@@ -1,0 +1,35 @@
+.sh-handoff { margin-top: 0; padding-top: 16px; color: var(--ink); }
+.sh-linked, .sh-ready, .sh-heading, .sh-send-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sh-thread, .sh-identity, .sh-ready strong { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; font-weight: 500; }
+.sh-thread { margin-top: 8px; min-height: 32px; text-decoration: underline; text-underline-offset: 3px; }
+.sh-thread:hover { color: var(--ink-2); }
+.sh-identity svg, .sh-ready svg { color: #C8B2FF; flex: none; }
+.sh-follow, .sh-copy { border: 0; background: transparent; padding: 6px 0; color: var(--muted); font: 400 13px/20px var(--font-ui); cursor: pointer; }
+.sh-follow:hover, .sh-copy:hover { color: var(--ink); }
+.sh-ready p, .sh-context { color: var(--muted); font-size: 12px; line-height: 18px; margin: 6px 0 12px; }
+.sh-ready p { margin-bottom: 0; }
+.sh-summary { margin: 8px 0 0; font-size: 14px; line-height: 21px; color: var(--ink-3); overflow-wrap: anywhere; }
+.sh-heading { margin-top: 12px; font-size: 14px; }
+.sh-handoff > .sh-heading:first-child { margin-top: 0; }
+.sh-composer { padding: 8px 0; border: 0; background: transparent; box-shadow: none; }
+.sh-composer textarea { display: block; width: 100%; min-height: 80px; max-height: 240px; padding: 12px; border: 0; border-bottom: 1px solid var(--line-2); border-radius: 0; background: var(--field, var(--surface-2)); box-shadow: none; outline: none; resize: none; color: var(--ink); font: 400 15px/22px var(--font-ui); }
+.sh-composer textarea:focus { border-bottom-color: var(--circle); }
+.sh-composer textarea::placeholder { color: var(--placeholder); opacity: 1; }
+.sh-send-row { margin-top: 10px; }
+.sh-send-row small { color: var(--muted); font-size: 11px; line-height: 16px; }
+.sh-send { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 8px 12px; border: 1px solid var(--line-2); border-radius: 9px; background: var(--surface-3); color: var(--ink); font: 600 13px/18px var(--font-ui); cursor: pointer; transition: background 140ms; }
+.sh-send:hover { background: var(--surface-sel); }
+.sh-send:disabled, .sh-follow:disabled { opacity: .5; cursor: wait; }
+.sh-error { margin: 12px 0 4px; font-size: 12px; line-height: 18px; }
+.sh-error strong { display: block; font-weight: 500; color: var(--destructive); }
+.sh-error span { display: block; color: var(--muted); margin-top: 4px; }
+.sh-copy { font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.sh-diagnostics { margin-top: 4px; color: var(--muted); font-size: 12px; }
+.sh-diagnostics summary { cursor: pointer; padding: 4px 0; }
+.sh-diagnostics pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; margin: 8px 0 0; background: var(--seg-well); border-radius: 10px; font: 400 11px/18px var(--font-mono); }
+@media (max-width: 899px) {
+  .sh-follow, .sh-copy, .sh-thread { min-height: 44px; }
+  .sh-send { min-height: 44px; }
+  .sh-composer textarea { font-size: 16px; line-height: 24px; }
+}
+.sh-handoff :is(button, a) { touch-action: manipulation; }

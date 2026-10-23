@@ -1,0 +1,26 @@
+/* Studio uses square surfaces; only status circles, swatches and switches stay round. */
+:root[data-studio] {
+  --r-card:0;
+  --r-panel:0;
+  --r-sheet:0;
+  --r-control:0;
+  --r-chip:0;
+  --r-box:0;
+  --r-row:0;
+}
+:root[data-studio] :not(:where(
+  .mini-state,.mini-editor-check,.mini-editor-top i:first-child,.ring6,.ring6-hole,.ring,.card-circle,.inline-box,.note-box,.dt-box,.md-box,.dt-done-circle,
+  .swatch,.label-dot,.labels-dot,.label-dot6,.phone-column-dot,.email-waiting-dot,
+  .topbar-synced > span,.automation-switch,input[type='radio']
+)),
+:root[data-studio] :not(:where(
+  .mini-state,.mini-editor-check,.mini-editor-top i:first-child,.ring6,.ring6-hole,.ring,.card-circle,.inline-box,.note-box,.dt-box,.md-box,.dt-done-circle,
+  .swatch,.label-dot,.labels-dot,.label-dot6,.phone-column-dot,.email-waiting-dot,
+  .topbar-synced > span,.automation-switch,input[type='radio']
+))::before,
+:root[data-studio] :not(:where(
+  .mini-state,.mini-editor-check,.mini-editor-top i:first-child,.ring6,.ring6-hole,.ring,.card-circle,.inline-box,.note-box,.dt-box,.md-box,.dt-done-circle,
+  .swatch,.label-dot,.labels-dot,.label-dot6,.phone-column-dot,.email-waiting-dot,
+  .topbar-synced > span,.automation-switch,input[type='radio']
+))::after { border-radius:0 !important; }
+:root[data-studio] :is(.inline-box,.note-box,.dt-box,.md-box,.dt-done-circle) { border-radius:50% !important; }

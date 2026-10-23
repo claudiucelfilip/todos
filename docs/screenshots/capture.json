@@ -1,0 +1,17 @@
+{
+  "capturedAt": "2026-10-22T14:39:18.189Z",
+  "source": "local production build, isolated demo workspace",
+  "screenshots": [
+    "board-desktop.jpg",
+    "notes-desktop.jpg",
+    "board-light.jpg",
+    "theme-palettes.jpg",
+    "board-mobile.jpg",
+    "editor-mobile.jpg",
+    "flows-desktop.jpg",
+    "label-actions.jpg"
+  ],
+  "desktopViewport": "1440x960",
+  "mobileViewport": "402x874",
+  "pageErrors": []
+}

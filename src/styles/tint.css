@@ -1,0 +1,634 @@
+/* Tint material with the contrast corrections agreed in the handoff. */
+.dt-panel .md-raw, .dt-sheet .md-raw {
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  font: 400 16px/24px var(--font-ui);
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+}
+.dt-panel .md-raw:only-child, .dt-sheet .md-raw:only-child { min-height: 80px; }
+.dt-panel .md-raw::placeholder, .dt-sheet .md-raw::placeholder { color: var(--placeholder); opacity: 1; }
+[data-theme="tint-light"] {
+  --glass-chroma: 1.4;
+  --material-wash-strength: 22%;
+  --l-todo:#5f62ef;
+  --l-doing:#c2410c;
+  --l-done:#0f766e;
+  --pill-ink:#ffffff;
+  --l-home:#14400c;
+  --l-work:#1a3f9e;
+  --l-health:#8e2554;
+  --l-errands:#6e4500;
+  --l-ideas:#064b55;
+  --kbd:rgba(0,0,0,.1);
+  --surface:rgb(from var(--material-tint) r g b / .55);
+  --surface-2:rgb(from var(--material-tint) r g b / .32);
+  --surface-3:rgb(from color-mix(in srgb, var(--theme-light) 78%, var(--theme-spark)) r g b / .54);
+  --surface-sel:rgb(from color-mix(in srgb, var(--theme-light) 78%, var(--theme-spark)) r g b / .64);
+  --surface-float:rgb(from var(--material-tint) r g b / .68);
+  --track:rgb(from var(--theme-shade) r g b / .14);
+  --line:transparent;
+  --line-2:rgb(from var(--theme-shade) r g b / .24);
+  --line-soft:rgb(from var(--theme-shade) r g b / .12);
+  --ink:color-mix(in srgb, var(--theme-shade) 30%, #060b08);
+  --ink-2:rgb(from var(--ink) r g b / .92);
+  --ink-3:rgb(from var(--ink) r g b / .84);
+  --muted:rgb(from var(--ink) r g b / .84);
+  --placeholder:rgb(from var(--ink) r g b / .80);
+  --circle:rgb(from var(--ink) r g b / .55);
+  --box:rgb(from var(--ink) r g b / .55);
+  --accent:var(--ink);
+  --on-accent:#ffffff;
+  --on-ink:#ffffff;
+  --due:var(--ink);
+  --destructive:#8a1111;
+  --toast-bg:var(--ink);
+  --toast-ink:#ffffff;
+  --toast-accent:#ffffff;
+  --rest-hi:rgb(from var(--material-tint) r g b / .3);
+  --md:rgb(from var(--ink) r g b / .64);
+  --on-bg-muted:var(--ink);
+  --on-bg-faint:rgb(from var(--ink) r g b / .8);
+  --card-depth:inset 0 1px 0 rgb(from var(--material-tint) r g b / .55), 0 1px 2px rgb(from var(--material-shadow) r g b / .06), 0 8px 24px -10px rgb(from var(--material-shadow) r g b / .22);
+  --control-depth:inset 0 1px 0 rgb(from var(--material-tint) r g b / .55), 0 1px 2px rgb(from var(--material-shadow) r g b / .08);
+  --well-depth:inset 0 1px 2px rgba(0,0,0,.12);
+  --panel-glass:rgb(from var(--material-tint) r g b / .62);
+  --bar-glass:rgb(from var(--material-tint) r g b / .16);
+  --bar-line:rgba(0,0,0,.08);
+  --card-edge:transparent;
+  --control-edge:transparent;
+  --sel-ring:rgba(0,0,0,.22);
+  --card-lift:inset 0 1px 0 rgb(from var(--material-tint) r g b / .6), 0 12px 24px -4px rgb(from var(--material-shadow) r g b / .18), 0 40px 80px -16px rgb(from var(--material-shadow) r g b / .28);
+  --shadow-drag:inset 0 1px 0 rgb(from var(--material-tint) r g b / .7), 0 30px 60px -12px rgb(from var(--material-shadow) r g b / .32);
+  --shadow-panel:inset 0 1px 0 rgb(from var(--material-tint) r g b / .6), 0 4px 6px rgb(from var(--material-shadow) r g b / .08), 0 12px 24px -4px rgb(from var(--material-shadow) r g b / .14), 0 40px 80px -16px rgb(from var(--material-shadow) r g b / .28);
+  --seg-well:rgb(from var(--theme-shade) r g b / .18);
+  --seg-well-depth:inset 0 1px 2px rgba(0,0,0,.14);
+  --seg-raised:0 1px 2px rgba(0,0,0,.16);
+  --composer-glass:rgb(from var(--material-tint) r g b / .7);
+  --composer-solid:rgb(from var(--material-tint) r g b / .9);
+  color-scheme:light;
+}
+[data-theme="tint-dark"] {
+  --l-todo:#5f62ef;
+  --l-doing:#c2410c;
+  --l-done:#0f766e;
+  --pill-ink:#0e1114;
+  --l-home:#56d39b;
+  --l-work:#6fa8f5;
+  --l-health:#f08cb0;
+  --l-errands:#f2b544;
+  --l-ideas:#5ccbd8;
+  --kbd:rgba(255,255,255,.12);
+  --surface:rgb(from var(--material-tint) r g b / .08);
+  --surface-2:rgb(from var(--material-tint) r g b / .05);
+  --surface-3:rgb(from color-mix(in srgb, var(--theme-light) 78%, var(--theme-spark)) r g b / .12);
+  --surface-sel:rgb(from color-mix(in srgb, var(--theme-light) 78%, var(--theme-spark)) r g b / .16);
+  --surface-float:rgba(16,16,18,.62);
+  --track:rgb(from var(--material-tint) r g b / .1);
+  --line:transparent;
+  --line-2:rgb(from var(--material-tint) r g b / .14);
+  --line-soft:rgb(from var(--material-tint) r g b / .07);
+  --ink:#ffffff;
+  --ink-2:rgba(255,255,255,.92);
+  --ink-3:rgba(255,255,255,.82);
+  --muted:rgba(255,255,255,.74);
+  --placeholder:rgba(255,255,255,.69);
+  --circle:rgba(255,255,255,.4);
+  --box:rgba(255,255,255,.48);
+  --accent:#ffffff;
+  --on-accent:#0c0f12;
+  --on-ink:#0c0f12;
+  --due:#ffffff;
+  --destructive:#f08c8c;
+  --toast-bg:#ffffff;
+  --toast-ink:#0c0f12;
+  --toast-accent:#0c0f12;
+  --rest-hi:rgb(from var(--material-tint) r g b / .04);
+  --md:rgba(255,255,255,.69);
+  --on-bg-muted:rgba(255,255,255,.72);
+  --on-bg-faint:rgba(255,255,255,.5);
+  --card-depth:inset 0 1px 0 rgb(from var(--material-tint) r g b / .1), 0 1px 2px rgba(0,0,0,.2), 0 10px 28px -10px rgba(0,0,0,.5);
+  --control-depth:inset 0 1px 0 rgb(from var(--material-tint) r g b / .1), 0 1px 2px rgba(0,0,0,.3);
+  --well-depth:inset 0 1px 2px rgba(0,0,0,.35);
+  --panel-glass:rgba(10,10,12,.5);
+  --bar-glass:rgba(0,0,0,.18);
+  --bar-line:rgb(from var(--material-tint) r g b / .06);
+  --card-edge:transparent;
+  --control-edge:transparent;
+  --sel-ring:rgb(from var(--material-tint) r g b / .28);
+  --card-lift:inset 0 1px 0 rgb(from var(--material-tint) r g b / .12), 0 12px 24px -4px rgba(0,0,0,.5), 0 40px 80px -16px rgba(0,0,0,.6);
+  --shadow-drag:inset 0 1px 0 rgb(from var(--material-tint) r g b / .12), 0 30px 60px -12px rgba(0,0,0,.7);
+  --shadow-panel:inset 0 1px 0 rgb(from var(--material-tint) r g b / .12), 0 4px 6px rgba(0,0,0,.3), 0 12px 24px -4px rgba(0,0,0,.45), 0 40px 80px -16px rgba(0,0,0,.6);
+  --seg-well:rgba(0,0,0,.25);
+  --seg-well-depth:inset 0 1px 2px rgba(0,0,0,.4);
+  --seg-raised:0 1px 2px rgba(0,0,0,.4);
+  --composer-glass:rgba(16,16,18,.6);
+  --composer-solid:rgba(16,16,18,.85);
+  color-scheme:dark;
+}
+
+:root {
+  --theme-color: #7cb965;
+  --theme-shade: #2e5535;
+  --theme-light: #b7dd91;
+  --theme-spark: #b1dd45;
+  --material-shadow: var(--theme-shade);
+  --material-tint: var(--theme-light);
+  --material-wash: color-mix(in srgb, var(--theme-color) var(--material-wash-strength, 18%), transparent);
+  --glass-blur: blur(28px) saturate(var(--glass-chroma, 1.6));
+  --focus-ring: color-mix(in srgb, var(--ink) 12%, transparent);
+  --bg: transparent;
+  --accent-fill: var(--accent);
+  --accent-text: var(--accent);
+  --accent-tint: var(--track);
+  --destructive-tint: color-mix(in srgb, var(--destructive) 12%, transparent);
+  --backdrop: rgba(0, 0, 0, .2);
+}
+body, .app { background: var(--page) fixed; }
+.app .dialog {
+  background: var(--panel-glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .app .dialog { background: var(--composer-solid); }
+}
+.ring6:not(.ring6-done) {
+  -webkit-mask: radial-gradient(circle closest-side, transparent 75%, #000 80%);
+  mask: radial-gradient(circle closest-side, transparent 75%, #000 80%);
+}
+.ring6-hole { background: transparent; }
+.ring6-done .ring6-hole { background: var(--accent); }
+:root .label-pill { height: 20px; font: 600 12px/20px var(--font-ui); }
+:root .label-pill.suggested { border-width: 2px; line-height: 16px; }
+.labels-name .label-pill, .label-check-name .label-pill { height: 26px; line-height: 26px; }
+:root .dt-chips .label-pill { padding: 0 4px 0 12px; }
+:root .label-pill-x { width: 20px; height: 20px; opacity: .75; }
+.card-done-date { color: var(--placeholder); }
+.composer-layer.desktop { bottom: 20px; }
+.composer-layer.desktop .composer-bar,
+.composer-layer.phone .composer-bar {
+  background: var(--composer-glass);
+  color: var(--muted);
+  border: 0;
+  border-radius: 14px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.composer-bar::before { content: none; }
+.composer-bar { color: var(--on-ink); }
+.install-card-go, .assistant-send { color: var(--on-ink); }
+.app .link-pop, .app .label-pop:not(.labels-menu) { background: var(--surface-float); }
+/* The picker floats outside the editor so nested glass cannot expose the text beneath it. */
+.app .label-pop.label-picker {
+  position: fixed;
+  z-index: 170;
+  padding: 8px;
+  background: color-mix(in srgb, var(--theme-shade) 35%, #080c10);
+  color: var(--ink);
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.label-picker .label-pop-heading { margin: 10px 12px 6px; font: 500 12px/18px var(--font-ui); }
+.label-picker .label-pop-list + .label-pop-heading { margin-top: 16px; }
+.label-picker .label-check { min-height: 44px; padding: 8px 12px; gap: 12px; }
+.label-picker .label-check input {
+  appearance: none;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--box);
+  border-radius: 5px;
+  background: transparent;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+.label-picker .label-check input[type='radio'] { border-radius: 50%; }
+.label-picker .label-check input:checked { background: var(--ink); border-color: var(--ink); }
+.label-picker .label-check input:checked::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: var(--on-accent);
+  clip-path: polygon(14% 44%, 0 58%, 38% 96%, 100% 22%, 84% 8%, 36% 68%);
+}
+.label-picker .label-check input[type='radio']:checked::after { width: 8px; height: 8px; border-radius: 50%; clip-path: none; }
+.label-picker :is(input, button):focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.label-picker .new-label-row {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 0;
+  border-top: 1px solid var(--line-2);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 500 14px/20px var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+.label-picker .new-label-row:hover { background: var(--track); }
+@media (forced-colors: active) {
+  .label-picker .label-check input { appearance: auto; }
+  .label-picker .label-check input::after { content: none; }
+}
+.background-picker { display: flex; flex-direction: column; gap: 12px; }
+.background-swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px 12px; padding-bottom: 20px; }
+.background-swatches button { position: relative; height: 40px; border: 0; border-radius: 10px; cursor: pointer; }
+.background-swatches button[aria-pressed='true'] { outline: 2px solid var(--ink); outline-offset: 3px; }
+.background-swatches span { position: absolute; top: 44px; left: 0; right: 0; color: var(--ink); font: 500 12px var(--font-ui); }
+
+@media (max-width: 899px) {
+  .app.phone .topbar {
+    height: auto;
+    padding: 54px 12px 12px;
+    background: var(--bar-glass);
+    border-bottom: 1px solid var(--bar-line);
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .app.phone .topbar-row { width: 100%; height: 44px; margin: 0; }
+  .app.phone .topbar-title { margin: 0; }
+  .app.phone .topbar-actions { gap: 6px; }
+  .app.phone .topbar-actions > .label-filter { display: none; }
+  .app.phone .topbar-actions .iconbtn { width: 38px; height: 38px; }
+  .app.phone .topbar-actions .assistant-launch { order: 2; }
+  .app.phone .phone-menu-anchor { order: 3; }
+  .app.phone .view-switch {
+    width: 100%; height: 40px; margin: 0; padding: 3px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    background: var(--seg-well); border-radius: 10px; box-shadow: var(--seg-well-depth);
+  }
+  .app.phone .view-switch button { height: 34px; justify-content: center; font: 600 15px var(--font-ui); }
+  .phone-column-pills { height: 36px; min-height: 36px; display: flex; align-items:center; gap: 8px; margin: 0 -12px; padding: 0 12px; }
+  .phone-column-list { min-width:0; flex:1; display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; }
+  .phone-column-list::-webkit-scrollbar { display:none; }
+  .phone-column-pill { flex: none; height: 36px; display: flex; align-items: center; gap: 7px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font: 600 14px var(--font-ui); }
+  .phone-column-pill > .mono { font: 500 11px var(--font-mono); opacity: .75; }
+  .phone-column-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lp-bg-l); }
+  .phone-column-pill.active { background: var(--lp-bg-l); color: var(--lp-fg-l); box-shadow: var(--control-depth); }
+  [data-theme='tint-dark'] .phone-column-dot { background: var(--lp-bg-d); }
+  [data-theme='tint-dark'] .phone-column-pill.active { background: var(--lp-bg-d); color: var(--lp-fg-d); }
+  .phone-column-add { flex: none; width: 36px; height: 36px; padding: 0; border: 1px dashed var(--line-2); border-radius: 50%; color: var(--ink); background: transparent; font-size: 22px; }
+  .phone-panes { position: fixed; inset: 222px 12px 0; display: block; overflow: hidden; touch-action: pan-y; }
+  .phone-panes[hidden], .phone-notes-pane[hidden] { display: none; }
+  .app.phone .board.phone { height: 100%; width: 100%; margin: 0; padding: 0; }
+  .app.phone .board.phone .columns { display: flex; gap: 12px; height: 100%; width: max-content; margin: 0; padding: 0; }
+  .app.phone .board.phone .column { display: flex; flex-direction: column; flex: none; width: round(down, calc((100vw - 24px) * .82), 1px); height: 100%; min-width: 0; padding: 0; overflow: visible; }
+  .app.phone .board.phone .column-header { display: flex; flex: none; height: 28px; min-height: 28px; padding: 0; margin: 0 0 12px; align-items: center; }
+  .app.phone .column-label .label-pill { height: 24px; font: 600 13px/24px var(--font-ui); }
+  .app.phone .column-count { font: 400 12px var(--font-mono); color: var(--on-bg-muted); }
+  .app.phone .board.phone .column-body { overflow-y: auto; overflow-x: clip; flex: 1; min-height: 0; gap: 12px; padding: 0 0 100px; overscroll-behavior: contain; }
+  .app.phone .board.phone .column-empty { height: 84px; min-height: 84px; border: 1px dashed var(--line-2); border-radius: 12px; display: grid; place-items: center; color: var(--on-bg-muted); margin: 0; }
+  .phone-notes-pane { position: fixed; inset: 176px 12px 0; }
+  .app.phone .notes-view.phone { height: 100%; padding: 0; margin: 0; }
+  .app.phone .notes-view.phone .notes-scroll { height: 100%; padding: 0 0 110px; margin: 0; overflow-y: auto; }
+  .app.phone .notes-grid { gap: 0 12px; }
+  .composer-layer.phone { bottom: max(30px, var(--safe-bottom)); }
+  .composer-layer.phone .composer-bar { height: 52px; padding: 0 22px; }
+  .dt-sheet-root { pointer-events: none; }
+  .dt-sheet-root .dt-sheet {
+    pointer-events: auto;
+    top: 60px; bottom: max(30px, calc(var(--kb) + 12px)); left: 12px; right: 12px;
+    height: auto; max-height: none; width: auto; border: 0; border-radius: 18px;
+    background: var(--panel-glass); box-shadow: var(--shadow-panel);
+    -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  }
+  :root .dt-sheet .dt-chips .label-pill { height: 32px; min-height: 32px; line-height: 32px; }
+  .dt-sheet .dt-row { min-height: 48px; padding-top: 12px; padding-bottom: 12px; }
+}
+.composer-layer.desktop .composer-bar { padding-right: 12px; }
+@media (max-width: 899px) {
+  .app.phone .column-label, .app.phone .column-count { display: inline-flex; }
+  .app.phone .column-header { gap: 8px; padding: 0 2px; margin-bottom: 10px; }
+  .app.phone .column-label .label-pill { padding: 0 10px; }
+  .phone-panes { left: 0; right: 0; bottom: 0; padding: 0 12px; }
+  .app.phone .board.phone .column-body { padding-bottom: calc(max(30px, var(--safe-bottom)) + 76px); }
+  .app.phone .board.phone .card-face, .app.phone .board.phone .card-face.doing { border-radius: 12px; padding: 12px 14px; grid-template-columns: minmax(0, 1fr) auto; }
+  .app.phone .card-face > .card-ring { top: 2px; right: 2px; width: 44px; height: 44px; }
+  .app.phone .card-face .card-title { padding-right: 34px; line-height: 24px; }
+  .app.phone .card-meta { padding-right: 24px; }
+  .app.phone .card-done-date { margin-right: 12px; }
+  .phone-notes-pane { bottom: 0; }
+  .app.phone .notes-view.phone .notes-scroll { padding-bottom: calc(max(30px, var(--safe-bottom)) + 76px); }
+  .app.phone .topbar.search-open > .topbar-row:not(.topbar-row-search) { display: none; }
+  .app.phone .topbar-row-search { position: static; order: -1; height: 44px; padding: 0; margin: 0; background: none; }
+  .app.phone .topbar-row-search .topbar-search { height: 44px; padding: 0 12px; }
+  .app.phone .phone-search-layer { inset: 176px 0 0; background: transparent; z-index: 10; padding: 0 12px 120px; gap: 8px; }
+  .app.phone[data-view='board'] .phone-search-layer { top: 222px; }
+  .phone-search-results { background: var(--surface); border-radius: 14px; box-shadow: var(--card-depth); padding: 6px; display: flex; flex-direction: column; gap: 2px; }
+  .phone-search-results .search-row { min-height: 60px; height: auto; }
+  .dt-sheet::after { content: none; }
+}
+
+/* Claude confirmed the rendered Tint cards replace the older Doing geometry. */
+.app .card-face.doing { padding: 12px 14px; }
+.app .card-face.doing .card-title { font: 500 16px/24px var(--font-ui); }
+.app.desktop .card-face > .card-ring { top: 8px; right: 8px; }
+.app .card-face.doing .card-notes { margin-top: 6px; }
+.app.desktop .column-header { align-items: center; }
+.app.desktop .column-label { display: inline-flex; align-items: center; gap: 10px; }
+.column-dot { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--dot-light); }
+[data-theme='tint-dark'] .column-dot { background: var(--dot-dark); }
+.app.desktop .column-count { font-size: 13px; }
+.app.desktop .column .column-body { gap: 10px; }
+.app .dt-sheet { overflow: hidden; }
+.dt-panel .dt-top { min-height: 36px; justify-content: flex-start; }
+.dt-top-actions { margin-left: auto; }
+.dt-new { font-size: 12px; color: var(--muted); }
+.dt-panel .dt-top .ring6-btn { width: 36px; height: 36px; margin-left: -8px; }
+.dt-top .ring6 { width: 22px; height: 22px; }
+.dt-top .ring6:not(.ring6-done) { -webkit-mask: radial-gradient(circle closest-side, transparent 68.1818%, #000 72.7273%); mask: radial-gradient(circle closest-side, transparent 68.1818%, #000 72.7273%); }
+.dt-panel .dt-remind-anchor { min-height: 28px; height: 28px; }
+.dt-panel .dt-row, .dt-sheet .dt-row { min-height: 40px; }
+.dt-panel .dt-row-text, .dt-sheet .dt-row-text { font-size: 16px; line-height: 22px; }
+.dt-panel .dt-row .dt-box, .dt-sheet .dt-row .dt-box { margin-top: 0; }
+.dt-panel .dt-row-del, .dt-sheet .dt-row-del { width: 22px; height: 22px; min-height: 22px; padding: 0; }
+@media (max-width: 899px) {
+  .dt-sheet .dt-row { min-height: 48px; }
+  .dt-sheet .dt-top { min-height: 36px; }
+}
+
+@media (max-width: 899px) {
+  .app.phone .board.phone .column-header { gap: 8px; padding: 0 2px; margin-bottom: 10px; }
+  .app.phone .board.phone .column-header > .column-count { display: inline-flex; }
+  .app.phone .board.phone .card-meta { flex-wrap: wrap; overflow: visible; padding-right: 0; gap: 8px; min-height: 20px; height: auto; }
+  .app.phone .card-done-date { margin-right: 0; }
+}
+
+@media (max-width: 899px) {
+  .dt-sheet .dt-scroll { padding: 0 22px 22px; }
+  .dt-sheet .dt-row:not(.ref) { background: transparent; border: 1px solid transparent; }
+  .dt-sheet .dt-add-input { min-height: 44px; border: 1px solid var(--line-2); padding: 10px 12px; font-size: 15px; line-height: 22px; background: transparent; }
+  .dt-sheet .dt-chips .dt-remind-anchor { min-height: 32px; }
+  .dt-sheet .dt-chips .dt-remind-btn { min-height: 32px; height: 32px; }
+  .dt-sheet .dt-foot { display: none; }
+}
+.app .card-face .card-title { min-height: 0; padding-right: 26px; }
+.app .card-face .card-meta { margin: 6px 0 0; padding-right: 0; height: auto; min-height: 20px; gap: 8px; flex-wrap: wrap; }
+.app .card-face .card-inline-items { margin-top: 6px; margin-left: 0; }
+.app.desktop .column.done .column-body { gap: 10px; }
+
+.labels-scrim { display: none; }
+@media (max-width: 899px) {
+  .labels-scrim { display: block; position: fixed; inset: 0; z-index: 89; background: rgba(0,0,0,.28); }
+  .app.phone .labels-menu { padding: 22px 12px 34px; height: 693px; max-height: calc(100dvh - var(--kb, 0px) - 60px); gap: 0; background: var(--panel-glass); }
+  .labels-sheet-head { display: flex; align-items: center; height: 44px; flex: none; padding: 0 10px; font-size: 18px; }
+  .labels-sheet-head button { margin-left: auto; border: 0; background: none; color: var(--ink); font: 600 16px var(--font-ui); height: 44px; padding: 0; }
+  .app.phone .labels-menu .labels-find { height: 44px; margin: 4px 0 8px; padding: 0 12px; border-radius: 10px; }
+  .app.phone .labels-menu .labels-find input { font-size: 16px; }
+  .app.phone .labels-menu .labels-list { flex: 1; }
+  .app.phone .labels-menu .labels-row { display: block; }
+  .app.phone .labels-menu .labels-row-main { width: 100%; height: 48px; min-height: 48px; padding: 0 12px; gap: 12px; }
+  .app.phone .labels-menu .labels-box { width: 22px; height: 22px; }
+  .app.phone .labels-menu .labels-more { display: none; }
+  .app.phone .labels-menu .labels-foot { flex: none; height: 44px; margin: 6px 4px 0; padding: 0 8px; font-size: 15px; }
+  .phone-search-results .search-row > .label-pill { display: none; }
+  .phone-search-results .search-row-title { font-size: 16px; }
+}
+@media (max-width: 899px) {
+  .app.phone .room-switch { height: 40px; padding: 0 12px; border-radius: 10px; background: var(--surface-2); box-shadow: var(--control-depth); }
+  .dt-sheet .dt-top { height: 44px; min-height: 44px; margin-bottom: 14px; }
+  .dt-sheet .dt-crumbs { margin-bottom: 16px; }
+  .dt-sheet .dt-head { gap: 24px; }
+  .dt-sheet .dt-checklist { margin-bottom: 16px; }
+  .dt-sheet .dt-checklist-head { height: 28px; padding: 0; margin-bottom: 4px; }
+  .dt-sheet .dt-section-title { font-size: 16px; }
+  .dt-sheet .dt-rows { display: flex; flex-direction: column; gap: 4px; }
+  .dt-sheet .dt-row { margin: 0; padding: 12px; border: 1px solid transparent; }
+  .dt-sheet .dt-row .dt-box { width: 22px; height: 22px; }
+  .dt-sheet .ref-open { width: 22px; height: 22px; min-height: 22px; }
+  .dt-sheet .dt-add { margin-top: 6px; }
+  .app.phone .labels-menu .label-pill { height: 28px; padding: 0 12px; font-size: 14px; }
+}
+
+.app.desktop .card-face .card-excerpt { margin-top: 8px; }
+.app.phone .board.phone .card-title { padding-right: 28px; }
+.phone-column-pill.drag-hover { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+.app .card-face.drag-ghost { position: fixed; margin: 0; pointer-events: none; }
+.app .card-face.drag-ghost.lifted { box-shadow: var(--shadow-drag); transition: box-shadow 200ms var(--ease-out); }
+.app .card-face.drag-ghost.drag-return, .app .card-face.drag-ghost.drag-drop { box-shadow: var(--card-depth); }
+
+/* iOS Home Screen only; browser tabs keep the regular responsive layout. */
+@media (max-width: 899px) {
+  html[data-ios-standalone]:has(.app.phone),
+  html[data-ios-standalone] body:has(.app.phone),
+  html[data-ios-standalone] #root:has(.app.phone) {
+    /* Percentage heights omit the status bar in older standalone WebKit. */
+    height: 100vh; overflow: hidden; overscroll-behavior: none;
+  }
+  html[data-ios-standalone] { background: var(--page) fixed; }
+  html[data-ios-standalone] .app.phone {
+    position: fixed; inset: 0; height: 100vh; min-height: 0;
+    --phone-top: max(54px, var(--safe-top));
+    --phone-footer: calc(max(30px, var(--safe-bottom)) + 76px);
+  }
+  html[data-ios-standalone] .app.phone .topbar {
+    padding-top: var(--phone-top);
+  }
+  html[data-ios-standalone] .phone-panes { top: calc(var(--phone-top) + 168px); bottom: 0; }
+  html[data-ios-standalone] .app.phone .board.phone .column-body {
+    padding-top: 20px; padding-bottom: var(--phone-footer); overscroll-behavior: contain;
+  }
+  html[data-ios-standalone] .phone-notes-pane { top: calc(var(--phone-top) + 122px); bottom: 0; }
+  html[data-ios-standalone] .app.phone .notes-view.phone .notes-scroll {
+    padding-bottom: var(--phone-footer); overscroll-behavior: contain;
+  }
+  html[data-ios-standalone] .phone-column-pills,
+  html[data-ios-standalone] .dt-scroll,
+  html[data-ios-standalone] .dialog-body,
+  html[data-ios-standalone] .phone-search-layer { overscroll-behavior: contain; }
+  html[data-ios-windowed]:has(.app.phone),
+  html[data-ios-windowed] body:has(.app.phone),
+  html[data-ios-windowed] #root:has(.app.phone),
+  html[data-ios-windowed] .app.phone { height: 100%; }
+  html[data-ios-windowed] .app.phone { --phone-top: 12px; }
+  html[data-ios-windowed] .dt-sheet-root .dt-sheet { top: 12px; }
+  /* An opaque fixed edge lets iOS sample the header without its scroll-edge blur. */
+  html[data-ios-windowed] body:has(.app.phone)::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; height: 1px;
+    z-index: 200; pointer-events: none; background-color: var(--studio-blue);
+  }
+}
+
+/* Card previews use the same Markdown blocks at the card's text size. */
+.md-preview p { margin: 0; }
+.md-preview .md-h { padding: 2px 0; }
+.md-preview .md-blank { min-height: 8px; height: 8px; }
+.md-preview code { font-family: var(--font-mono); background: var(--surface-2); border-radius: 4px; padding: 0 3px; }
+
+/* The horizontal Board scroller needs paint room for its edge columns. */
+.app.desktop .columns {
+  width: calc(100% + 48px);
+  margin-left: -24px;
+  margin-right: -24px;
+  padding: 0 24px;
+}
+
+/* Swipe position is animated by the gesture, without a competing CSS transition. */
+.dt-row { transition: background-color 160ms var(--ease-out); }
+.dt-row.checked .dt-row-text { flex: 1; margin-right: 0; }
+.dt-row.checked .dt-box, .card-inline-item.checked .inline-box { animation: none; color: var(--on-ink); }
+.dt-row-wrap > .swipe-bg-delete { background: var(--surface-2); color: var(--ink); filter: none; }
+/* Checklist actions share a first-line slot, so hover never shifts the text. */
+.dt-panel .dt-row, .dt-sheet .dt-row { align-items: flex-start; gap: 10px; padding: 6px 10px; min-height: 36px; }
+.dt-row .dt-box { width: 22px; height: 22px; }
+.dt-row-actions { flex: 0 0 32px; height: 32px; margin: -5px 0; display: flex; justify-content: center; align-items: center; padding: 0; border: 0; background: none; color: var(--ink-2); font: 500 13px/1 var(--font-ui); cursor: pointer; opacity: 0; pointer-events: none; }
+.dt-row-actions svg { width: 20px; height: 20px; }
+.dt-row:hover .dt-row-actions, .dt-row:focus-within .dt-row-actions, .dt-row.item-menu-open .dt-row-actions { opacity: 1; pointer-events: auto; }
+.dt-row-actions:hover, .dt-row-actions[aria-expanded='true'] { background: var(--surface-3); border-radius: 8px; }
+.dt-row .ref-open { flex: none; width: 28px; height: 28px; margin: -3px 0; display: flex; align-items: center; justify-content: center; }
+.dt-row .ref-open svg { width: 16px; height: 16px; }
+.dt-item-menu { width: 200px; min-width: 0; border: 0; border-radius: 12px; gap: 2px; animation: none; }
+.dt-item-menu-caption { height: 24px; display: flex; align-items: center; padding: 0 10px; font: 400 12px/1 var(--font-mono); color: var(--muted); }
+.dt-item-menu button { height: 36px; min-height: 36px; padding: 0 10px; border-radius: 8px; font-size: 14px; }
+.dt-item-menu button:hover, .dt-item-menu button:focus-visible { background: var(--surface-3); }
+.dt-item-menu button:last-child { color: var(--ink-2); }
+.dt-item-menu-divider { height: 1px; background: var(--line-2); margin: 4px 6px; }
+.dt-item-menu.phone { width: 220px; }
+.dt-item-menu.phone button { height: 44px; min-height: 44px; font-size: 16px; }
+.app.phone .dt-sheet .dt-row { padding: 10px; min-height: 44px; }
+.app.phone .dt-row-handle { display: none; }
+.app.phone .dt-row-actions, .app.phone .dt-row:hover .dt-row-actions { flex-basis: 44px; height: 44px; margin: -11px 0; padding: 0; opacity: 1; pointer-events: auto; }
+.app.phone .dt-row.item-active .dt-row-actions, .app.phone .dt-row:focus-within .dt-row-actions, .app.phone .dt-row.item-menu-open .dt-row-actions { opacity: 1; pointer-events: auto; }
+.app.phone .dt-row.item-active { background: var(--surface-2); }
+.app.phone .dt-row .ref-open { width: 44px; height: 44px; margin: -11px 0; }
+.app.phone .dt-row .ref-open svg { width: 18px; height: 18px; }
+[data-panel="ink"] { --panel-glass: rgb(from color-mix(in srgb, var(--theme-shade) 45%, #080c10) r g b / .62); --surface-float: rgb(from color-mix(in srgb, var(--theme-shade) 45%, #080c10) r g b / .7); color: var(--ink); }
+
+/* Boxed fields use the same inset material as the view switch. */
+[data-theme="tint-light"] { --field: var(--seg-well); --field-depth: inset 0 1px 2px rgba(0,0,0,.14); --field-placeholder: rgb(from var(--ink) r g b / .84); --field-focus: rgb(from var(--ink) r g b / .55); }
+[data-theme="tint-dark"] { --field: rgba(0,0,0,.25); --field-depth: inset 0 1px 2px rgba(0,0,0,.4); --field-placeholder: rgba(255,255,255,.69); --field-focus: rgba(255,255,255,.6); }
+:root :is(input, textarea, select):not(:where([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], .search-input, .labels-find input, .assistant-field textarea, .sh-composer textarea, .rooms-link .rooms-input, .dt-title:not(:focus))) {
+  background: var(--field) !important; box-shadow: var(--field-depth) !important; color: var(--ink) !important; border: 0 !important; border-radius: 10px; min-height: 40px;
+}
+:root :is(input, textarea, select)::placeholder { color: var(--field-placeholder); opacity: 1; }
+:root :is(input, textarea, select):focus:not(:where([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], .search-input, .labels-find input, .assistant-field textarea, .sh-composer textarea, .rooms-link .rooms-input)) { box-shadow: var(--field-depth), inset 0 0 0 1px var(--field-focus) !important; outline: 0; }
+/* Native iOS selects ignore inset shadows; use the same thin edge as an outline. */
+:root select:focus { box-shadow: var(--field-depth) !important; outline: 1px solid var(--field-focus); outline-offset: -1px; }
+:root .topbar-search, :root .labels-find { background: var(--field); box-shadow: var(--field-depth); border: 0; border-radius: 10px; }
+:root .topbar-search:focus-within, :root .labels-find:focus-within { box-shadow: var(--field-depth), inset 0 0 0 1px var(--field-focus); }
+:root .topbar-search input, :root .labels-find input { background: transparent; box-shadow: none; color: var(--ink); }
+:root .composer-bar input { padding: 0 12px; border-radius: 10px; }
+:root .dt-title:focus { padding: 4px 8px; }
+.app.phone :is(input, textarea, select):not(:where([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="hidden"], .dt-title:not(:focus))) { min-height: 44px; }
+:root .composer-layer .composer-bar { padding: 4px; gap: 0; position: relative; }
+:root .composer-layer.desktop .composer-bar { height: 48px; }
+:root .composer-layer.phone .composer-bar { height: 52px; }
+:root .composer-bar input { height: 40px; padding-right: 36px; }
+:root .composer-layer.phone input { height: 44px; padding-right: 12px; }
+:root .composer-kbd { position: absolute; right: 16px; pointer-events: none; }
+:root .dt-title:focus { margin: -4px -8px -4px; width: calc(100% + 16px); min-height: 0; }
+@media (pointer: coarse) {
+  :root .dt-title:focus { min-height: 52px; }
+}
+.dt-panel .md-raw, .dt-sheet .md-raw { margin: 0; width: 100%; }
+[data-panel="ink"] { --accent-fill: var(--accent); --accent-text: var(--accent); --accent-tint: var(--track); --focus-ring: color-mix(in srgb, var(--ink) 12%, transparent); }
+
+
+/* The mirrored text owns layout in both reading and editing states. */
+.dt-item-text-field { position: relative; flex: 1; min-width: 0; }
+.dt-item-text-field::before { content: ''; position: absolute; inset: -4px -6px; border-radius: 6px; background: var(--field); box-shadow: var(--field-depth); pointer-events: none; }
+.dt-item-text-field > .dt-row-text { display: block; white-space: pre-wrap; overflow-wrap: anywhere; }
+.dt-row.editing .dt-item-text-field > .dt-row-text { visibility: hidden; }
+:root .dt-item-text-field > .dt-row-edit { position: absolute; inset: -4px -6px; width: calc(100% + 12px); height: calc(100% + 8px); min-height: 0; margin: 0; padding: 4px 6px; resize: none; overflow: hidden; font: 400 16px/22px var(--font-ui); border-radius: 6px; }
+.dt-row.editing .dt-row-actions, .dt-row.editing .dt-row-handle { visibility: hidden; }
+:root .composer-layer .composer-bar { background: var(--panel-glass); color: var(--ink-2); padding: 0 18px; text-align: left; cursor: pointer; font: inherit; }
+.composer-bar > span { flex: 1; }
+.composer-bar:focus-visible { outline: 1px solid var(--field-focus); outline-offset: 3px; }
+
+/* Cards are the main objects: a fine edge, a soft lift, and a clear reading rhythm. */
+[data-theme="tint-light"] { --note-edge: rgb(from var(--material-tint) r g b / .6); --note-sheen: rgb(from var(--material-tint) r g b / .12); --note-shadow: 0 2px 3px rgb(from var(--material-shadow) r g b / .08), 0 10px 22px -12px rgb(from var(--material-shadow) r g b / .32); }
+[data-theme="tint-dark"] { --note-edge: rgb(from var(--material-tint) r g b / .12); --note-sheen: rgb(from var(--material-tint) r g b / .04); --note-shadow: 0 2px 3px rgba(0,0,0,.12), 0 10px 22px -12px rgba(0,0,0,.5); }
+:root .app :is(.card-face, .note-card) {
+  padding: 14px; border: 1px solid var(--note-edge); border-radius: 18px;
+  background: linear-gradient(var(--material-wash), var(--material-wash)), linear-gradient(155deg, var(--note-sheen), transparent 65%), var(--surface);
+  background-blend-mode: soft-light, normal;
+  -webkit-backdrop-filter: blur(28px) saturate(1.25); backdrop-filter: blur(28px) saturate(1.25);
+  box-shadow: var(--note-shadow); transition: background-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), opacity 160ms var(--ease-out);
+}
+:root .app :is(.card-face, .note-card):is(:hover, .open, .selected) {
+  border: 1px solid var(--note-edge); transform: none;
+  background: linear-gradient(color-mix(in srgb, var(--theme-color) 24%, transparent), color-mix(in srgb, var(--theme-color) 24%, transparent)), linear-gradient(155deg, var(--note-sheen), transparent 65%), var(--surface-3);
+  background-blend-mode: soft-light, normal;
+  -webkit-backdrop-filter: blur(28px) saturate(1.6); backdrop-filter: blur(28px) saturate(1.6);
+  box-shadow: var(--card-depth);
+}
+:root .app .card-face .card-title { font: 600 18px/26px var(--font-ui); padding-right: 36px; }
+:root .app .note-title { font: 600 17px/24px var(--font-ui); padding-right: 32px; }
+:root .app .card-face > .card-ring { top: 11px; right: 10px; }
+:root .app .note-card > .note-ring { top: 13px; right: 10px; }
+:root .app .card-face .card-inline-items { margin-top: 8px; gap: 2px; max-height: 100px; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: none; }
+:root .app .card-inline-items::-webkit-scrollbar { display: none; }
+/* Keep the tap area inside its row so three items do not overflow. */
+:root .app .card-inline-item .inline-box::after { inset: -4px 0; }
+:root .app .card-inline-item { flex: none; align-items: start; font-weight: 400; padding: 4px 0; column-gap: 10px; min-height: 32px; line-height: 22px; }
+:root .app .card-inline-item.ref { padding: 4px; }
+:root .app .card-inline-item .ref-open { height: 22px; }
+:root .app .card-face .card-meta { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line-2); color: var(--muted); font-size: 12px; }
+:root .app .note-main { gap: 8px; }
+:root .app .note-foot { height: auto; min-height: 20px; padding-top: 8px; margin-top: 4px; border-top: 1px solid var(--line-2); }
+:root .app .note-item { height: 28px; font-size: 14px; gap: 8px; }
+:root .app .note-item.ref { padding: 4px 6px; height: 32px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--surface-2); }
+:root .app .card-inline-item.ref, :root .app .dt-row.ref { background: var(--surface-2); border: 1px solid var(--line-2); box-shadow: 0 2px 4px rgba(0,0,0,.06); }
+@media (max-width: 899px) {
+  :root .app .note-card { padding: 14px; border-radius: 16px; }
+  :root .app .note-title { font-size: 16px; line-height: 22px; }
+  :root .app .note-card > .note-ring { top: 3px; right: 3px; }
+  :root .app.phone .board.phone .card-face { padding: 14px; border-radius: 18px; }
+  :root .app .card-face > .card-ring { top: 2px; right: 4px; }
+  :root .app .card-face .card-title { font-size: 17px; line-height: 24px; }
+}
+
+/* The collapsed editor and open panel share their frame and bottom edge. */
+.app.desktop { --editor-width: max(360px, var(--col-w)); }
+:root .app.desktop .composer-bar, :root .app.desktop[data-detail-open] .dt-panel { width: var(--editor-width); border-radius: 18px; }
+:root .app.desktop[data-detail-open] .dt-panel { right: 20px; bottom: 20px; }
+:root .app.desktop[data-detail-open] .dt-panel.creating, :root .dt-sheet-root .dt-sheet.creating { animation: dt-create-in 260ms var(--ease-out); }
+.dt-panel .md-body { margin: 0; }
+.dt-sheet .md-body { margin: 9px 0 10px; }
+:root .assistant-field { background: var(--field); box-shadow: var(--field-depth); padding: 12px; gap: 12px; }
+:root .assistant-field:focus-within { box-shadow: var(--field-depth), inset 0 0 0 1px var(--field-focus); }
+:root .assistant-field textarea { background: transparent; box-shadow: none; border: 0; border-radius: 0; min-height: 44px; padding: 0; outline: none; }
+:root .assistant-field textarea:focus-visible { outline: none; }
+@media (max-width: 899px) {
+  :root .dt-sheet-root .dt-sheet.creating { animation-name: dt-create-phone-in; }
+  .composer-layer.phone .composer-bar { border-radius: 18px; }
+}
+@keyframes dt-create-phone-in {
+  from { clip-path: inset(calc(100% - 52px) 0 0 round 18px); }
+  to { clip-path: inset(0 0 0 round 18px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root .app.desktop[data-detail-open] .dt-panel.creating, :root .dt-sheet-root .dt-sheet.creating { animation: none; }
+}
+
+/* Animate surfaces and controls without moving card content or drag targets. */
+.app :is(button.ring6-btn, .inline-box, .ref-open, .dt-row-actions, .dt-item-menu button, .dt-float-close, .dt-more, .composer-bar) {
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out), border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out), opacity 160ms var(--ease-out), transform 120ms var(--ease-out);
+}
+.app :is(button.ring6-btn, .inline-box, .ref-open, .dt-row-actions, .dt-float-close, .dt-more):active:not(:disabled) { transform: scale(.97); }
+.app .grid-resize { transition: opacity 160ms var(--ease-out); }
+.app :is(.card-inline-item .inline-text, .note-item, .note-box) { transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out), border-color 160ms var(--ease-out); }
+@media (prefers-reduced-motion: reduce) {
+  :root .app :is(.card-face, .note-card, button.ring6-btn, .inline-box, .ref-open, .dt-row-actions, .dt-item-menu button, .dt-float-close, .dt-more, .composer-bar, .grid-resize, .card-inline-item .inline-text, .note-item, .note-box) { transition: none !important; }
+  .app :is(button.ring6-btn, .inline-box, .ref-open, .dt-row-actions, .dt-float-close, .dt-more):active:not(:disabled) { transform: none; }
+}
+:root[data-reduce-motion='on'] .app :is(.card-face, .note-card, button.ring6-btn, .inline-box, .ref-open, .dt-row-actions, .dt-item-menu button, .dt-float-close, .dt-more, .composer-bar, .grid-resize, .card-inline-item .inline-text, .note-item, .note-box) { transition: none !important; }
+:root[data-reduce-motion='on'] .app :is(button.ring6-btn, .inline-box, .ref-open, .dt-row-actions, .dt-float-close, .dt-more):active:not(:disabled) { transform: none; }
+
+.notes-grid.masonry { display: block; position: relative; }
+:root .app .notes-grid.masonry > :is(.note-card, .note-swipe, .grid-slot) { transition: background-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), opacity 160ms var(--ease-out); }
+:root .app .notes-grid.masonry > [data-resizing] { transition: none; }
+.notes-grid.masonry .note-swipe > .note-card { position: relative !important; left: auto !important; top: auto !important; width: 100% !important; }
+@media (prefers-reduced-motion: reduce) {
+  :root .app .notes-grid.masonry > :is(.note-card, .note-swipe, .grid-slot) { transition: none !important; }
+}
+:root[data-reduce-motion='on'] .app .notes-grid.masonry > :is(.note-card, .note-swipe, .grid-slot) { transition: none !important; }

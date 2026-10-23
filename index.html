@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <meta name="description" content="Todos — a personal task board, the same on every device." />
+    <meta name="theme-color" content="#007eea" />
+    <script>
+      // Cached colors prevent a flash while account preferences load.
+      (() => {
+        let canvas = '#cceeff', header = '#007eea';
+        try {
+          const saved = JSON.parse(localStorage.getItem('todos.studio.paint') || 'null');
+          if (/^#[0-9a-f]{6}$/i.test(saved?.canvas)) canvas = saved.canvas;
+          if (/^#[0-9a-f]{6}$/i.test(saved?.header)) header = saved.header;
+        } catch {}
+        document.documentElement.style.setProperty('--page', canvas);
+        document.documentElement.style.setProperty('--variant-canvas', canvas);
+        document.documentElement.style.background = navigator.standalone ? header : canvas;
+        document.querySelector('meta[name=theme-color]').content = header;
+      })();
+    </script>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Todos" />
+    <link
+      rel="preload"
+      href="/fonts/instrument-sans-latin-v4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-latin-v9.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin-v24.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="icon" type="image/svg+xml" href="/todos-hinge.svg" />
+    <link rel="alternate icon" type="image/png" sizes="32x32" href="/todos-hinge-favicon.png" />
+    <link rel="apple-touch-icon" href="/todos-hinge-apple.png" />
+    <title>Todos</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

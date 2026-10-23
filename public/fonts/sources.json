@@ -1,0 +1,170 @@
+{
+  "downloaded": "2026-10-02",
+  "cssSource": "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600&family=JetBrains+Mono:wght@400;500&display=optional",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+  "licenseSources": {
+    "instrument-sans": "https://github.com/google/fonts/raw/refs/heads/main/ofl/instrumentsans/OFL.txt",
+    "bricolage-grotesque": "https://raw.githubusercontent.com/google/fonts/refs/heads/main/ofl/bricolagegrotesque/OFL.txt",
+    "jetbrains-mono": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt"
+  },
+  "files": [
+    {
+      "file": "bricolage-grotesque-vietnamese-v9.woff2",
+      "source": "https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bTXq_nANBjzKo3IeZx8z6up5BeSl9D4dj_x9PpZBMlGHInHWVyNJtvI.woff2",
+      "sha256": "7e13a14cb0bd5fcacf4907e47ac01fb4adb471540663987ecf356043612368c0",
+      "axes": [
+        {
+          "tag": "opsz",
+          "min": 12.0,
+          "max": 96.0
+        },
+        {
+          "tag": "wght",
+          "min": 200.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 13060
+    },
+    {
+      "file": "bricolage-grotesque-latin-ext-v9.woff2",
+      "source": "https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bTXq_nANBjzKo3IeZx8z6up5BeSl9D4dj_x9PpZBMlGGInHWVyNJtvI.woff2",
+      "sha256": "1d04719f1325400ea4267e630dba29b02af87eb094d7d71d2e4d80a05479d07a",
+      "axes": [
+        {
+          "tag": "opsz",
+          "min": 12.0,
+          "max": 96.0
+        },
+        {
+          "tag": "wght",
+          "min": 200.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 30636
+    },
+    {
+      "file": "bricolage-grotesque-latin-v9.woff2",
+      "source": "https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bTXq_nANBjzKo3IeZx8z6up5BeSl9D4dj_x9PpZBMlGIInHWVyNJ.woff2",
+      "sha256": "85f55a58a31e61a2e19e8bb25fed503181bf2a6b4cab76c589992cfaac377447",
+      "axes": [
+        {
+          "tag": "opsz",
+          "min": 12.0,
+          "max": 96.0
+        },
+        {
+          "tag": "wght",
+          "min": 200.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 76868
+    },
+    {
+      "file": "instrument-sans-latin-ext-v4.woff2",
+      "source": "https://fonts.gstatic.com/s/instrumentsans/v4/pxiTypc9vsFDm051Uf6KVwgkfoSxQ0GsQv8ToedPibnr0She1ZuWi3hKpA.woff2",
+      "sha256": "21fac8da552a915e7a9fb84c5afaeb85d35507b2616346d592e78128c1cfe3e0",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 700.0
+        }
+      ],
+      "bytes": 11092
+    },
+    {
+      "file": "instrument-sans-latin-v4.woff2",
+      "source": "https://fonts.gstatic.com/s/instrumentsans/v4/pxiTypc9vsFDm051Uf6KVwgkfoSxQ0GsQv8ToedPibnr0SZe1ZuWi3g.woff2",
+      "sha256": "6219bc4bfdfc5d9b2201dcdf046218b122a758f932e25ed5f168f929b7ca2311",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 700.0
+        }
+      ],
+      "bytes": 29904
+    },
+    {
+      "file": "jetbrains-mono-cyrillic-ext-v24.woff2",
+      "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwgknk-6nFg.woff2",
+      "sha256": "9343de2ca5d9549f792e7962375af8efb0f320c7643bfd36c884b5a30e5c396f",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 1664
+    },
+    {
+      "file": "jetbrains-mono-cyrillic-v24.woff2",
+      "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwgknk-6nFg.woff2",
+      "sha256": "4995a9a43ac659ec32fcd8b463755cd6a07b31a6e6b3894a6a153b661cf490e2",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 8892
+    },
+    {
+      "file": "jetbrains-mono-greek-v24.woff2",
+      "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwgknk-6nFg.woff2",
+      "sha256": "49c3da6c9a2b279b0f1f860f5cfb1f5dc38d88a5c7be9c9b1837bbc4e3db6111",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 6800
+    },
+    {
+      "file": "jetbrains-mono-vietnamese-v24.woff2",
+      "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwgknk-6nFg.woff2",
+      "sha256": "d44eb1936043a56038eb02dd70b243f379bef65783f94ec12f277550720411f1",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 5872
+    },
+    {
+      "file": "jetbrains-mono-latin-ext-v24.woff2",
+      "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwgknk-6nFg.woff2",
+      "sha256": "9c38cb2d0d2d93c1ee6e21fa78db76f13ea7e15e15cc64214c7ca89b6aaa35c4",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 11596
+    },
+    {
+      "file": "jetbrains-mono-latin-v24.woff2",
+      "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2",
+      "sha256": "2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4",
+      "axes": [
+        {
+          "tag": "wght",
+          "min": 400.0,
+          "max": 800.0
+        }
+      ],
+      "bytes": 31340
+    }
+  ]
+}

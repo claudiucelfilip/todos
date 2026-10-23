@@ -1,0 +1,1280 @@
+/* Corner ring, notes grid, nested rows, and markdown body. */
+
+:root {
+  --md: #3a5a2e;
+  --rest-hi: rgba(255, 255, 255, 0.22);
+}
+[data-theme='tint-dark'] {
+  --md: #8f9ba7;
+  --rest-hi: rgba(255, 255, 255, 0.04);
+}
+[data-theme='sky'] {
+  --md: #2e485a;
+}
+
+/* ---- the ring (20 px, 2 px wide, 28 px hit) ---- */
+.ring6-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1;
+  flex: none;
+}
+span.ring6-btn {
+  cursor: default;
+}
+.ring6 {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--circle);
+}
+.ring6-hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ring-hole, var(--surface));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ring6-note {
+  background: var(--box);
+}
+.ring6-btn[data-ring='note'] {
+  opacity: 0.45;
+}
+.ring6-doing {
+  background: conic-gradient(var(--accent) var(--pct, 50%), var(--track) 0);
+}
+.ring6-done,
+.ring6-done .ring6-hole {
+  background: var(--accent);
+}
+.ring6-done .ring6-hole {
+  width: 20px;
+  height: 20px;
+}
+.ring6 svg {
+  fill: none;
+  stroke: var(--on-accent);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- board cards: the ring sits in the top-right corner; no left control column ---- */
+.card-face {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 12px 14px;
+  position: relative;
+  box-shadow: inset 0 1px 0 var(--rest-hi);
+}
+.card-face:hover,
+.card-face.selected {
+  --ring-hole: var(--surface-3);
+}
+.card-face > .card-ring {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.card-face .card-title {
+  padding-right: 26px;
+}
+.card-face .card-thumb {
+  grid-column: 2;
+  margin-top: 26px;
+}
+.card-excerpt {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-meta {
+  padding-right: 0;
+  margin-top: 6px;
+}
+.card-refs {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.note-glyph {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1.5px solid var(--box);
+  background: var(--surface-2);
+  display: inline-block;
+}
+.card-face.doing {
+  padding: 14px 16px 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.card-face.doing > .card-ring {
+  top: 10px;
+  right: 10px;
+}
+.card-face.doing .card-title {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+}
+.card-inline-items {
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.card-inline-item {
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  column-gap: 14px;
+  padding: 4px;
+  margin-right: 0;
+  border: 1px solid transparent;
+}
+.card-inline-item .inline-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.card-inline-item .inline-text > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.card-inline-item.checked .inline-text > span:first-child {
+  color: var(--placeholder);
+  text-decoration: line-through;
+}
+.inline-box {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--box);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-inline-item.checked .inline-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.inline-box svg {
+  width: 12px;
+  height: 12px;
+}
+.card-inline-item.ref {
+  background: var(--surface-3);
+  border-color: var(--line-2);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+}
+.card-inline-item.ref .inline-box {
+  border-radius: 5px;
+  background: var(--surface-2);
+}
+.card-inline-item.ref.checked .inline-box {
+  background: var(--accent);
+}
+.ref-tag {
+  font-size: 11px;
+  color: var(--placeholder);
+  flex: none;
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+  padding: 0 5px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.ref-open {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 16px;
+  width: 24px;
+  height: 28px;
+  padding: 0;
+  cursor: pointer;
+}
+.ref-open:hover {
+  color: var(--ink);
+}
+.card-more-items {
+  padding-left: 38px;
+}
+
+/* Done ledger: title, {n} notes, the filled ring at the row's right end. */
+.done-group .card-face {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 0 0 10px;
+}
+.done-group .card-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+.done-group .card-face > .card-ring {
+  position: static;
+  order: 3;
+}
+.done-group .card-title {
+  padding-right: 0;
+  font-size: 16px;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.card-done-refs {
+  font-size: 12px;
+  color: var(--placeholder);
+  white-space: nowrap;
+  flex: none;
+}
+.done-group .card-face .card-ring:hover {
+  background: var(--track);
+}
+
+/* ---- top bar: Board · Notes ---- */
+.view-switch {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  flex: none;
+}
+.view-switch button {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 7px;
+  border: 0;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 15px var(--font-ui);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.16s;
+}
+.view-switch button.on {
+  background: var(--track);
+  color: var(--ink);
+}
+.view-stale {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ---- the Notes view ---- */
+.app.desktop .notes-view {
+  grid-row: 3;
+  grid-column: 1;
+}
+.notes-view {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  min-width: 0;
+  outline: none;
+}
+.notes-composer .composer {
+  margin: 0;
+}
+.notes-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: none;
+  padding: 12px 12px 16px;
+  margin: -12px -12px 0;
+}
+.notes-scroll::-webkit-scrollbar {
+  display: none;
+}
+.notes-grid {
+  display: grid;
+  grid-auto-rows: 1px;
+  align-items: start;
+  grid-auto-flow: row;
+  column-gap: 20px;
+  row-gap: 0;
+}
+.notes-empty {
+  border: 1px dashed var(--line-2);
+  border-radius: 12px;
+  padding: 28px 12px;
+  color: var(--muted);
+  text-align: center;
+}
+.note-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+  box-shadow: inset 0 1px 0 var(--rest-hi);
+  outline: none;
+  transition: opacity 0.2s;
+}
+.note-card:hover {
+  background: var(--surface-3);
+  --ring-hole: var(--surface-3);
+}
+.note-card.open,
+.note-card:focus-visible {
+  border-color: var(--accent);
+}
+.note-card > .note-ring {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.note-main {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+.note-title {
+  flex: none;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding-right: 26px;
+  color: var(--ink);
+}
+.note-title > span {
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sparkle {
+  flex: none;
+  margin-top: 5px;
+  fill: none;
+  stroke: var(--placeholder);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.note-preview {
+  flex: none;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: pretty;
+  white-space: pre-line;
+}
+.note-preview.alone {
+  font-size: 16px;
+  color: var(--ink-2);
+  padding-right: 26px;
+}
+.note-card.done .note-title {
+  color: var(--placeholder);
+  text-decoration: line-through;
+}
+.note-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: none;
+}
+.note-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 24px;
+  font-size: 15px;
+  color: var(--ink-2);
+  min-width: 0;
+}
+.note-item.done {
+  color: var(--placeholder);
+  text-decoration: line-through;
+}
+.note-box {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--box);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.note-item.ref .note-box {
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+.note-item.done .note-box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.note-box svg,
+.dt-done-circle svg,
+.md-box svg {
+  fill: none;
+  stroke: var(--on-accent);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.note-item-text {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.note-item-sub {
+  font-size: 11px;
+  color: var(--placeholder);
+  flex: none;
+  text-decoration: none;
+}
+.note-more {
+  font-size: 12px;
+  color: var(--placeholder);
+  padding-left: 26px;
+}
+.note-thumb {
+  flex: 1;
+  min-height: 48px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.note-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 20px;
+  flex: none;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.note-link {
+  color: var(--accent);
+  text-decoration: none;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-parent {
+  color: var(--placeholder);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-label,
+.note-suggest {
+  font: 500 13px var(--font-ui);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink-3);
+  flex: none;
+}
+.label-dot6 {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+.note-suggest,
+.dt-suggest {
+  height: 22px;
+  padding: 0 9px 0 7px;
+  border-radius: 11px;
+  border: 1px dashed var(--box);
+  background: none;
+  cursor: pointer;
+}
+.note-spacer {
+  flex: 1;
+}
+.note-date {
+  color: var(--placeholder);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grid-slot {
+  border: 1.5px dashed var(--accent);
+  border-radius: 12px;
+}
+.grid-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  pointer-events: none;
+  transform-origin: center;
+}
+.grid-ghost .note-card {
+  width: 100%;
+  height: 100%;
+  border-color: var(--line-2);
+  box-shadow: var(--shadow-drag);
+}
+body.grid-dragging,
+body.grid-dragging * {
+  cursor: grabbing !important;
+  user-select: none;
+}
+
+/* Phone: two columns, cards size to their content; a wide card spans both. */
+.notes-view.phone {
+  padding: 0 16px;
+  flex: 1;
+}
+.notes-view.phone .notes-grid {
+  grid-auto-rows: 1px;
+  column-gap: 16px;
+}
+.notes-view.phone .note-card {
+  border-radius: 14px;
+  padding: 12px;
+  min-height: 84px;
+}
+.notes-view.phone .note-card > .note-ring {
+  width: 44px;
+  height: 44px;
+  top: 0;
+  right: 0;
+}
+.notes-view.phone .notes-scroll {
+  padding-bottom: 120px;
+}
+.note-swipe {
+  min-width: 0;
+}
+
+/* ---- composer: the other kind ---- */
+.composer-alt {
+  border: 1px solid var(--line-2);
+  background: none;
+  color: var(--ink-3);
+  font: 600 14px var(--font-ui);
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: auto;
+}
+.composer-kind {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  margin-left: auto;
+}
+.composer-kind button {
+  border: 0;
+  background: none;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 7px;
+  font: 600 14px var(--font-ui);
+  color: var(--muted);
+}
+.composer-kind button.on {
+  background: var(--track);
+  color: var(--ink);
+}
+
+/* ---- the panel (v6) ---- */
+.dt-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  flex-wrap: wrap;
+  font: 500 13px var(--font-ui);
+  color: var(--muted);
+}
+.dt-crumb {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  display: inline-flex;
+  gap: 6px;
+  cursor: pointer;
+}
+.dt-crumb:hover {
+  color: var(--ink);
+}
+.dt-crumb span {
+  color: var(--placeholder);
+}
+/* §11.24.6: the last crumb is this card's own title, not a link. */
+.dt-crumb-here {
+  max-width: 24ch;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ink-2);
+}
+.dt-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dt-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.dt-title-row .dt-title {
+  flex: 1;
+  min-width: 0;
+}
+.dt-title::placeholder {
+  color: var(--placeholder);
+}
+.dt-done-circle {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--box);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+.dt-done-circle.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.dt-ai-chip {
+  align-self: flex-start;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 8px;
+  border-radius: 11px;
+  background: var(--track);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.dt-ai-chip svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+.dt-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 28px;
+}
+.dt-chips .dt-remind {
+  margin: 0;
+  display: contents;
+}
+.dt-chip-btn,
+.dt-chips .dt-remind-btn {
+  height: 28px;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  margin-left: 0;
+  border-radius: 14px;
+  border: 1px solid var(--line-2);
+  background: none;
+  font: 500 13px var(--font-ui);
+  color: var(--ink-3);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.dt-chips .dt-remind-btn.set {
+  color: var(--due);
+}
+.dt-suggest {
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px 0 9px;
+  border-radius: 14px;
+  font: 500 13px var(--font-ui);
+  color: var(--ink-3);
+}
+.dt-note-hint {
+  font-size: 12px;
+  color: var(--placeholder);
+  line-height: 18px;
+  padding-top: 6px;
+  margin: 0;
+}
+.dt-row .dt-box {
+  border-radius: 50%;
+  border: 1.5px solid var(--box);
+}
+.dt-row.ref {
+  background: var(--surface-3);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+  margin: 0;
+}
+.dt-row.ref .dt-box {
+  border-radius: 5px;
+  background: var(--surface-2);
+}
+.dt-row.ref.checked .dt-box {
+  background: var(--accent);
+}
+.dt-ref-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dt-ref-text > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dt-item-of {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dt-parent {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font: 15px var(--font-ui);
+  color: var(--ink-2);
+  text-align: left;
+}
+.dt-parent:hover {
+  background: var(--surface-3);
+}
+.dt-parent-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dt-parent > span:last-child {
+  color: var(--muted);
+}
+.dt-md-hint {
+  flex: 1;
+  text-align: right;
+  color: var(--placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 14px;
+}
+
+/* ---- [[ link popover ---- */
+.dt-add {
+  position: relative;
+}
+.dt-add.linking .dt-add-input {
+  border-color: var(--accent);
+}
+.link-pop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 5;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  box-shadow: var(--shadow-panel);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: link-pop-in 140ms var(--ease-out);
+}
+@keyframes link-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.link-pop-hint {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.link-pop-row {
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.link-pop-row.new {
+  grid-template-columns: 22px minmax(0, 1fr);
+}
+.link-pop-row.on,
+.link-pop-row:hover {
+  background: var(--surface-3);
+}
+.link-pop-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1.5px solid var(--box);
+  background: var(--surface-2);
+}
+.link-pop-box.done {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.link-pop-box.dashed {
+  border-style: dashed;
+  background: none;
+}
+.link-pop-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+.link-pop-title {
+  font-size: 15px;
+  color: var(--ink);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.link-pop-row.new .link-pop-title {
+  color: var(--ink-2);
+}
+.link-pop-meta {
+  font-size: 12px;
+  color: var(--placeholder);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.link-pop-rule {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 6px;
+}
+
+/* ---- markdown body ---- */
+.md-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 640px;
+}
+.md-body p {
+  margin: 0;
+}
+.md-p,
+.md-li,
+.md-task,
+.md-h,
+.md-img,
+.md-blank {
+  cursor: inherit;
+  min-height: 24px;
+  overflow-wrap: anywhere;
+}
+.md-body :is(.md-p, .md-li, .md-task, .md-h, .md-img, .md-blank) {
+  cursor: text;
+}
+.md-blank {
+  min-height: 12px;
+  height: 12px;
+}
+.md-h {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 10px 0 2px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  color: var(--ink);
+}
+.md-h1 {
+  font-size: 22px;
+}
+.md-h2,
+.md-h3 {
+  font-size: 18px;
+}
+.md-mark {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--md);
+  flex: none;
+}
+.md-li {
+  display: flex;
+  gap: 10px;
+  padding-left: 4px;
+}
+.md-li .md-mark {
+  width: 14px;
+  font-size: 16px;
+}
+.md-task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+}
+.md-box {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--box);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+.md-task.done .md-box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.md-task.done > span {
+  color: var(--placeholder);
+  text-decoration: line-through;
+}
+.md-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.md-body code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+.md-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+.md-link:hover {
+  text-decoration: underline;
+}
+.md-img {
+  margin: 6px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.md-img img,
+.md-img-missing {
+  max-height: 140px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--track);
+}
+.md-img-missing {
+  height: 140px;
+}
+.md-raw-under {
+  font-size: 12px;
+  color: var(--md);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.md-raw {
+  cursor: text;
+  width: calc(100% + 16px);
+  border: none;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin: 0 -8px;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--ink);
+  display: block;
+}
+
+/* ---- the panel floats over the board / grid at every desktop width: opening a card never reflows them ---- */
+.app.desktop[data-detail-open] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.app.desktop[data-detail-open] .dt-panel {
+  position: fixed;
+  top: calc(var(--header-h, 84px) + 4px);
+  right: 32px;
+  bottom: 32px;
+  width: 380px;
+  height: auto;
+  grid-column: auto;
+  grid-row: auto;
+  z-index: 40;
+  border-color: var(--line-2);
+  box-shadow: var(--shadow-panel);
+  animation: detail-float-in var(--spring-gentle-ms) var(--spring-gentle);
+  transition: none;
+}
+
+/* ---- panel sizes to the v6 frame ---- */
+.dt-panel .dt-content {
+  gap: 18px;
+}
+.dt-panel .dt-content > .dt-top {
+  margin-bottom: 0;
+}
+.dt-title-row .dt-title {
+  margin: 0;
+}
+.dt-chips .label-pill {
+  height: 28px;
+  padding: 0 10px 0 9px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.dt-checklist-head {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+.dt-checklist-head .dt-section-title,
+.dt-item-of .dt-section-title {
+  font: 600 16px var(--font-display);
+  color: var(--ink);
+}
+.dt-panel .dt-checklist,
+.dt-panel .dt-item-of {
+  margin: 0;
+}
+.dt-panel .dt-content > .dt-top {
+  margin-right: -4px; /* the header sits at 18, the body at 22 */
+  margin-left: -4px;
+}
+.dt-panel .dt-top-actions {
+  gap: 0;
+  flex: none;
+}
+
+
+/* ---- phone (v5 §8, engineer notes §1) ---- */
+@media (max-width: 899px) {
+  .board.phone .card-face,
+  .board.phone .card-face.doing {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 12px 14px;
+  }
+  .board.phone .card-face > .card-ring {
+    width: 44px;
+    height: 44px;
+    top: 0;
+    right: 0;
+  }
+  .card-inline-items {
+    margin-left: 0;
+  }
+  .card-inline-item {
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    column-gap: 14px;
+  }
+  .card-more-items {
+    padding-left: 36px;
+  }
+  .phone-nav {
+    display: grid;
+    grid-template-columns: repeat(var(--segments, 4), minmax(0, 1fr));
+    gap: 8px;
+  }
+  .phone-nav button {
+    min-width: 0;
+    padding: 0 10px;
+    justify-content: center;
+  }
+  .phone-tab-name {
+    font: 600 15px var(--font-ui);
+    overflow: hidden;
+  }
+  .notes-view.phone {
+    padding: 0 12px;
+  }
+}
+
+/* Panel header: one row that fits 380 px; the three icon buttons share one size. */
+.dt-panel .dt-top {
+  gap: 6px;
+}
+.dt-panel .dt-top-actions {
+  gap: 2px;
+}
+.dt-panel .dt-float-close {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dt-panel .dt-float-close:hover {
+  background: var(--track);
+  color: var(--ink);
+}
+.dt-panel .dt-top-actions svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* The ring centres on the title's first line (measured: title line centre 25 / 27 / 24 px). */
+.card-face > .card-ring {
+  top: 10px;
+}
+.card-face.doing > .card-ring {
+  top: 12px;
+}
+.note-card > .note-ring {
+  top: 9px;
+}
+
+/* Top bar meta: the sync state is an icon (the word lives in the tooltip). */
+.topbar-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  min-width: 0;
+}
+.topbar-synced {
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  color: var(--accent);
+  flex: none;
+}
+.topbar-sync > span[aria-hidden]:first-child {
+  display: none;
+}
+
+/* Phone search: below the status bar, 16 px text (iOS zooms the page into smaller fields), results clear of the keyboard. */
+@media (max-width: 899px) {
+  .topbar-row-search {
+    top: 0;
+    height: calc(72px + var(--safe-top));
+    padding-top: calc(12px + var(--safe-top));
+  }
+  .phone-search-layer {
+    inset: calc(72px + var(--safe-top)) 0 0;
+    padding-bottom: calc(40px + var(--kb));
+  }
+  .topbar-phone .search-input,
+  .topbar-row-search .search-input {
+    font-size: 16px;
+  }
+}
+
+.grid-resize {
+  position: absolute; right: 4px; bottom: 4px; width: 32px; height: 32px; z-index: 2;
+  border: 0; background: transparent; color: var(--muted); cursor: nwse-resize;
+  opacity: 0; padding: 4px; border-radius: 0 0 12px 0; touch-action: none;
+}
+.grid-resize svg { width: 24px; height: 24px; display: block; pointer-events: none; }
+.grid-resize:hover, .grid-resize:focus-visible { opacity: 1; }
+.note-foot { padding-right: 16px; }

@@ -1,0 +1,174 @@
+/* Labels + links: pills, swatches, the label picker / filter popovers, settings rows.
+ * Pills get per-theme colors from pillColors() (text >= 4.5:1 for any hex); swatches
+ * and dots use the raw --label with a faint ring so black and white stay visible. */
+
+/* ---- pills ---- */
+.label-pill {
+  display: inline-flex; align-items: center; gap: 2px;
+  max-width: 140px; height: 20px; padding: 0 8px;
+  border-radius: 999px;
+  background: var(--pill-bg-l);
+  color: var(--pill-fg-l);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent); /* keeps a white or black pill's edge visible */
+  font-size: 12px; font-weight: 500; line-height: 20px;
+  white-space: nowrap;
+}
+[data-theme='tint-dark'] .label-pill { background: var(--pill-bg-d); color: var(--pill-fg-d); }
+.label-pill-name { overflow: hidden; text-overflow: ellipsis; }
+.label-pill-x {
+  border: 0; background: transparent; color: inherit; padding: 0 0 0 2px;
+  font-size: 14px; line-height: 1; opacity: 0.7;
+}
+.label-pill-x:hover { opacity: 1; }
+.label-more { color: var(--muted); }
+
+/* The first reference link on the face: a tappable one-line chip (+N for the rest). */
+.card-linkrow { display: flex; align-items: center; gap: 6px; margin-top: 6px; min-width: 0; }
+.card-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  min-width: 0; max-width: 100%; height: 22px; padding: 0 8px;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+  color: var(--accent-text); font-size: 12px; font-weight: 500; text-decoration: none;
+  transition: border-color var(--d-fast) var(--ease-out);
+}
+.card-link:hover { border-color: var(--accent-text); }
+.card-link-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card-link svg { flex: none; }
+.card-link-more { flex: none; color: var(--muted); }
+.board.phone .card-link { height: 28px; padding: 0 10px; font-size: 13px; }
+
+.card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin-top: 6px; }
+
+.label-dot {
+  flex: none; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--label);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 28%, transparent);
+}
+
+/* ---- color choice ---- */
+.color-choice { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0 2px; }
+.swatch {
+  position: relative; flex: none;
+  width: 22px; height: 22px; padding: 0; border-radius: 50%;
+  border: 2px solid var(--surface); background: var(--label);
+  box-shadow: 0 0 0 1px var(--line), inset 0 0 0 1px color-mix(in srgb, var(--ink) 28%, transparent);
+  cursor: pointer;
+  transition: transform 80ms, box-shadow var(--d-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) { .swatch:hover { transform: scale(1.08); } } /* no sticky hover on touch */
+.swatch.on { box-shadow: 0 0 0 2px var(--ink), inset 0 0 0 1px color-mix(in srgb, var(--ink) 28%, transparent); }
+.swatch-custom {
+  background: conic-gradient(#E5484D, #F5A524, #2E9E6B, #12A6B8, #2F80ED, #7C5CFF, #E2699A, #E5484D);
+}
+.swatch-custom.on { background: var(--label); }
+.swatch-custom input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+.swatch-custom:focus-within { outline: 1px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 899px) { .swatch { width: 30px; height: 30px; } .color-choice { gap: 10px; } }
+
+/* ---- popovers (detail picker, top bar filter) ---- */
+.label-pop {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 30;
+  width: 260px; max-height: min(60dvh, 420px); overflow-y: auto;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-hover);
+  animation: label-pop-in var(--spring-snappy-ms) var(--spring-snappy);
+}
+@keyframes label-pop-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.label-pop-list { list-style: none; margin: 0; padding: 0; }
+.label-check {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 36px; padding: 0 8px; border-radius: 8px;
+  font-size: 14px; cursor: pointer;
+}
+.label-check:hover { background: var(--track); }
+.label-check input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.label-check-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.label-pop-empty { color: var(--muted); padding: 8px; margin: 0; }
+.label-new { border-top: 1px solid var(--line); margin-top: 6px; padding: 8px 6px 4px; }
+.label-new-name, .label-name-input {
+  width: 100%; height: 34px; padding: 0 10px;
+  font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
+}
+.label-new-name::placeholder { color: var(--placeholder); }
+.label-new-add { display: block; width: 100%; margin-top: 8px; }
+.label-new-add:disabled { opacity: 0.45; cursor: default; }
+.label-new-name:focus, .label-name-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+.label-pop-foot { display: flex; justify-content: flex-end; border-top: 1px solid var(--line); margin-top: 6px; padding: 6px 4px 2px; }
+.label-pop-foot .linkbtn:disabled { opacity: 0.4; cursor: default; }
+
+/* ---- top bar filter ---- */
+.label-filter { position: relative; }
+.label-filter-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 10px;
+  font: inherit; font-size: 14px; color: var(--muted);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-control);
+  transition: border-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+}
+.label-filter-btn:hover { color: var(--ink); }
+.label-filter-btn.active, .label-filter .iconbtn.active { color: var(--accent); border-color: var(--accent); }
+.label-filter .iconbtn.active { background: var(--accent-tint); }
+.label-filter-count {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+  background: var(--accent-fill); color: var(--on-accent); line-height: 18px; text-align: center; font-size: 11px;
+}
+.label-filter .iconbtn { position: relative; }
+.label-filter .iconbtn .label-filter-count { position: absolute; top: 4px; right: 4px; }
+.label-filter-pop { left: auto; right: 0; }
+/* Phone: the filter button is not at the screen edge, so pin the popover to the viewport. */
+.topbar-phone .label-filter-pop { position: fixed; top: calc(var(--header-h, 64px) + 4px); right: 16px; width: min(280px, calc(100vw - 32px)); }
+
+/* ---- detail: label picker anchor ---- */
+.dt-labels-anchor { position: relative; width: auto; }
+/* Only an open picker expands; closed chips share the same row. */
+.phone .dt-labels-anchor { position: static; }
+@media (max-width: 899px) {
+  .label-check { min-height: 48px; }
+  .label-new-name, .label-name-input { height: 44px; }
+}
+
+/* ---- settings ---- */
+.labels-edit { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.labels-edit-row { padding: 2px 0; }
+.labels-edit-main { display: flex; align-items: center; gap: 10px; }
+.labels-edit-main .label-name-input { flex: 1; min-width: 0; }
+.labels-edit-tag { color: var(--muted); padding: 0 8px; }
+.labels-edit-del { font-size: 18px; }
+.labels-edit-row .color-choice { padding-left: 32px; }
+
+/* ---- filtered-empty state (§11.24.2) ---- */
+.filter-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 56px 12px;
+  text-align: center;
+}
+.filter-empty-title {
+  margin: 0;
+  font: 600 20px/1.25 var(--font-display);
+  color: var(--ink);
+}
+.filter-empty-clear {
+  height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--surface);
+  box-shadow: var(--control-depth);
+  color: var(--ink);
+  font: 500 14px var(--font-ui);
+  cursor: pointer;
+}
+
+.label-pop-heading { color: var(--muted); margin: 8px 12px; font-size: 11px; }
+.phone .dt-chips .label-pill, .phone .dt-chips .dt-chip-btn, .phone .dt-chips .dt-remind-btn { height: 32px; position: relative; }
+.phone .dt-chips .dt-chip-btn::before, .phone .dt-chips .dt-remind-btn::before { content: ''; position: absolute; inset: -6px 0; }
+.phone .dt-chips .label-pill-x { min-width: 32px; min-height: 32px; position: relative; }
+.phone .dt-chips .label-pill-x::before { content: ''; position: absolute; width: 44px; height: 44px; left: -6px; top: -6px; }

@@ -1,0 +1,14 @@
+export type RemindEvery = 'hour' | 'day' | 'weekday' | 'week' | 'month';
+type Reminding = { remindAt?: string | null; remindedAt?: string | null; remindEvery?: RemindEvery | null };
+export const REMIND_EVERY: RemindEvery[];
+export const QUIET_FROM: number;
+export const QUIET_TO: number;
+export function quiet(ms: number): boolean;
+export function repeats(c: { remindEvery?: unknown } | null | undefined): boolean;
+export function nextRemind(atIso: string, every: RemindEvery | null | undefined, afterMs: number): string | null;
+export function dueAt(c: Reminding | null | undefined): string | null;
+export function remindResting(c: { someday?: boolean; remindEvery?: RemindEvery | null; status?: string }): boolean;
+export function restStamp(c: Reminding, nowIso: string): string | undefined;
+export function onceAt(c: Reminding, nowMs: number): string | null;
+export function copyStamp(c: Reminding & { createdAt?: string }, nowIso: string): string | null;
+export function lastSlot(atIso: string, every: RemindEvery, nowMs: number): number | null;

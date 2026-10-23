@@ -1,0 +1,70 @@
+/* View-only link: the top bar pill, the read-only detail, Settings → Share and "no longer shared".
+ * <html data-readonly> is set while the board is view only. */
+
+/* ---- top bar pill ---- */
+.ro-pill-anchor { position: relative; align-self: center; }
+.ro-pill {
+  display: inline-flex; align-items: center;
+  height: 22px; padding: 0 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: transparent; color: var(--muted);
+  font-size: 11px; letter-spacing: 0.02em; white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+}
+.ro-pill:hover, .ro-pill[aria-expanded='true'] { background: var(--track); color: var(--ink); }
+.ro-pop { width: 240px; padding: 12px; }
+.ro-pop-text { margin: 0 0 10px; font-size: 14px; color: var(--muted); }
+.ro-pop-signin { width: 100%; }
+
+/* ---- the board when view only ---- */
+/* Card circles and checklist boxes are state, not controls: thinner, quieter, no hover or press. */
+.card-circle.ro-circle { pointer-events: none; cursor: default; }
+.card-circle.ro-circle .ring { transition: none; border-width: 1.5px; border-color: var(--line); }
+.card-face.done .card-circle.ro-circle .ring { border-color: var(--accent); }
+[data-readonly] .board.phone .columns { padding-bottom: calc(24px + max(var(--safe-bottom), var(--kb))); }
+
+/* ---- the detail when view only ---- */
+.ro-status {
+  display: inline-flex; align-items: center;
+  min-height: 32px; padding: 0 12px;
+  background: var(--track); color: var(--ink);
+  font-size: 12px; font-weight: 500;
+}
+.dt-title.ro-title { margin: 0; min-height: 0; overflow-wrap: anywhere; }
+.dt-title.ro-title a, .ro-notes a { color: var(--accent-text); text-decoration: underline; }
+.dt-notes.ro-notes { cursor: auto; }
+.dt-row.ro-row { cursor: default; }
+.dt-row.ro-row:hover { background: var(--surface); }
+.dt-row.ro-row .dt-box { animation: none; transition: none; }
+.dt-row.ro-row:not(.checked) .dt-box { border-width: 1.5px; border-color: var(--line); }
+.dt-row.ro-row:active, .dt-row.ro-row:active .dt-box { transform: none; }
+.dt-row.ro-row .dt-row-text a { color: var(--accent-text); text-decoration: underline; }
+.ro-remind {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 16px; font-size: 14px; color: var(--muted);
+}
+.ro-remind.set { color: var(--ink); }
+.ro-remind.set svg { color: var(--accent); }
+
+/* ---- Settings → Share ---- */
+/* Same box as the Notifications topic (.notify-topic code); selectable text, not an input. */
+.notify-topic .share-url { user-select: all; -webkit-user-select: all; }
+.share-error { margin: 0 0 8px; }
+.share-confirm span { font-size: 14px; }
+.settings-share .btn:disabled { opacity: 0.6; }
+
+/* ---- the link was turned off ---- */
+.ro-gone { gap: 10px; }
+.ro-gone-body { margin: 0 0 6px; color: var(--muted); font-size: 15px; line-height: 1.45; }
+.ro-gone-signin { min-height: 44px; }
+
+/* ---- Settings → Siri ---- */
+.siri-list { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.siri-item { display: flex; align-items: center; gap: 12px; }
+.siri-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.siri-name { font-size: 14px; font-weight: 500; }
+.siri-say { font-size: 12px; }
+.siri-example { font-size: 12px; }
+.siri-item a.btn { text-decoration: none; display: inline-flex; align-items: center; }
+.settings-siri .btn:disabled { opacity: 0.6; }

@@ -1,0 +1,32 @@
+.bot-overview { width: min(760px, calc(100vw - 32px)); max-height: min(86dvh, 850px); }
+.bot-overview-head { justify-content: space-between; padding: 22px 26px 10px; }
+.bot-overview-head h2 { margin: 2px 0 0; font: 600 25px/32px var(--font-display); }
+.bot-overview-kicker { color: var(--muted); font: 500 11px/16px var(--font-mono); letter-spacing: 1px; }
+.bot-overview-close { flex: none; width: 36px; height: 36px; border: 0; background: transparent; color: var(--muted); font: 28px/1 var(--font-ui); cursor: pointer; }
+.bot-overview-body { padding: 8px 26px 26px; }
+.bot-overview-stats { display: flex; flex-wrap: wrap; gap: 20px; padding: 15px 0 20px; color: var(--muted); font-size: 13px; }
+.bot-overview-stats strong { color: var(--ink); font: 600 20px/1 var(--font-display); margin-right: 4px; }
+.bot-overview-room { padding: 18px 0 22px; border-top: 1px solid var(--line-2); }
+.bot-overview-room-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.bot-overview-room-head h3 { margin: 0; color: var(--ink); font: 600 18px/24px var(--font-display); }
+.bot-overview-room-head p { margin: 2px 0 0; color: var(--muted); font-size: 12px; line-height: 18px; }
+.bot-overview-room-head a { flex: none; color: var(--ink); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.bot-overview-list-label, .bot-overview-jobs summary { margin: 16px 0 6px; color: var(--muted); font: 500 12px/18px var(--font-mono); }
+.bot-overview-list-label span, .bot-overview-jobs summary span { margin-left: 4px; }
+.bot-overview-list { border-top: 1px solid var(--line-2); }
+.bot-overview-item { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--line-2); color: var(--ink); text-decoration: none; }
+.bot-overview-item:hover .bot-overview-title { text-decoration: underline; text-underline-offset: 3px; }
+.bot-overview-title { min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; }
+.bot-overview-meta { flex: none; color: var(--muted); font: 400 11px/16px var(--font-mono); text-align: right; }
+.bot-overview-flag { margin-right: 8px; color: var(--destructive); font-weight: 600; }
+.bot-overview-empty, .bot-overview-error { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+.bot-overview-error { color: var(--destructive); }
+.bot-overview-jobs summary { cursor: pointer; }
+@media (max-width: 600px) {
+  .bot-overview { width: 100%; height: 100dvh; max-height: 100dvh; border-radius: 0; padding-top: var(--safe-top); }
+  .bot-overview-head { padding: 14px 18px 10px; }
+  .bot-overview-body { padding: 6px 18px calc(24px + var(--safe-bottom)); }
+  .bot-overview-room-head { flex-wrap: wrap; }
+  .bot-overview-item { display: block; }
+  .bot-overview-meta { display: block; margin-top: 2px; text-align: left; }
+}

@@ -1,0 +1,205 @@
+/* App shell: header / banners / board rows; the loading line; the shortcut sheet. */
+.app {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: minmax(
+    0,
+    1fr
+  ); /* a long header line never widens the app past the screen */
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--muted);
+}
+
+/* ---- §7.12 shortcut sheet ---- */
+.shortcut-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in var(--d-base) var(--ease-out);
+}
+.shortcut-sheet {
+  width: min(420px, calc(100vw - 32px));
+  background: var(--surface);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow-panel);
+  padding: 20px 24px 24px;
+}
+.shortcut-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.shortcut-esc {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+.shortcut-list {
+  margin: 0;
+}
+.shortcut-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+}
+.shortcut-row dt {
+  color: var(--ink);
+}
+.shortcut-row dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* Phone: the segmented control already names the column (§7.14); hide the duplicate label + count. */
+.board.phone .column-label,
+.board.phone .column-header > .column-count {
+  display: none;
+}
+
+/* Coarse pointers in any layout (iPad): hover-only controls are always visible, tap targets ≥ 44 px. */
+@media (pointer: coarse) {
+  /* :root raises specificity over the component sheets loaded after this one. */
+  :root .topbar-search,
+  :root .label-filter-btn {
+    height: 44px;
+  }
+  :root .search-input {
+    height: 100%;
+  }
+  :root .iconbtn,
+  :root .dt-more,
+  :root .dt-remind-x,
+  :root .dt-link-x {
+    width: 44px;
+    height: 44px;
+  }
+  :root .someday-toggle,
+  :root .linkbtn,
+  :root .dt-esc,
+  :root .dt-link,
+  :root .dt-remind-btn,
+  :root .dt-add-many,
+  :root .btn,
+  :root .remind-chip,
+  :root .dt-menu button {
+    min-height: 44px;
+  }
+  :root .dt-esc,
+  :root .dt-link {
+    min-width: 44px;
+  }
+  :root .dt-title {
+    min-height: 44px;
+  }
+  :root .dt-row-handle {
+    opacity: 1;
+  }
+  :root .dt-row-del {
+    opacity: 1;
+    width: 44px;
+    height: 44px;
+  }
+  :root .label-pill-x {
+    opacity: 1;
+    position: relative;
+  }
+  :root .label-pill-x::after {
+    content: '';
+    position: absolute;
+    inset: -15px -17px;
+  } /* a 44 px hit area inside a small pill */
+}
+
+.app.desktop {
+  padding: 0 32px 32px;
+}
+.app.desktop:has(.panes[data-view='board']) {
+  padding-bottom: 0;
+}
+.app.desktop[data-detail-open] {
+  grid-template-columns: minmax(0, 1fr) 380px;
+  column-gap: 20px;
+}
+.app.desktop .topbar,
+.app.desktop .banners {
+  grid-column: 1 / -1;
+}
+.app.desktop .board {
+  grid-row: 3;
+  grid-column: 1;
+}
+.app.desktop .dt-panel {
+  position: relative;
+  grid-row: 3;
+  grid-column: 2;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  width: 380px;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+}
+@media (max-width: 899px) {
+  .app.phone {
+    padding: 0;
+  }
+}
+@media (min-width: 900px) and (max-width: 1319px) {
+  .app.desktop[data-detail-open] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app.desktop[data-detail-open] .dt-panel {
+    position: fixed;
+    top: 84px;
+    right: 32px;
+    bottom: 32px;
+    width: 380px;
+    height: auto;
+    grid-column: auto;
+    grid-row: auto;
+    border-color: var(--line-2);
+    animation: detail-float-in var(--spring-gentle-ms) var(--spring-gentle);
+  }
+}
+@keyframes detail-float-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

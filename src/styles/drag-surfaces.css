@@ -1,0 +1,78 @@
+/* Lifted cards leave their column/grid, so carry the same material into the portal. */
+:root :is(.app .card-face.drag-ghost,.app .grid-ghost .note-card,.move-wrap .move-clone) {
+  --ring-hole:transparent !important;
+  padding:20px;
+  background:color-mix(in srgb,var(--preview-card) var(--glass-card-fill),transparent);
+  color:var(--variant-ink);
+  border:0;
+  border-radius:0 !important;
+  -webkit-backdrop-filter:blur(1px) saturate(1.15);
+  backdrop-filter:blur(1px) saturate(1.15);
+  opacity:1;
+  box-shadow:var(--shadow-drag);
+}
+:root :is(.drag-ghost,.grid-ghost,.move-wrap) :is(.card-ring,.note-ring) { top:20px; right:20px; }
+:root :is(.drag-ghost,.grid-ghost,.move-wrap) :is(.card-title,.note-title,.card-excerpt,.note-body,.card-inline-item,.note-item) { color:var(--variant-ink); }
+:root :is(.drag-ghost,.grid-ghost,.move-wrap) .md-mark { color:inherit; }
+:root .grid-ghost :is(.note-title,.note-preview.alone) { padding-right:40px; }
+:root .grid-insertion-line { position:absolute; height:3px; background:var(--studio-accent); box-shadow:0 0 0 1px var(--variant-canvas); pointer-events:none; z-index:2; }
+:root :is(.notes-scroll,.dt-scroll,.column-body)[data-drag-scroll="top"] { box-shadow:inset 0 16px 16px -16px var(--studio-accent); }
+:root :is(.notes-scroll,.dt-scroll,.column-body)[data-drag-scroll="bottom"] { box-shadow:inset 0 -16px 16px -16px var(--studio-accent); }
+:root .app [data-checklist-drop='true'] {
+  outline:2px solid var(--variant-ink) !important;
+  background:color-mix(in srgb,var(--preview-card) 90%,transparent) !important;
+}
+:root .app [data-checklist-drop='true']::after {
+  background:var(--control-fill);
+  color:var(--control-on-fill);
+  border-radius:0;
+}
+/* Checklist ghosts retain the editor's palette even when appended to the body. */
+:root .dt-row-ghost {
+  --ink:rgb(var(--editor-neutral) / 92%);
+  --completion-accent:var(--editor-completion-accent);
+  --ink-2:var(--ink); --muted:var(--ink);
+  --line-2:rgb(var(--editor-neutral) / 45%);
+  --box:var(--line-2); --control-ink:var(--ink);
+  --accent:var(--ink); --on-accent:var(--studio-accent);
+  color:var(--ink);
+  background:color-mix(in srgb,var(--editor-material) var(--glass-panel-fill),transparent);
+  -webkit-backdrop-filter:blur(36px) saturate(1);
+  backdrop-filter:blur(36px) saturate(1);
+  border-radius:0;
+  font-family:var(--font-ui);
+}
+:root .dt-row-ghost .dt-row { padding:12px; gap:10px; min-height:52px; border-radius:0; background:transparent; border-color:rgb(var(--editor-neutral) / 45%); box-shadow:none; }
+:root .dt-row-ghost :is(.dt-row-text,.dt-row-actions,.ref-open) { color:var(--ink); }
+:root .dt-row-ghost .dt-row-text { font-size:16px; }
+:root .dt-row-ghost .dt-row-actions { height:28px; margin:0; }
+:root .dt-row-ghost .dt-row-handle { position:absolute; left:2px; top:12px; width:8px; margin:0; }
+:root .dt-row-ghost .dt-box { border-color:var(--line-2); }
+:root .app .dt-row-slot { height:3px; border:0; border-radius:0; background:var(--studio-accent); margin:0; box-shadow:0 0 0 1px var(--editor-material); }
+@media (max-width:899px) {
+  :root .dt-row-ghost .dt-row { position:relative; padding-right:52px; min-height:68px; }
+  :root .dt-row-ghost .dt-row-actions { position:absolute; top:0; right:0; width:44px; height:44px; }
+}
+
+/* Notices retain a darker tint while transmitting the blurred board. */
+:root .banners > .banner {
+  --glass-tint:var(--variant-canvas);
+  --glass-fill:var(--glass-panel-fill);
+  color:var(--control-ink);
+  border:1px solid var(--control-line) !important;
+  border-radius:0;
+  margin-bottom:8px;
+}
+:root .banners > .banner::after { opacity:0; }
+:root .banners > .banner-warn { color:var(--control-danger); }
+@media (max-width:599px) {
+  :root .banners { padding:0 12px; }
+  :root .banner { flex-wrap:wrap; gap:8px; padding:12px; }
+  :root .banner .mono { flex-basis:100%; }
+}
+
+:root .dt-row-ghost .dt-row.ref { background:rgb(var(--editor-neutral) / 8%); }
+:root .dt-row-ghost .dt-box { background:transparent; }
+:root .dt-row-ghost .dt-row.checked .dt-box { background:transparent; color:var(--completion-accent); border-color:currentColor; }
+:root .dt-row-ghost .ref-tag { background:transparent; color:inherit; }
+@media (max-width:899px) { :root .dt-row-ghost .dt-row-text { font-size:16px; } }

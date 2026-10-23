@@ -1,0 +1,757 @@
+/* Studio: shared reading geometry with independently colored glass layers. */
+/* Surface fills share one density; text and line hierarchy stay independent. */
+:root {
+  --ease-drawer:cubic-bezier(.32,.72,0,1);
+  --glass-header-fill:85%;
+  --glass-panel-fill:51.2%;
+  --glass-menu-fill:38.4%;
+  --glass-card-fill:44.8%;
+  --glass-card-hover-fill:54.4%;
+  --glass-card-selected-fill:62.4%;
+  --glass-field-fill:6.4%;
+  --glass-paint-dark:.16;
+  --glass-paint-light:.24;
+}
+
+:root, :root [data-theme], :root [data-panel] {
+  --font-ui: 'Instrument Sans', sans-serif !important;
+  --font-display: 'Bricolage Grotesque', sans-serif !important;
+  --bg: var(--variant-canvas) !important;
+  --surface: color-mix(in srgb, var(--preview-card) 70%, transparent) !important;
+  --surface-2: color-mix(in srgb, var(--variant-ink) 6%, transparent) !important;
+  --surface-3: color-mix(in srgb, var(--preview-card) 85%, transparent) !important;
+  --surface-sel: color-mix(in srgb, var(--preview-card) 90%, transparent) !important;
+  --surface-float: color-mix(in srgb, var(--preview-card) 94%, transparent) !important;
+  --ink: var(--variant-ink) !important;
+  --ink-2: var(--variant-ink) !important;
+  --ink-3: var(--variant-muted) !important;
+  --muted: var(--variant-muted) !important;
+  --placeholder: var(--variant-muted) !important;
+  --on-bg-muted: var(--variant-ink) !important;
+  --on-bg-faint: var(--variant-muted) !important;
+  --accent: var(--studio-blue) !important;
+  --accent-tint: color-mix(in srgb, var(--studio-blue) 12%, transparent) !important;
+  --on-accent: rgb(var(--header-neutral) / 92%) !important;
+  --on-ink: var(--variant-canvas) !important;
+  --line: color-mix(in srgb, var(--variant-ink) 24%, transparent) !important;
+  --line-2: color-mix(in srgb, var(--variant-ink) 24%, transparent) !important;
+  --line-soft: color-mix(in srgb, var(--variant-ink) 16%, transparent) !important;
+  --circle: color-mix(in srgb, var(--variant-ink) 60%, transparent) !important;
+  --box: color-mix(in srgb, var(--variant-ink) 60%, transparent) !important;
+  --track: color-mix(in srgb, var(--variant-ink) 20%, transparent) !important;
+  --field: color-mix(in srgb, var(--variant-ink) 4%, transparent) !important;
+  --field-placeholder: var(--variant-muted) !important;
+  --field-focus: var(--studio-blue) !important;
+  --md: var(--variant-ink) !important;
+  --due: var(--variant-link) !important;
+  --sel-ring: var(--studio-blue) !important;
+  --ring-hole: transparent !important;
+  --panel-glass: color-mix(in srgb, var(--preview-card) 94%, transparent) !important;
+  --bar-glass: color-mix(in srgb, var(--studio-blue) 88%, transparent) !important;
+  --bar-line: rgb(var(--studio-neutral) / 30%) !important;
+  --composer-glass: color-mix(in srgb, var(--studio-accent) 88%, transparent) !important;
+  --composer-solid: var(--studio-accent) !important;
+  --glass-blur: blur(8px) saturate(1.1) !important;
+  /* Lower the canvas lightness while retaining its chroma and hue. */
+  --glass-shadow-ink: oklch(from var(--variant-canvas) calc(l * .45) c h);
+  --glass-shadow-card: 0 2px 4px -1px color-mix(in srgb, var(--glass-shadow-ink) 20%, transparent), 0 12px 28px -12px color-mix(in srgb, var(--glass-shadow-ink) 34%, transparent);
+  --glass-shadow-rail: 0 2px 6px -2px color-mix(in srgb, var(--glass-shadow-ink) 22%, transparent), 0 16px 32px -16px color-mix(in srgb, var(--glass-shadow-ink) 30%, transparent);
+  --glass-shadow-float: 0 2px 6px -2px color-mix(in srgb, var(--glass-shadow-ink) 30%, transparent), 0 12px 28px -10px color-mix(in srgb, var(--glass-shadow-ink) 32%, transparent), 0 32px 72px -20px color-mix(in srgb, var(--glass-shadow-ink) 42%, transparent);
+  --glass-shadow-lift: 0 4px 10px -3px color-mix(in srgb, var(--glass-shadow-ink) 32%, transparent), 0 20px 40px -12px color-mix(in srgb, var(--glass-shadow-ink) 36%, transparent), 0 40px 80px -20px color-mix(in srgb, var(--glass-shadow-ink) 42%, transparent);
+  --shadow-panel: var(--glass-shadow-float) !important;
+  --card-lift: var(--glass-shadow-lift) !important;
+  --shadow-drag: var(--glass-shadow-lift) !important;
+  --backdrop: rgb(0 0 0 / 22%) !important;
+  --field-depth: none !important; --note-shadow: none !important; --card-depth: none !important;
+  --control-depth: none !important; --well-depth: none !important; --seg-raised: none !important;
+  --seg-well-depth: none !important;
+  color-scheme: light;
+}
+:root[data-studio-tone="dark"] { color-scheme: dark; }
+html, body, :root .app { background: var(--variant-canvas) !important; }
+:root[data-ios-standalone] { background: var(--studio-blue) !important; }
+:root[data-ios-standalone] body { background: var(--studio-blue) !important; }
+:root .app.desktop { padding: 0 32px; }
+:root .app .topbar {
+  --surface: transparent !important;
+  background: var(--studio-blue);
+}
+:root .app.desktop .topbar { height: 84px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; }
+:root .app .topbar-title h1 { font: 550 28px/36px var(--font-display); letter-spacing: -0.02em; }
+:root .app :is(.topbar-counter,.topbar-meta,.column-count,.card-meta,.note-foot,.dt-count) {
+  font-family: var(--font-ui); font-variant-numeric: tabular-nums;
+}
+:root .app .room-switch { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding-left: 0; }
+:root .app .view-switch {
+  background: transparent; border: 0; border-radius: 0; box-shadow: none;
+  padding: 0; gap: 0; height: 44px;
+}
+:root .app .seg-thumb { display: none; }
+:root .app .view-switch button {
+  height: 44px; border-radius: 0; border-bottom: 2px solid transparent;
+  background: transparent; color: rgb(255 255 255 / 80%); padding: 0 12px; font-weight: 500;
+}
+:root .app .view-switch button.on { color: var(--studio-accent); border-bottom-color: var(--studio-accent); }
+:root .app .topbar-search {
+  background: transparent; border: 0; border-bottom: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 0; box-shadow: none; padding: 0 0 0 2px;
+}
+:root .app .topbar-search:focus-within { box-shadow: none; border-bottom: 2px solid var(--studio-accent); }
+:root .app .topbar-search :is(input,svg,kbd) { color: var(--on-accent); }
+:root .app .topbar-search kbd { border: 0; background: transparent; opacity: 0.7; }
+:root .app .label-filter-btn { gap:10px; border: 0; background: transparent; border-radius: 0; box-shadow: none; color: rgb(255 255 255 / 92%); }
+:root .app .label-filter-btn.active { color: var(--studio-accent); background: transparent; }
+:root .app.desktop .board { padding-top: 0; padding-bottom: 64px; }
+:root .app.desktop .columns { width: 100%; margin: 0; padding: 0; max-width: none; }
+:root .app.desktop .column { border-radius: 0; border-right: 1px solid var(--line); }
+:root .app.desktop .column:first-child { padding-left: 0; }
+:root .app.desktop .column:last-child { padding-right: 0; border-right: 0; }
+:root .app .column-header { padding: 28px 0 18px; min-height: 84px; border-bottom: 2px solid var(--studio-blue); color: var(--ink); }
+:root .app .column-label { font: 550 26px/32px var(--font-display); letter-spacing: -0.02em; }
+:root .app .column-dot { width: 8px; height: 8px; border-radius: 0; }
+:root .app .column-count { color: var(--muted); font-size: 13px; }
+:root .app .column-header .linkbtn { color: var(--muted); font: 400 13px/20px var(--font-ui); }
+:root .app .column .column-body { gap: 0; padding: 0 0 24px; margin: 0; }
+:root .app .card-face,
+:root .app .card-face:is(:hover,.open,.selected) {
+  background: transparent; border: 0; border-bottom: 1px solid var(--line);
+  border-radius: 0 !important; padding: 24px 0; color: var(--ink);
+  box-shadow: none; backdrop-filter: none; transform: none;
+}
+:root .app .card-face:hover { background: var(--surface-2); }
+:root .app .card-face:is(.open,.selected) { background: var(--surface-sel); }
+:root .app .card-face:focus-visible { outline: 2px solid var(--studio-blue); outline-offset: -2px; }
+:root .app .card-face > .card-ring,
+:root .app .card-face.doing > .card-ring { top: 22px; right: 0; }
+:root .app .card-face .card-title { font: 550 20px/28px var(--font-display); padding-right: 40px; }
+:root .app .card-excerpt { margin-top: 8px; font: 400 14px/22px var(--font-ui); }
+:root .app .card-face .card-meta:empty { display:none; }
+:root .app .card-face .card-meta { border: 0; margin: 14px 0 0; padding-top: 0; min-height: 20px; color: var(--muted); }
+:root .app .card-inline-items { margin-top: 16px; gap: 4px; }
+:root .app :is(.card-inline-item.ref,.note-item.ref) { border: 0; border-radius: 0; padding: 6px 8px;
+}
+:root .app .column.done .card-title { font: 500 17px/24px var(--font-ui); }
+:root .app .column.done .card-face { padding: 20px 0; }
+:root .app .column.done .card-ring { top: 18px; }
+:root .app .card-placeholder { border-radius: 0; outline: 1px dashed var(--studio-blue); background: var(--accent-tint); }
+:root .app.desktop .notes-scroll { margin: 0; padding: 128px 0 96px; }
+:root .app .note-card,
+:root .app .note-card:is(:hover,.open,.selected) {
+  background: var(--on-accent); border: 0; border-bottom: 1px solid var(--line-2);
+  border-radius: 0 !important; padding: 20px; color: var(--ink);
+  backdrop-filter: none; box-shadow: none; transform: none;
+}
+:root .app .note-card:hover { background: var(--surface-3); }
+:root .app .note-card:is(.open,.selected) { background: var(--surface-sel); outline: 1px solid var(--studio-blue); outline-offset: -1px; }
+:root .app .note-title { font: 550 19px/26px var(--font-display); }
+:root .app .note-preview.alone { color:rgb(var(--control-neutral) / var(--text-title-alpha)) !important; }
+:root .app .note-card > .note-ring { top: 16px; right: 14px; }
+:root .app .note-foot { border-top: 0; padding-top: 0; margin-top: 0; color: var(--muted); }
+:root .label-pill { background: var(--lp-bg-l); color: color-mix(in srgb,var(--lp-fg-l) var(--lp-text-alpha,92%),transparent); border-radius:0 !important; box-shadow: none; }
+:root .app :is(.card-link,.note-link) { padding-left: 0; border: 0; background: none; border-radius: 0; text-decoration: underline; text-underline-offset: 3px; }
+:root .app .composer-layer .composer-bar,
+:root .composer-layer .composer-bar {
+  width: 100% !important; height: 64px; border: 0; border-radius: 0 !important;
+  color: var(--ink); background: var(--studio-accent); box-shadow: none; backdrop-filter: none;
+  padding: 0 32px; gap: 16px; font: 550 18px/26px var(--font-display);
+}
+:root .composer-bar::before {
+  content: ''; width: 20px; height: 20px; flex: none;
+  background: linear-gradient(var(--ink),var(--ink)) center / 16px 2px no-repeat,
+              linear-gradient(var(--ink),var(--ink)) center / 2px 16px no-repeat;
+}
+:root .composer-bar:hover { background-color: rgb(0 0 0 / 4%); }
+:root .composer-kbd { font: 500 12px/20px var(--font-ui); opacity: 1; border: 1px solid var(--editor-line); border-radius: 0; padding: 0 6px; }
+:root .app .dt-title { font: 550 30px/36px var(--font-display); letter-spacing: -0.02em; }
+:root .app .dt-scroll { padding-left: 28px; padding-right: 28px; }
+:root .app .dt-top { padding: 20px 28px 16px; }
+:root .app .dt-item-text-field::before { background: transparent; box-shadow: none; }
+:root .app .dt-row { border-radius: 0; border-bottom: 1px solid var(--line-soft); }
+:root .app .dt-row.ref { border: 0; border-bottom: 1px solid var(--line-2); background: var(--surface-2); box-shadow: none; }
+:root .app :is(.dt-add-input,.dt-row-edit,.md-raw) { --field: var(--variant-canvas) !important; border-radius: 0; }
+:root .app :is(.dt-chip-btn,.dt-remind-btn) { border-radius: 0; box-shadow: none; }
+:root .app .labels-rule-count { background: var(--accent-tint); color: var(--studio-blue); border-radius: 0; }
+:root .app .automation-preview { background: var(--variant-canvas); border-radius: 0; }
+:root :is(input,textarea,select) { caret-color: var(--studio-blue); }
+:root .app :is(input,textarea,select):not([type=checkbox],[type=radio],[type=range],[type=color]) { border-radius: 0; }
+:root .app :is(button,input,textarea,select,a):focus-visible { outline: 2px solid var(--studio-blue); outline-offset: 3px; }
+::selection { background: var(--studio-accent); color: var(--ink); }
+@media (max-width: 899px) {
+  :root .app.phone .topbar { height:auto; padding: calc(8px + var(--safe-top)) 12px 8px; gap: 4px; }
+  :root[data-ios-standalone] .app.phone .topbar { padding-top:calc(14px + var(--safe-top)); }
+  :root[data-ios-windowed] .app.phone .topbar { padding-top:8px; }
+  :root .app.phone .topbar > .topbar-row { gap:4px; }
+  :root .app.phone .topbar-title:has(.room-switch) { flex:0 0 44px; overflow:visible; }
+  :root .app.phone .room-switch { width:44px; height:44px; justify-content:center; padding:0; }
+  :root .app.phone .room-switch > span:not(.room-avatar),
+  :root .app.phone .room-switch > .rooms-icon:last-child { display:none; }
+  :root .app.phone .room-switch > .rooms-icon:first-child { display:block; width:22px; height:22px; }
+  :root .app.phone .topbar-actions { gap:0; margin-left:auto; }
+  :root .app.phone .topbar-actions .iconbtn { width:44px; height:44px; }
+  :root .app.phone .view-switch { display:flex; flex:none; width:auto; margin:0; background:transparent; height:44px; padding:0; }
+  :root .app.phone .view-switch button { height:44px; min-width:44px; padding:0 8px; }
+  :root .app.phone .board.phone > .phone-column-pills {
+    position: absolute; top: var(--header-h, 60px); left: -16px; right: -16px; z-index: 2; isolation: isolate;
+    height: 44px; min-height: 44px; margin: 0; padding: 0 12px 0 28px; gap: 8px;
+    --glass-tint: var(--studio-blue); --glass-fill: var(--glass-header-fill); --glass-chroma: 1;
+    background: transparent;
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+  }
+  :root .app.phone .phone-column-list { gap:20px; }
+  :root .app.phone .phone-column-pill { background: transparent; color: rgb(255 255 255 / 80%); border-radius: 0; padding: 0; height: 44px; border-bottom: 2px solid transparent; }
+  :root .app.phone .phone-column-pill.active { color: var(--studio-accent); background: transparent; border-bottom-color: var(--studio-accent); box-shadow: none; }
+  :root .app.phone .phone-column-add { width:44px; height:44px; color: rgb(255 255 255 / 92%); border: 0; }
+  :root .app.phone .phone-panes { top: 0; left:0; right:0; padding: 0 16px; bottom: 0; }
+  :root .app.phone .board.phone { position: relative; }
+  :root .app.phone .board.phone .columns { height:100%; }
+  :root .app.phone .board.phone .columns { gap: 32px; }
+  :root .app.phone .board.phone .column { width: calc(100vw - 32px); }
+  :root .app.phone .board.phone .column-header { display:none; }
+  :root .app.phone .board.phone .column-body { gap: 0; padding: 0 0 100px; scroll-padding-top: calc(var(--header-h, 60px) + 44px); }
+  :root .app.phone .board.phone .card-face { padding: 20px 0; }
+  :root .app.phone .card-face .card-title { font: 550 19px/26px var(--font-display); }
+  :root .app.phone .card-face > .card-ring { top: 18px; right: 0; }
+  :root .app.phone .phone-search-layer { top:var(--header-h,56px); }
+  :root .app.phone .phone-notes-pane { top: 0; left: 16px; right: 16px; }
+  :root .app.phone :is(.phone-panes,.phone-notes-pane,.column-body,.notes-scroll) { touch-action:pan-y; }
+  :root .app.phone .notes-view.phone .notes-scroll { padding: calc(var(--header-h, 60px) + 20px) 0 100px; scroll-padding-top: calc(var(--header-h, 60px) + 20px); }
+  :root .app.phone .note-card { padding: 16px; }
+  :root .app.phone .note-title { font: 550 16px/22px var(--font-display); }
+  :root .app.phone .note-card > .note-ring { top: 2px; right: 0; }
+  :root .app.phone .composer-layer { padding-bottom: var(--safe-bottom); }
+  :root .app.phone .composer-bar { height: 60px; padding: 0 16px; }
+  :root .app.phone .dt-sheet { top: var(--safe-top); left: 0; right: 0; bottom: 0; width: 100%; border: 0; border-radius: 0; background: var(--on-accent); }
+  :root .app.phone .dt-sheet .dt-title { font-size:22px !important; line-height:32px; }
+  :root .app.phone .dt-scroll { padding: 0 20px 24px; }
+  :root .app.phone .dt-top { padding: 16px 20px; }
+  :root .app.phone .column-label .label-pill { background: transparent; color: var(--ink); padding: 0; font: 550 24px/30px var(--font-display); }
+}
+:root .app .card-inline-item,
+:root .app .card-inline-item.ref {
+  padding: 6px 0; border: 0; grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 10px;
+}
+:root .app .card-inline-item .inline-box { justify-self: start; width: 22px; height: 22px; }
+:root .app .card-face:is(:hover,.open,.selected) { background: transparent; isolation: isolate; }
+:root .app .card-face:is(.open,.selected)::before { background: var(--surface-sel); }
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  :root .app.desktop .room-switch { flex-shrink: 0; min-width: 100px; }
+  :root .app.desktop .view-switch { flex-shrink: 0; }
+  :root .app.desktop .topbar-search { width: 180px; flex-shrink: 0; }
+  :root .app.desktop .topbar-title { min-width: 0; overflow: hidden; }
+  :root .app.desktop .topbar-title h1 { font-size: 22px; line-height: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :root .app.desktop .label-filter-btn { white-space: nowrap; }
+}
+
+/* All three glass surfaces share tint transmission without blending their text. */
+:root .app .topbar,
+:root .app .composer-layer,
+:root .app :is(.dt-panel,.dt-sheet) { background: transparent; mix-blend-mode: normal; isolation: isolate;
+  border: 0; border-radius: 0;
+}
+:root .app .topbar::before,
+:root .app.phone .board.phone > .phone-column-pills::before,
+:root .app .composer-layer::before,
+:root .app :is(.dt-panel,.dt-sheet)::before {
+  content: ''; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background: color-mix(in srgb,var(--glass-tint) var(--glass-fill,72%),transparent); filter:saturate(var(--glass-chroma,1.8));
+}
+:root .app .topbar::after,
+:root .app.phone .board.phone > .phone-column-pills::after,
+:root .app .composer-layer::after,
+:root .app :is(.dt-panel,.dt-sheet)::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  width:auto; height:auto;
+  background: var(--glass-tint); mix-blend-mode: color; opacity:.28;
+}
+:root .app .topbar::after,
+:root .app.phone .board.phone > .phone-column-pills::after { display: none; }
+:root .app .topbar {
+  --glass-tint: var(--studio-blue); --glass-fill:var(--glass-header-fill); --glass-chroma:1;
+  --ink: rgb(var(--header-neutral)) !important;
+  --control-ink: rgb(var(--header-neutral));
+  --ink-2: rgb(var(--header-neutral) / 90%) !important;
+  --ink-3: rgb(var(--header-neutral) / 82%) !important;
+  --muted: rgb(var(--header-neutral) / 82%) !important;
+  --placeholder: rgb(var(--header-neutral) / 82%) !important;
+  --field-placeholder: rgb(var(--header-neutral) / 82%) !important;
+  --on-bg-muted: rgb(var(--header-neutral) / 90%) !important;
+  --on-bg-faint: rgb(var(--header-neutral) / 82%) !important;
+  --surface-2: rgb(var(--header-neutral) / 12%) !important;
+  --surface-3: rgb(var(--header-neutral) / 12%) !important;
+  --line-2: rgb(var(--header-neutral) / 28%) !important;
+  color: var(--ink); -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3); box-shadow:var(--glass-shadow-rail);
+}
+:root .app .topbar :is(button,input,h1,svg,kbd,.view-tab,.view-radio,.search-key,.topbar-date,.topbar-count) { color: var(--ink); }
+:root .app .topbar-search { --ink: rgb(var(--header-neutral) / 92%) !important; --field-placeholder: rgb(var(--header-neutral) / 82%) !important; color:var(--ink); border-bottom-color:rgb(var(--header-neutral) / 42%); }
+:root .app .topbar .view-switch button.on,
+:root .app .topbar .label-filter-btn.active { color:var(--studio-accent); }
+:root .app .topbar .phone-column-pill { color:rgb(var(--header-neutral) / 82%); }
+:root .app .topbar .phone-column-pill.active { color:var(--studio-accent); }
+
+/* The canvas continues behind the header; cards remain separate padded pieces. */
+:root .app { background-image:none !important; --studio-pattern-ink:color-mix(in srgb,var(--variant-ink) 8%,transparent); }
+:root .app::before { content:''; position:absolute; inset:0; pointer-events:none; z-index:0; background:var(--studio-pattern-ink); -webkit-mask-image:var(--studio-pattern-mask); mask-image:var(--studio-pattern-mask); -webkit-mask-size:var(--studio-pattern-size); mask-size:var(--studio-pattern-size); }
+:root[data-pattern="plain"] .app::before { display:none; }
+:root[data-pattern="checker"] .app::before { opacity:.5; }
+:root .app.desktop .panes { margin:0 -32px; }
+:root .app.desktop .pane-board { padding:0; overflow:hidden; }
+:root .app.desktop .pane > .board { flex:1; height:100%; min-height:0; padding:var(--header-h,84px) 0 0; }
+:root .app.desktop .columns { height:auto; min-height:0; align-items:stretch; gap:20px; overflow:visible !important; }
+:root .app.desktop .column { padding:0; border:0; }
+:root .app.desktop .column-header { margin-bottom:0; }
+:root .app.desktop .column .column-body { flex:1; min-height:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; gap:20px; padding:20px 8px 24px; margin:0 -8px; }
+:root .app .column-body > .drop-placeholder { margin-block:-11px -12px; }
+:root .app.desktop .column:last-child .column-body { padding-bottom:80px; }
+:root .app .column.done .done-group,
+:root .app .column .someday-list { display:flex; flex-direction:column; gap:20px; }
+:root .app :is(.column .card-face,.notes-view .note-card),
+:root .app :is(.column .card-face,.notes-view .note-card):is(:hover,.open,.selected) {
+  --ring-hole:transparent !important; padding:20px;
+  background:color-mix(in srgb,var(--preview-card) var(--glass-card-fill),transparent);
+  color:var(--variant-ink); border:0; border-radius:0 !important;
+  -webkit-backdrop-filter:blur(1px) saturate(1.15); backdrop-filter:blur(1px) saturate(1.15);
+  box-shadow:var(--glass-shadow-card); isolation:auto; transform:none; outline:none;
+}
+:root .app :is(.column .card-face,.notes-view .note-card):hover { background:color-mix(in srgb,var(--preview-card) var(--glass-card-hover-fill),transparent); }
+:root .app .card-swipe.swipe-left :is(.card-face,.note-card) { background:color-mix(in srgb,var(--preview-card) var(--glass-card-fill),var(--variant-canvas)); -webkit-backdrop-filter:none; backdrop-filter:none; }
+:root .app :is(.column .card-face,.notes-view .note-card):is(.open,.selected) { background:color-mix(in srgb,var(--preview-card) var(--glass-card-selected-fill),transparent); box-shadow:inset 3px 0 0 var(--studio-accent),var(--glass-shadow-card); }
+:root .app :is(.column .card-face,.notes-view .note-card):focus-visible { outline:2px solid var(--variant-link); outline-offset:-2px; }
+:root .app .card-face::before { display:none; content:none; }
+:root .app .column .card-face > .card-ring,
+:root .app .column .card-face.doing > .card-ring,
+:root .app .notes-view .note-card > .note-ring { top:20px; right:20px; }
+:root .app .notes-view .note-title,
+:root .app .notes-view .note-preview.alone { padding-right:40px; }
+:root .app .card-face .card-meta,
+:root .app .note-card .note-foot { margin-left:0; margin-right:0; padding-left:0; padding-right:0; }
+:root .app .card-face :is(.card-thumb,.card-file-tile) { margin-right:0; }
+:root .app .card-face .card-inline-items { margin-left:0; margin-right:0; max-height:180px; gap:6px; }
+:root .app .card-face :is(.card-inline-item,.card-inline-item.ref) { padding:5px; border:0; grid-template-columns:22px minmax(0,1fr) auto; column-gap:10px; border-radius:0; }
+:root .app .note-card :is(.note-item,.note-item.ref) { padding:5px; border:0; min-height:32px; height:auto; column-gap:10px; border-radius:0; }
+:root .app :is(.card-inline-item.ref,.note-item.ref) { background:color-mix(in srgb,var(--variant-ink) 6%,transparent); box-shadow:none; }
+:root .app .notes-grid:not(.masonry) { column-gap:20px; row-gap:0; }
+:root .app :is(.card-title,.note-title,.card-excerpt,.note-body,.card-inline-item,.note-item,.column-title,.column-header) { color:var(--variant-ink); }
+:root .app :is(.card-excerpt,.note-body) :is(p,li,h1,h2,h3,h4,strong) { color:inherit; }
+:root .app :is(.card-excerpt a,.note-body a,.note-link,.card-link,.text-link,.md-link,.card-fraction,.note-fraction) { color:var(--variant-link); }
+:root .app :is(.inline-box,.note-box,.ref-tag) { border-color:var(--line-2); }
+:root[data-studio-tone="dark"] .app .column-header { border-color:var(--line); }
+:root .app.desktop .card-inline-items { overscroll-behavior:auto; }
+:root .app.desktop[data-detail-open] :is(.pane-board,.notes-scroll) { scrollbar-width:none; }
+:root .app { scrollbar-color:var(--variant-muted) var(--variant-canvas); }
+:root .app * { scrollbar-color:var(--variant-muted) transparent; }
+/* Keep native edge bounce local to each scroller, including Home Screen installs. */
+:root :is(.board,.column,.column-body,.card-inline-items,.notes-scroll,.someday-tray,
+  .dt-scroll,.dialog-body,.label-settings,.assistant-list,.rooms,.rooms-list,
+  .label-pop,.label-picker,.label-picker-body,.label-new-options,.labels-menu,.labels-list,
+  .phone-search-layer,.search-pop,.remind-pop,textarea) { overscroll-behavior-y:contain; }
+:root .phone-column-list { overscroll-behavior:contain; }
+:root .app [data-checklist-drop] { outline:2px solid var(--variant-link) !important; outline-offset:-2px; background:var(--accent-tint) !important; }
+
+/* Capture and editing use the same translucent material. */
+:root .app :is(.composer-layer,.dt-panel,.dt-sheet) {
+  --glass-tint:var(--editor-material,var(--studio-accent)); --glass-fill:var(--glass-panel-fill); --glass-chroma:1;
+  -webkit-backdrop-filter:blur(16px) saturate(.5) contrast(1.25);
+  backdrop-filter:blur(16px) saturate(.5) contrast(1.25);
+}
+
+/* Keep the paint hue without clipping away changes in the backdrop. */
+:root .app :is(.composer-layer,.dt-panel,.dt-sheet) { background:color-mix(in srgb,var(--glass-tint) var(--glass-fill),transparent) !important; }
+:root .app :is(.composer-layer,.dt-panel,.dt-sheet)::before { background:var(--glass-tint); mix-blend-mode:color; opacity:.28; }
+:root[data-studio-tone="dark"] .app :is(.composer-layer,.dt-panel,.dt-sheet)::after { mix-blend-mode:plus-lighter; opacity:var(--glass-paint-dark); }
+:root[data-studio-tone="light"] .app :is(.composer-layer,.dt-panel,.dt-sheet)::after { mix-blend-mode:multiply; opacity:var(--glass-paint-light); }
+
+/* Capture and editing use one surface and consistent inner edges. */
+:root .app .composer-layer {
+  --glass-tint:var(--editor-material,var(--studio-accent)); --ink:rgb(var(--editor-neutral) / 80%) !important;
+  position:fixed; left:auto; right:0; bottom:0; top:auto; width:400px; padding:0;
+  box-shadow:var(--glass-shadow-float); color:var(--ink);
+}
+:root .app .composer-layer .composer-bar { height:52px; width:100%; padding:0 20px; background:transparent; color:var(--ink); font:500 16px/24px var(--font-ui); }
+:root .app .composer-layer .composer-bar:hover { background:rgb(var(--editor-neutral) / 4%); }
+:root .app.desktop .dt-panel[data-panel],
+:root .app.phone .dt-sheet {
+  --glass-tint:var(--editor-material,var(--studio-accent)); --editor-ink:rgb(var(--editor-neutral) / 92%);
+  --editor-muted:rgb(var(--editor-neutral) / 82%); --editor-line:rgb(var(--editor-neutral) / 45%);
+  --text-meta-alpha:82%; --text-placeholder-alpha:82%;
+  --completion-accent:var(--editor-completion-accent);
+  --ink:var(--editor-ink) !important; --ink-2:var(--editor-ink) !important;
+  --ink-3:var(--editor-muted) !important; --muted:var(--editor-muted) !important;
+  --placeholder:rgb(var(--editor-neutral) / 82%) !important;
+  --field-placeholder:rgb(var(--editor-neutral) / 82%) !important;
+  --field:rgb(var(--editor-neutral) / 4%) !important;
+  --line:var(--editor-line) !important; --line-2:var(--editor-line) !important;
+  --line-soft:rgb(var(--editor-neutral) / 16%) !important;
+  --track:rgb(var(--editor-neutral) / 25%) !important;
+  --circle:rgb(var(--editor-neutral) / 87%) !important;
+  --box:rgb(var(--editor-neutral) / 75%) !important;
+  --accent:rgb(var(--editor-neutral) / 87%) !important; --on-accent:var(--studio-accent) !important;
+  position:fixed; top:var(--header-h,83px); right:0; bottom:0; left:auto; width:400px; height:auto;
+  max-width:100vw; max-height:none; margin:0; padding:0; overflow:hidden; z-index:60;
+  background:transparent; color:var(--editor-ink); border:0; border-radius:0;
+  box-shadow:var(--glass-shadow-float); isolation:isolate; mix-blend-mode:normal;
+  animation:studio-editor-slide-in 400ms var(--ease-drawer) both;
+}
+:root .app.desktop .dt-panel[data-panel].creating,
+:root .app.phone .dt-sheet.creating { animation:studio-field-expand 400ms var(--ease-drawer) both; }
+:root .app :is(.dt-panel,.dt-sheet) > .dt-scroll { width:100%; max-width:none; min-height:0; margin:0; padding:24px; overflow-x:hidden; overflow-y:auto; flex:1; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-content { width:100%; max-width:none; margin:0; padding:0; display:flex; flex-direction:column; gap:20px; background:transparent; animation:none; transition:none; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-content > .dt-top { height:36px; min-height:36px; padding:0; margin:0; background:transparent; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-top .ring6-btn { margin-left:0; }
+:root .app.desktop .dt-panel .dt-content > .dt-top { transform:translateY(4px); }
+:root .app.desktop .dt-panel .dt-top > .ring6-btn { margin-left:-7px; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-content > .dt-head { display:flex; flex-direction:column; gap:12px; padding:0; margin:-15px 0 0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-chips { padding:0; margin:0; gap:8px; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-title,
+:root .app :is(.dt-panel,.dt-sheet) .dt-title:focus { width:100%; min-height:34px; margin:0; padding:0; font:550 26px/34px var(--font-display); background:transparent !important; box-shadow:none !important; border:0 !important; outline:none; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-title:focus-visible { outline:2px solid var(--editor-line); outline-offset:4px; }
+:root .app :is(.dt-panel,.dt-sheet) .md-body { width:100%; max-width:none; padding:0; margin:0; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.dt-title,.dt-new,.dt-chip-btn,.dt-remind-btn,.dt-section-title,.dt-row-text,.md-body,.md-h,.md-li,.md-p,.dt-progress,.dt-ask,.dt-esc,.dt-more,.dt-row .ref-open,.dt-row-actions,.md-link,.text-link) { color:var(--editor-ink); }
+:root .app :is(.dt-panel,.dt-sheet) :is(input,textarea)::placeholder { color:rgb(var(--editor-neutral) / 82%); opacity:1; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input,.dt-row-edit) { --field:rgb(var(--editor-neutral) / 4%) !important; background:rgb(var(--editor-neutral) / 4%) !important; color:var(--editor-ink) !important; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input) { width:100%; min-height:44px; padding:12px; margin:0; border:1px solid var(--editor-line) !important; border-radius:0; box-shadow:none !important; outline:none; }
+:root .app :is(.dt-panel,.dt-sheet) .md-raw { min-height:140px; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input):focus { border-color:var(--editor-ink) !important; outline:1px solid var(--editor-ink); outline-offset:0; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.dt-chip-btn,.dt-remind-btn,.dt-remind-x,.dt-box,.ref-tag,.dt-checklist-head,.dt-foot,.dt-row,.dt-row.ref) { border-color:var(--editor-line) !important; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.dt-chip-btn,.dt-remind-btn) { background:transparent; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-checklist { width:100%; padding:0; margin:0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row-wrap { width:100%; margin:0; border-radius:0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-rows { gap:0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-checklist-head { margin:0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row { margin:0; padding:12px; gap:10px; min-height:52px; border:0; border-bottom:1px solid var(--editor-line); border-radius:0; background:transparent; box-shadow:none; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row:not(.ref) { align-items:center; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row:not(.ref) .dt-box { margin-top:0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row.ref { background:rgb(var(--editor-neutral) / 8%); box-shadow:none; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row-handle { position:absolute; left:2px; top:12px; width:8px; margin:0; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.dt-row-actions,.dt-row .ref-open) { margin:0; height:28px; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-add { margin:0; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-box { background:transparent; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-row.checked .dt-box { background:var(--accent); color:var(--on-accent); }
+:root .app :is(.dt-panel,.dt-sheet) .ref-tag { background:transparent; color:inherit; }
+:root .app :is(.dt-panel,.dt-sheet) .ring6-hole { background:transparent; }
+:root .app :is(.dt-panel,.dt-sheet) .ring6-btn[data-ring="note"] { opacity:1; }
+:root .app :is(.dt-panel,.dt-sheet) > .dt-foot { height:52px; min-height:52px; padding:0 24px; background:transparent; border-top:1px solid var(--editor-line); }
+:root .app :is(.dt-panel,.dt-sheet) :is(.dt-foot,.dt-foot .mono,.dt-progress) { color:var(--editor-muted); }
+:root .app .dt-new { font:500 13px/20px var(--font-ui); }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind .remind-pop { position:absolute; top:calc(100% + 8px); right:auto; left:0; width:280px; max-width:calc(100vw - 40px); max-height:calc(100dvh - 220px); overflow-y:auto; margin:0; z-index:100; flex-basis:auto; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind-anchor { width:auto; height:auto; min-height:28px; flex-wrap:wrap; gap:8px; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind-tail { gap:6px; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind-notify { width:28px; height:28px; border:1px solid var(--editor-line); border-radius:0; background:rgb(var(--editor-neutral) / 4%); color:var(--editor-muted); }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind-notify.on { color:var(--editor-ink); background:rgb(var(--editor-neutral) / 10%); }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind-notify:hover { background:rgb(var(--editor-neutral) / 14%); }
+:root .app :is(.dt-panel,.dt-sheet) .dt-remind-x { width:28px; height:28px; }
+@media (max-width:899px) {
+  :root .app.phone .dt-sheet .dt-remind-anchor { min-height:44px; }
+  :root .app.phone .dt-sheet :is(.dt-remind-notify,.dt-remind-x) { width:44px; height:44px; min-height:44px; }
+}
+
+/* Every dropdown uses the label picker's padding and translucent material. */
+:root :is(.label-pop.label-picker,.label-pop,.dt-menu,.rooms,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.labels-menu,.label-picker,.remind-menu,.room-menu,.settings-menu,.dialog) {
+  --ink:var(--variant-ink) !important; --ink-2:var(--variant-ink) !important;
+  --muted:var(--variant-muted) !important; --placeholder:var(--variant-muted) !important;
+  --surface-2:color-mix(in srgb,var(--variant-ink) 6%,transparent) !important;
+  --surface-3:color-mix(in srgb,var(--variant-ink) 8%,transparent) !important;
+  background:color-mix(in srgb,var(--preview-card) 94%,transparent); color:var(--variant-ink);
+  border:1px solid color-mix(in srgb,var(--variant-ink) 24%,transparent); border-radius:0; padding:8px;
+  -webkit-backdrop-filter:blur(8px) saturate(1.1); backdrop-filter:blur(8px) saturate(1.1);
+  box-shadow:var(--glass-shadow-float);
+}
+:root :where(.label-pop.label-picker,.label-pop,.dt-menu,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop) :where(button,[role="menuitem"],.link-pop-row) { min-height:44px; padding:10px 12px; border-radius:0; }
+:root :where(.label-pop.label-picker,.label-pop,.dt-menu,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop) :where(button,[role="menuitem"],.link-pop-row):hover { background:color-mix(in srgb,var(--variant-ink) 8%,transparent); }
+@keyframes studio-field-expand { from { transform:translateY(calc(100% - 52px)); } to { transform:translateY(0); } }
+@keyframes studio-side-arrive { from { transform:translateX(24px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+@media(max-width:899px) {
+  :root .app.phone .board.phone .column-body { gap:20px; padding:calc(var(--header-h, 60px) + 64px) 0 100px; margin:0; }
+  html[data-ios-standalone] .app.phone .board.phone .column-body { padding-top:calc(var(--header-h, 60px) + 64px); }
+  :root .app.phone .board.phone .card-face,
+  :root .app.phone .board.phone .card-face:is(:hover,.open,.selected),
+  :root .app.phone .notes-view .note-card,
+  :root .app.phone .notes-view .note-card:is(:hover,.open,.selected) { padding:18px; }
+  :root .app.phone .board.phone .card-face > .card-ring,
+  :root .app.phone .board.phone .card-face.doing > .card-ring,
+  :root .app.phone .notes-view .note-card > .note-ring { top:20px; right:20px; }
+  :root .app.phone .composer-layer { left:0; right:0; bottom:0; width:auto; padding:0 0 5px; }
+  :root .app.phone .composer-layer .composer-bar { height:64px; }
+  :root .app.phone .composer-layer .composer-bar[data-view="notes"] { padding-left:32px; }
+  :root .app.phone .dt-sheet { top:0; right:0; left:0; bottom:0; width:auto; height:100%; max-width:none; max-height:none; }
+  /* Paint beneath the floating keyboard toolbar; reserve its inset inside the scroller. */
+  :root .app.phone .dt-sheet > .dt-scroll { --keyboard-focus-gap:24px; flex:none; height:calc(100% - var(--visual-top,0px)); max-height:none; margin-top:var(--visual-top,0px); padding:calc(12px + max(0px,var(--safe-top) - var(--visual-top,0px))) 20px calc(var(--keyboard-focus-gap) + max(var(--safe-bottom),var(--kb) - var(--visual-top,0px))); scroll-padding-bottom:calc(var(--keyboard-focus-gap) + max(0px,var(--kb) - var(--visual-top,0px))); }
+  :root .app.phone .dt-sheet .dt-content { min-height:0; }
+  :root .app.phone .notes-view .note-main { flex:none; }
+  :root .app.phone .dt-sheet .dt-handle { display:none; }
+  :root .app.phone .dt-sheet .dt-row { min-height:68px; align-items:center; }
+  :root .app.phone .dt-sheet .dt-row .dt-box { margin-top:0; }
+  :root .app.phone .dt-sheet .dt-row .dt-row-actions { top:50%; transform:translateY(-50%); }
+  :root .app.phone .dt-sheet :is(.dt-row-actions,.dt-row .ref-open) { height:44px; }
+}
+@media(prefers-reduced-motion:reduce) { :root .app :is(.dt-panel,.dt-sheet), :root .app :is(.dt-panel,.dt-sheet).creating { animation:none; } }
+:root[data-reduce-motion="on"] .app :is(.dt-panel,.dt-sheet),
+:root[data-reduce-motion="on"] .app :is(.dt-panel,.dt-sheet).creating { animation:none; }
+:root .app .column.done .card-face,
+:root .app .column.done .card-face:is(:hover,.open,.selected) { padding:20px; }
+:root .app .topbar .view-switch button.on,
+:root .app .topbar .label-filter-btn.active,
+:root .app .topbar .phone-column-pill.active { color:rgb(var(--header-neutral)); border-bottom-color:rgb(var(--header-neutral) / 76%); }
+:root .app .topbar .view-switch button.on { border-bottom-color:var(--studio-accent); }
+:root .app .topbar-search:focus-within { border-bottom-color:rgb(var(--header-neutral) / 86%); }
+:root .app .topbar :is(button,input):focus-visible { outline-color:rgb(var(--header-neutral) / 86%); }
+:root .app .composer-layer .composer-bar { --ink:rgb(var(--editor-neutral) / 80%) !important; --editor-line:rgb(var(--editor-neutral) / 32%); }
+:root .settings.dialog { width:620px; max-width:calc(100vw - 32px); }
+:root .studio-appearance { display:flex; flex-direction:column; gap:12px; padding:0 0 20px; }
+:root .studio-appearance h3 { font:600 16px/24px var(--font-ui); margin:0; color:var(--variant-ink); }
+.studio-theme-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:8px; background:var(--variant-canvas); }
+.studio-theme-options > button { display:flex; flex-direction:column; min-width:0; padding:0; border:2px solid transparent; background:transparent; text-align:left; border-radius:0; overflow:hidden; color:var(--variant-ink); }
+.studio-theme-options > button[aria-checked="true"] { border-color:var(--variant-ink); }
+.studio-mini { --mini-shadow-ink:oklch(from var(--mini-canvas) calc(l * .45) c h); position:relative; width:100%; height:100px; background:var(--mini-canvas); overflow:hidden; color:var(--mini-ink); }
+.studio-mini::before,.studio-pattern-sample::before { content:''; position:absolute; inset:0; pointer-events:none; background:currentColor; opacity:.11; -webkit-mask-image:var(--studio-pattern-mask); mask-image:var(--studio-pattern-mask); -webkit-mask-size:var(--studio-pattern-size); mask-size:var(--studio-pattern-size); }
+:root[data-pattern="plain"] .studio-mini::before { display:none; }
+.studio-mini-bar { display:flex; align-items:center; gap:5px; position:relative; height:18px; padding:0 7px; background:color-mix(in srgb,var(--mini-header) var(--glass-header-fill),transparent); box-shadow:0 2px 5px color-mix(in srgb,var(--mini-shadow-ink) 15%,transparent); }
+.studio-mini-bar i { width:12px; height:2px; background:rgb(var(--mini-header-neutral) / 92%); }
+.studio-mini-bar i:first-child { width:4px; height:4px; }
+.studio-mini-cards { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; padding:8px 7px 0; }
+.studio-mini-cards > i { position:relative; display:block; height:29px; padding:6px 5px; background:color-mix(in srgb,var(--mini-card) var(--glass-card-fill),transparent); box-shadow:0 2px 4px color-mix(in srgb,var(--mini-shadow-ink) 15%,transparent); }
+.studio-mini .mini-title,.studio-mini .mini-copy,.studio-mini .mini-foot { display:block; height:2px; background:currentColor; }
+.studio-mini .mini-title { width:60%; opacity:1; }
+.studio-mini .mini-copy { width:85%; margin-top:5px; opacity:.8; }
+.studio-mini .mini-foot { width:36%; margin-top:5px; opacity:.7; }
+.studio-mini .mini-state { position:absolute; top:4px; right:3px; width:7px; height:7px; border:1px solid rgb(var(--mini-neutral) / 20%); border-radius:50%; color:var(--mini-completion); }
+.studio-mini .mini-state.done { border-color:currentColor; }
+.studio-mini .mini-state svg { display:block; width:5px; height:5px; }
+.studio-mini .mini-state.doing { border:0; background:conic-gradient(var(--mini-completion) 50%,rgb(var(--mini-neutral) / 20%) 0); -webkit-mask:radial-gradient(circle,transparent 45%,black 50%); mask:radial-gradient(circle,transparent 45%,black 50%); }
+.studio-mini-editor { position:absolute; right:0; top:18px; bottom:0; width:34%; padding:6px; isolation:isolate; background:color-mix(in srgb,var(--mini-editor) var(--glass-panel-fill),transparent); color:rgb(var(--mini-editor-neutral) / 92%); box-shadow:-3px 0 7px color-mix(in srgb,var(--mini-shadow-ink) 20%,transparent); }
+.studio-mini-editor::before { content:''; position:absolute; inset:0; z-index:-2; background:var(--mini-editor); mix-blend-mode:color; opacity:.28; }
+.studio-mini-editor::after { content:''; position:absolute; inset:0; z-index:-1; background:var(--mini-editor); mix-blend-mode:var(--mini-paint-blend); opacity:var(--mini-paint-strength); }
+.mini-editor-top { display:flex; align-items:center; gap:4px; height:8px; }
+.mini-editor-top i:first-child { width:6px; height:6px; border:1px solid currentColor; border-radius:50%; }
+.mini-editor-top i:last-child { width:12px; height:2px; background:currentColor; opacity:.82; }
+.mini-editor-title { display:block; width:75%; height:3px; margin:5px 0; background:rgb(var(--mini-editor-neutral)); }
+.mini-editor-chips { display:flex; gap:3px; height:6px; }
+.mini-editor-chips i { flex:1; border:1px solid rgb(var(--mini-editor-neutral) / 45%); }
+.mini-editor-chips i:first-child { background:#6366f1; border:0; }
+.mini-editor-body { display:block; height:20px; margin-top:5px; padding:4px; border:1px solid rgb(var(--mini-editor-neutral) / 45%); }
+.mini-editor-body i { display:block; height:2px; margin-bottom:3px; background:currentColor; opacity:.82; }
+.mini-editor-check { display:block; width:6px; height:6px; margin-top:5px; border:1px solid var(--mini-editor-completion); border-radius:50%; }
+.mini-editor-footer { position:absolute; bottom:5px; left:6px; width:14px; height:2px; background:currentColor; opacity:.82; }
+.studio-theme-name { display:flex; justify-content:space-between; gap:4px; width:100%; padding:8px; font:600 12px/16px var(--font-ui); min-height:48px; }
+.studio-theme-name > span { flex:none; }
+.studio-pattern-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.studio-pattern-options > button { display:flex; flex-direction:column; align-items:stretch; gap:6px; padding:8px; min-width:0; border:2px solid transparent; background:color-mix(in srgb,var(--variant-ink) 4%,transparent); border-radius:0; color:var(--variant-ink); font:500 11px/16px var(--font-ui); }
+.studio-pattern-options > button[aria-checked="true"] { border-color:var(--variant-ink); }
+.studio-pattern-sample { position:relative; display:block; height:30px; background:color-mix(in srgb,var(--preview-card) 70%,transparent); color:var(--variant-ink); }
+.studio-pattern-sample::before { opacity:var(--sample-opacity); }
+.studio-appearance button:focus-visible { outline:2px solid var(--variant-link); outline-offset:2px; }
+:root .settings.dialog :is(input,select) { color:var(--variant-ink); }
+@media(max-width:599px) {
+  :root .settings.dialog { width:100%; max-width:100%; }
+  .studio-theme-options { gap:8px; }
+  .studio-mini { height:80px; }
+  .studio-theme-name { padding:6px; font-size:11px; }
+  .studio-pattern-options { gap:6px; }
+  :root .app.phone .column.done .card-face,
+  :root .app.phone .column.done .card-face:is(:hover,.open,.selected) { padding:18px; }
+}
+
+/* Ring overlays retain contrast on both light and dark card glass. */
+:root .app :is(.card-face,.note-card) .ring6-btn {
+  --accent:var(--completion-accent) !important;
+  --circle:var(--track) !important;
+  --track:color-mix(in srgb,var(--variant-ink) 25%,transparent) !important;
+  --ring-hole:transparent !important;
+}
+:root .app :is(.card-face,.note-card) .ring6-hole { background:transparent; }
+
+:root .app:has([role="dialog"]) .install-card { display:none; }
+
+:root .btn-accent { --accent-fill:rgb(var(--studio-neutral) / 92%) !important; --on-accent:var(--variant-canvas) !important; }
+
+
+/* Floating surfaces transmit the backdrop; chroma correction stays below their content. */
+:root :is(.settings.dialog,.dialog,.label-pop.label-picker,.label-pop,.dt-menu,.rooms,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.login-card,.link-prompt,.shortcut-sheet,.detail-dock,.install-card,.toast,.banner,.phone-search-results,.assistant-panel) {
+  --glass-tint:var(--preview-card); --glass-fill:var(--glass-menu-fill);
+  background:transparent !important; border:0 !important; isolation:isolate;
+  -webkit-backdrop-filter:blur(16px) saturate(1.3); backdrop-filter:blur(16px) saturate(1.3);
+  box-shadow:var(--glass-shadow-float);
+}
+:root :is(.settings.dialog,.dialog,.label-pop.label-picker,.label-pop,.dt-menu,.rooms,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.login-card,.link-prompt,.shortcut-sheet,.detail-dock,.install-card,.toast,.banner,.phone-search-results,.assistant-panel)::before,
+:root :is(.settings.dialog,.dialog,.label-pop.label-picker,.label-pop,.dt-menu,.rooms,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.login-card,.link-prompt,.shortcut-sheet,.detail-dock,.install-card,.toast,.banner,.phone-search-results,.assistant-panel)::after {
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+}
+:root :is(.settings.dialog,.dialog,.label-pop.label-picker,.label-pop,.dt-menu,.rooms,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.login-card,.link-prompt,.shortcut-sheet,.detail-dock,.install-card,.toast,.banner,.phone-search-results,.assistant-panel)::before { z-index:-2; background:color-mix(in srgb,var(--glass-tint) var(--glass-fill),transparent); filter:saturate(1.3); }
+:root :is(.settings.dialog,.dialog,.label-pop.label-picker,.label-pop,.dt-menu,.rooms,.rooms-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.login-card,.link-prompt,.shortcut-sheet,.detail-dock,.install-card,.toast,.banner,.phone-search-results,.assistant-panel)::after { z-index:-1; background:var(--glass-tint); mix-blend-mode:color; opacity:.28; }
+:root :is(.login-card,.shortcut-sheet,.banner) { position:relative; }
+:root .app.desktop .pane { padding-bottom:0; }
+:root .app.desktop .notes-scroll { padding-bottom:112px; scroll-padding-bottom:112px; }
+:root .app :is(.dt-scroll,.dialog-body,.assistant-list) { scroll-padding-bottom:24px; }
+:root .app :is(.dt-scroll,.dialog-body) { padding-bottom:28px; }
+:root .app :is(.dt-panel,.dt-sheet).exit-clone { opacity:1; }
+
+/* Links share a consistent underline treatment. */
+:root :is(a.md-link,a.text-link,a.dt-link,a.card-link,a.note-link,.sh-reply a,.assistant-reply a,.login-card a,.dialog a) { text-decoration:underline; text-decoration-color:currentColor; text-underline-offset:3px; text-decoration-thickness:1px; }
+:root :is(.text-link svg,.md-link svg,.dt-link svg,.card-link svg,.note-link svg,.sh-thread-link svg) { color:inherit; opacity:1; }
+
+/* Focus changes the underline color without adding weight. */
+:root { --input-focus-accent:var(--studio-accent); }
+:root .app :is(.dt-panel,.dt-sheet) { --input-focus-accent:var(--editor-completion-accent); }
+:root :is(input,textarea,select):not(:where([type="checkbox"],[type="radio"],[type="range"],[type="color"],[type="file"],[type="hidden"])) { outline:none !important; outline-offset:0; }
+:root :is(input,textarea,select):focus:not(:where([type="checkbox"],[type="radio"],[type="range"],[type="color"],[type="file"],[type="hidden"])) { outline:none !important; box-shadow:inset 0 -1px 0 var(--input-focus-accent) !important; }
+:root :is(.topbar-search,.assistant-field,.sh-composer,.labels-find,.rooms-link) { border:0; border-bottom:1px solid var(--line-2); border-radius:0; box-shadow:none; }
+:root :is(.topbar-search,.assistant-field,.sh-composer,.labels-find,.rooms-link):focus-within { border-bottom-color:var(--input-focus-accent); box-shadow:none !important; }
+:root :is(.topbar-search,.assistant-field,.sh-composer,.labels-find,.rooms-link) :is(input,textarea):focus { box-shadow:none !important; }
+:root .app .topbar-search { border-bottom-color:rgb(var(--header-neutral) / 42%); }
+:root .app .topbar-search:focus-within { border-bottom:1px solid var(--input-focus-accent); }
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input):focus { outline:none; border-color:var(--editor-line) !important; border-bottom-color:var(--input-focus-accent) !important; box-shadow:none !important; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-add { position:relative; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-add-icon { position:absolute; left:12px; top:16px; color:var(--editor-muted); pointer-events:none; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input),
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input):focus { background:rgb(0 0 0 / var(--glass-field-fill)) !important; border:0 !important; border-bottom:1px solid var(--editor-line) !important; padding:12px; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-add-input,
+:root .app :is(.dt-panel,.dt-sheet) .dt-add-input:focus { display:block; padding-left:36px; }
+:root .app :is(.dt-panel,.dt-sheet) :is(.md-raw,.dt-add-input):focus { border-bottom-color:var(--input-focus-accent) !important; }
+:root :is(.assistant-field,.sh-composer) { background:transparent; padding:8px 0; }
+:root .assistant-field textarea { background:transparent !important; padding:0; }
+:root .app :is(.dt-panel,.dt-sheet) .sh-composer { border:0; box-shadow:none; }
+:root .app :is(.dt-panel,.dt-sheet) .sh-composer textarea { padding:12px; background:rgb(0 0 0 / var(--glass-field-fill)) !important; border:0; border-bottom:1px solid var(--editor-line); color:var(--editor-ink); }
+:root .app :is(.dt-panel,.dt-sheet) .sh-composer textarea:focus { border-bottom-color:var(--input-focus-accent); }
+:root .app :is(.dt-panel,.dt-sheet) .sh-composer textarea::placeholder { color:rgb(var(--editor-neutral) / 60%) !important; }
+
+/* The assistant shares the editor geometry and palette instead of a separate rounded shell. */
+:root .app.desktop .assistant-panel { top:var(--header-h,83px); right:0; bottom:0; width:400px; max-width:100vw; border-radius:0; animation:studio-side-arrive 200ms var(--ease-out); }
+:root .app .assistant-panel { --glass-fill:var(--glass-menu-fill); -webkit-backdrop-filter:blur(16px) saturate(1.3); backdrop-filter:blur(16px) saturate(1.3); }
+:root .assistant-panel :is(.assistant-head,.assistant-context,.assistant-compose) { padding-left:20px; padding-right:20px; }
+:root .assistant-list { padding:12px 20px 28px; }
+:root .assistant-panel :is(.assistant-tile,.assistant-chip,.assistant-prompts button,.assistant-you,.assistant-preview) { border-radius:0; background:rgb(var(--studio-neutral) / 6%); box-shadow:none; }
+:root .assistant-sheet { border-radius:0; }
+
+:root a { text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; text-decoration-color:currentColor; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-title:focus { box-shadow:inset 0 -1px 0 var(--input-focus-accent) !important; outline:none !important; }
+:root .app > .remind-pop { width:280px; margin:0; }
+
+:root .toast { --toast-ink:var(--variant-ink); --toast-accent:var(--variant-ink); color:var(--variant-ink); }
+
+/* Icons inherit their local foreground, including controls on colored glass. */
+:root svg { color:inherit !important; }
+:root :is(.ring svg,.ring6 svg,.note-box svg,.dt-done-circle svg,.md-box svg,.sparkle) { stroke:currentColor; }
+:root :is(.rooms-leading,.room-switch > .rooms-icon,.dt-remind-btn.set svg,.dt-remind-every.on svg,.ro-remind.set svg) { color:inherit; }
+:root .app .ring6-btn { color:var(--ink); }
+:root .app .ring6-done { color:var(--completion-accent); background:transparent; border:2px solid currentColor; }
+:root .app :is(.ring6-todo,.ring6-note) { background:var(--track); }
+:root .app .ring6-note { -webkit-mask:none; mask:none; background:transparent; border:2px solid var(--track); }
+:root .app .ring6-note svg { stroke:var(--track); stroke-width:2; }
+@media (hover:hover) and (pointer:fine) {
+  :root .app button.ring6-btn:hover:not(:disabled) .ring6-note { border-color:var(--control-ink); }
+  :root .app button.ring6-btn:hover:not(:disabled) .ring6-note svg { stroke:var(--control-ink); }
+  :root .app button.ring6-btn:hover:not(:disabled) .ring6-todo { background:var(--control-ink); }
+  :root .app button.ring6-btn:hover:not(:disabled) .ring6-doing { filter:brightness(1.2); }
+}
+:root .app .ring6-doing { background:conic-gradient(var(--completion-accent) var(--pct,50%),var(--track) 0); }
+:root .app .ring6-done .ring6-hole { background:transparent; }
+:root .app .topbar-synced { color:var(--ink); }
+:root .app .card-inline-item.checked > .inline-text { text-decoration:none; }
+:root .app :is(.card-inline-item.checked .inline-text > span:first-child,.note-item.done,.dt-row.checked .dt-row-text,.dt-row-exit.done .dt-row-exit-text,.md-task.done > span,.card-title,.note-title,.dt-title,.search-row-title,.search-result-title) { text-decoration-thickness:1px; text-decoration-color:rgb(from currentColor r g b / 1); }
+:root .app :is(.card-inline-item.checked .inline-box,.note-item.done .note-box,.dt-row.checked .dt-box,.md-task.done .md-box,.dt-done-circle.on) { color:var(--completion-accent) !important; background:transparent !important; border-color:currentColor !important; }
+
+:root .app :is(.dt-panel,.dt-sheet) .dt-foot .dt-link.danger { color:var(--control-danger); }
+
+@media(max-width:899px) {
+  :root .app.phone .dt-sheet .dt-top { height:48px; min-height:48px; align-items:center; justify-content:flex-start; gap:0; }
+  :root .app.phone .dt-sheet .dt-top-actions { height:48px; align-items:center; }
+  :root .app.phone .dt-sheet :is(.dt-sheet-close,.dt-top > .ring6-btn) { width:48px; height:48px; min-width:48px; min-height:48px; padding:0; margin:0; display:flex; align-items:center; justify-content:center; color:var(--ink); }
+  :root .app.phone .dt-sheet .dt-top > .ring6-btn { width:44px; min-width:44px; margin-left:-11px; }
+  :root .app.phone .dt-sheet .dt-chips { align-items:center; }
+  :root .app.phone .dt-sheet .dt-chips .label-pill { height:44px; min-height:44px; line-height:44px; }
+  :root .app.phone .dt-sheet .dt-chips :is(.dt-chip-btn,.dt-remind-btn) { position:relative; height:44px; min-height:44px; padding:0 10px; line-height:20px; }
+  :root .app.phone .dt-sheet .dt-sheet-close svg { width:20px; height:20px; }
+}
+
+/* Full-screen travel takes 400ms so expansion stays legible beside the native keyboard. */
+@keyframes studio-phone-capture {
+  from { transform:translateY(calc(100% - 69px)); }
+  to { transform:translateY(0); }
+}
+@media(max-width:899px) {
+  :root .app.phone .dt-sheet.creating { animation:studio-phone-capture 400ms var(--ease-drawer) both; transition:none; }
+  :root .app.phone:has(.dt-sheet-root.exit-clone) .composer-layer { visibility:hidden; }
+  :root .app.phone .dt-sheet-root.exit-clone .dt-sheet { animation:none !important; transition:none; }
+}
+@media(prefers-reduced-motion:reduce) { :root .app.phone .dt-sheet.creating { animation:none; } }
+:root[data-reduce-motion="on"] .app.phone .dt-sheet.creating { animation:none; }
+/* Align the painted icons while their invisible tap areas extend into the gutters. */
+@media(max-width:899px) {
+  :root .app.phone .dt-sheet .dt-top > .ring6-btn { position:relative; left:0; }
+  :root .app.phone .dt-sheet .dt-sheet-close { position:relative; left:18px; }
+}
+
+/* Cards share one content edge; padded tap targets sit outside the painted ring. */
+:root .app .card-face .card-title,
+:root .app .note-card .note-title,
+:root .app .note-card .note-preview.alone { padding-right:44px; overflow-wrap:anywhere; }
+:root .app .column .card-face > .card-ring,
+:root .app .column .card-face.doing > .card-ring { width:28px; height:28px; top:20px; right:16px; }
+:root .app .column.done .card-face > .card-ring { top:18px; }
+:root .app .notes-view .note-card > .note-ring { width:28px; height:28px; top:19px; right:16px; }
+:root .app .card-face .card-inline-items,
+:root .app .note-card .note-items { margin-left:-5px; margin-right:-5px; }
+:root .app .card-face :is(.card-inline-item,.card-inline-item.ref),
+:root .app .note-card :is(.note-item,.note-item.ref) { padding:5px; margin-left:0; margin-right:0; }
+:root .assistant-panel .assistant-field textarea { min-height:36px; padding:7px 0; }
+@media(max-width:899px) {
+  :root .app.phone .board.phone .card-face .card-title,
+  :root .app.phone .notes-view .note-card .note-title { padding-right:44px; }
+  :root .app.phone .board.phone .card-face > .card-ring,
+  :root .app.phone .board.phone .card-face.doing > .card-ring { width:44px; height:44px; top:10px; right:6px; }
+  :root .app.phone .column.done .card-face > .card-ring { top:8px; }
+  :root .app.phone .notes-view .note-card > .note-ring { width:44px; height:44px; top:8px; right:6px; }
+  :root .app.phone .dt-sheet .dt-top-actions > .dt-menu-anchor { position:relative; left:18px; }
+  :root .app.phone .topbar .phone-menu-anchor > .iconbtn { position:relative; left:0; }
+}
+
+@keyframes studio-editor-slide-in {
+  from { transform:translateX(100%); }
+  to { transform:translateX(0); }
+}
+@media(max-width:899px) {
+  :root .app.phone .dt-sheet:not(.creating) { animation:studio-editor-slide-in 400ms var(--ease-drawer) both; transition:none; }
+}
+@media(prefers-reduced-motion:reduce) {
+  :root .app.phone .dt-sheet:not(.creating) { animation:none; }
+}
+:root[data-reduce-motion="on"] .app.phone .dt-sheet:not(.creating) { animation:none; }
+
+/* Foreground hierarchy uses local ink without fading the glass or nested controls. */
+:root {
+  --text-title-alpha:100%;
+  --text-meta-alpha:70%;
+  --text-placeholder-alpha:70%;
+}
+:root :is(h1,h2,h3,.card-title,.note-title,.dt-title,.md-h,.dt-section-title),
+:root .app.phone .column-label .label-pill { color:rgb(var(--control-neutral) / var(--text-title-alpha)) !important; }
+:root .app :is(.card-meta,.note-foot,.dt-foot .mono,.dt-progress,.dt-new,.column-count,.topbar-count,.composer-kbd),
+:root .app :is(.card-meta,.note-foot) :is(time,.card-count,.note-count,.card-link,.note-link,.note-parent) { color:rgb(var(--control-neutral) / var(--text-meta-alpha)) !important; }
+:root :is(input,textarea)::placeholder { color:rgb(var(--control-neutral) / var(--text-placeholder-alpha)) !important; opacity:1; }
+:root .app .composer-layer .composer-bar > span { color:rgb(var(--editor-neutral) / var(--text-placeholder-alpha)); }
+
+/* Phone label selection and creation share the visible viewport above the keyboard. */
+:root .label-picker-head { display:none; }
+@media(max-width:899px) {
+  :root .app.phone .label-pop.label-picker { --glass-tint:var(--variant-canvas); --glass-fill:80%; display:flex; flex-direction:column; overflow:hidden; padding:0; }
+  :root .app.phone .label-picker-head { display:flex; align-items:center; flex:none; gap:12px; min-height:56px; padding:4px 12px; border-bottom:1px solid var(--line); }
+  :root .app.phone .label-picker-head strong { font:550 18px/24px var(--font-display); }
+  :root .app.phone .label-picker-head button { background:transparent; border:0; color:inherit; min-width:44px; height:44px; padding:0; }
+  :root .app.phone .label-picker-close { margin-left:auto; display:grid; place-items:center; }
+  :root .app.phone .label-picker-body { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:8px; }
+  :root .app.phone .label-picker > .new-label-row { flex:none; margin:0; padding:12px 20px; }
+  :root .app.phone .label-picker.creating :is(.label-picker-body,.new-label-row) { display:none; }
+  :root .app.phone .label-picker .label-new { flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column; gap:8px; margin:0; padding:12px; border:0; }
+  :root .app.phone .label-picker .label-new-options { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+  :root .app.phone .label-picker .label-new-name { flex:none; height:44px; font-size:16px; }
+  :root .app.phone .label-picker .color-choice { flex:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(44px,1fr)); gap:8px; padding:4px 0; }
+  :root .app.phone .label-picker .swatch { width:100%; height:44px; min-height:44px; padding:0; }
+  :root .app.phone .label-picker .label-new-add { flex:none; min-height:44px; margin:0; margin-top:auto; }
+}
+
+@media(max-width:899px) {
+  :root .app.phone .card-face .card-inline-item,
+  :root .app.phone .note-card .note-item { font-size:14px; }
+}

@@ -1,0 +1,149 @@
+/* Search enters from its header action without delaying input focus. */
+.app.phone :is(.topbar-row-search,.phone-search-layer) {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+@starting-style {
+  :root:not([data-motion-input='keyboard']):not([data-reduce-motion='on']) .app.phone .topbar-row-search {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  :root:not([data-motion-input='keyboard']):not([data-reduce-motion='on']) .app.phone .phone-search-layer {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @starting-style {
+    :root:not([data-reduce-motion='off']) .app.phone :is(.topbar-row-search,.phone-search-layer) { transform: none; }
+  }
+}
+
+/* State feedback shares one short fade; layout and focus outlines stay immediate. */
+:root :is(button, a, input, textarea, select, summary, [role='button'], [role='menuitem'], [role='tab'],
+  .card-face, .note-card, .label-pill, .label-pop-row, .link-pop-row, .search-row, .search-result,
+  .dt-row, .note-item, .card-inline-item, .dt-box, .note-box, .inline-box, .md-box, .ring6) {
+  transition:
+    background-color var(--d-fast) ease,
+    color var(--d-fast) ease,
+    border-color var(--d-fast) ease,
+    opacity var(--d-fast) ease,
+    box-shadow var(--d-fast) ease,
+    text-decoration-color var(--d-fast) ease;
+}
+:root :is(button, a.btn, [role='button']) {
+  transition:
+    background-color var(--d-fast) ease,
+    color var(--d-fast) ease,
+    border-color var(--d-fast) ease,
+    opacity var(--d-fast) ease,
+    box-shadow var(--d-fast) ease,
+    transform var(--d-fast) var(--ease-out);
+}
+:root :is(.card-face, .note-card)::before,
+:root .automation-switch::before {
+  transition: background-color var(--d-fast) ease, opacity var(--d-fast) ease;
+}
+
+/* Frequent navigation stays short; anchored floats appear beside their trigger. */
+:is(.label-pop, .link-pop, .search-pop, .remind-pop, .rooms, .rooms-menu) {
+  transform-origin: top left;
+}
+.phone-more-menu { transform-origin: top right; }
+
+/* Custom menus acknowledge pointer toggles without moving surrounding content. */
+:root :is(.dt-menu,.rooms,.rooms-menu,.labels-menu,.label-picker,.label-pop,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.link-prompt) {
+  transform-origin: top right;
+  animation: dropdown-open 180ms var(--ease-out) both;
+}
+:root :is(.rooms,.labels-menu,.label-picker,.label-pop,.link-pop,.search-pop,.remind-pop,.link-prompt) { transform-origin: top left; }
+@keyframes dropdown-open {
+  from { opacity:0; transform:translateY(-6px) scale(.98); }
+  to { opacity:1; transform:none; }
+}
+:root :is(.dt-menu,.rooms,.rooms-menu,.labels-menu,.label-picker,.label-pop,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.link-prompt)[data-closing] {
+  pointer-events:none;
+  animation:dropdown-close 150ms ease-in both;
+}
+@keyframes dropdown-close {
+  from { opacity:1; transform:none; }
+  to { opacity:0; transform:translateY(-4px) scale(.98); }
+}
+:root .labels-scrim[data-closing] { pointer-events:none; animation:dropdown-scrim-close 150ms ease-in both; }
+@keyframes dropdown-scrim-close { to { opacity:0; } }
+@media (max-width:899px) {
+  :root :is(.rooms,.labels-menu) { transform-origin:bottom center; animation-name:dropdown-sheet-open; }
+  :root :is(.rooms,.labels-menu)[data-closing] { animation-name:dropdown-sheet-close; }
+}
+@keyframes dropdown-sheet-open {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:none; }
+}
+@keyframes dropdown-sheet-close {
+  from { opacity:1; transform:none; }
+  to { opacity:0; transform:translateY(12px); }
+}
+
+/* Do not reserve a composited layer for every resting card. */
+.card-swipe-inner { will-change: auto; }
+body.dragging .drag-ghost, .move-wrap, .flip-flying { will-change: transform; }
+
+/* Keyboard feedback is immediate, including pseudo-elements and delayed entries. */
+:root[data-motion-input='keyboard'] *,
+:root[data-motion-input='keyboard'] *::before,
+:root[data-motion-input='keyboard'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Keep layout transforms (pane position, toast centering), remove animated movement. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-reduce-motion='off']) *,
+  :root:not([data-reduce-motion='off']) *::before,
+  :root:not([data-reduce-motion='off']) *::after {
+    animation: none !important;
+    transition-property: opacity, color, background-color, border-color !important;
+    transition-duration: 120ms !important;
+    transition-delay: 0ms !important;
+  }
+  :root:not([data-reduce-motion='off']) .app :is(button, .card-face, .note-card):active {
+    transform: none !important;
+  }
+}
+:root[data-reduce-motion='on'] *,
+:root[data-reduce-motion='on'] *::before,
+:root[data-reduce-motion='on'] *::after {
+  animation: none !important;
+  transition-property: opacity, color, background-color, border-color !important;
+  transition-duration: 120ms !important;
+  transition-delay: 0ms !important;
+}
+:root[data-reduce-motion='on'] .app :is(button, .card-face, .note-card):active {
+  transform: none !important;
+}
+
+/* Board's columns stay nested; Notes is its right-hand neighbor. */
+@media (max-width: 899px) {
+  :root .app.phone :is(.phone-panes, .phone-notes-pane) {
+    display: block;
+    visibility: visible;
+    transform: translateX(0);
+    transition: transform 300ms var(--ease-drawer), visibility 0ms;
+  }
+  :root .app.phone :is(.phone-panes, .phone-notes-pane)[hidden] {
+    display: block;
+    visibility: hidden;
+    transition: transform 300ms var(--ease-drawer), visibility 0ms linear 300ms;
+  }
+  :root .app.phone .phone-panes[hidden] { transform: translateX(-100vw); }
+  :root .app.phone .phone-notes-pane[hidden] { transform: translateX(100vw); }
+  :root .app.phone[data-view-dragging] :is(.phone-panes, .phone-notes-pane) {
+    visibility: visible;
+    transition: none;
+  }
+}
+
+/* A completed or interrupted entrance stays complete when input mode changes. */
+:root .app :is(.dt-panel,.dt-sheet)[data-entry-settled] { animation:none !important; }

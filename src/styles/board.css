@@ -1,0 +1,2058 @@
+/* Board, columns, composer, card face, phone nav, drag and drop. Tokens: src/index.css */
+
+.board {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.columns {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding: 12px 20px 20px;
+}
+
+/* ---- column -------------------------------------------------------------- */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-radius: var(--r-panel);
+  transition: background-color var(--d-fast) var(--ease-out);
+}
+.column.drop-target {
+  background: transparent;
+}
+
+.column-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 10px 10px;
+  flex-wrap: wrap;
+}
+.column-label {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.column-count {
+  color: var(--muted);
+}
+.column-header .linkbtn {
+  margin-left: auto;
+}
+.column-hint {
+  flex-basis: 100%;
+  color: var(--muted);
+  animation: fade-in var(--d-base) var(--ease-out);
+}
+.column-header.shake {
+  animation: header-shake 240ms var(--ease-out);
+}
+
+.column-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 6px 12px;
+}
+
+.column-composer {
+  padding: 8px 6px 0;
+}
+
+.column-empty {
+  margin: 0;
+  padding: 28px 12px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  animation: fade-in var(--d-base) var(--ease-out) both;
+}
+
+.linkbtn {
+  background: none;
+  border: 0;
+  padding: 2px 4px;
+  color: var(--muted);
+  border-radius: 6px;
+  transition:
+    color var(--d-fast),
+    background-color var(--d-fast);
+}
+.linkbtn:hover {
+  color: var(--ink);
+  background: var(--track);
+}
+.archived-link {
+  align-self: center;
+  margin-top: 4px;
+}
+
+/* Someday: a quiet labelled rule at the bottom of To do; everything below it is parked. */
+.someday-divider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  margin-top: 4px;
+}
+.someday-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 0;
+  padding: 4px 6px 4px 4px;
+  margin-left: -4px;
+  color: var(--muted);
+  border-radius: 6px;
+  transition:
+    color var(--d-fast) var(--ease-out),
+    background-color var(--d-fast) var(--ease-out);
+}
+.someday-toggle:hover {
+  color: var(--ink);
+  background: var(--track);
+}
+.someday-chevron {
+  transition: transform var(--spring-gentle-ms) var(--spring-gentle);
+}
+.someday-toggle[aria-expanded='false'] .someday-chevron {
+  transform: rotate(-90deg);
+}
+.someday-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  transition: background-color var(--d-fast) var(--ease-out);
+}
+.someday-divider.drop-into .someday-toggle {
+  color: var(--accent-text);
+}
+.someday-divider.drop-into .someday-rule {
+  background: var(--accent);
+}
+.someday-divider.drop-closed .someday-rule {
+  height: 2px;
+}
+.someday-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.someday-hint {
+  margin: 0;
+  padding: 14px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  opacity: 0.7;
+  border: 1px dashed var(--line);
+  border-radius: var(--r-card);
+  transition:
+    opacity var(--d-fast) var(--ease-out),
+    border-color var(--d-fast) var(--ease-out);
+}
+body.dragging .someday-hint {
+  opacity: 1;
+  border-color: var(--placeholder-slot);
+}
+
+/* ---- card face ------------------------------------------------------------ */
+
+.card-face {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px 12px 12px;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-rest);
+  cursor: pointer;
+  transition:
+    box-shadow 160ms var(--ease-out),
+    transform 160ms var(--ease-out),
+    opacity var(--d-fast) var(--ease-out);
+}
+/* Real hover only: touch screens keep a "sticky" hover after a tap, which would lift a card by itself. */
+@media (hover: hover) and (pointer: fine) {
+  .card-face:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+}
+.card-face:active {
+  transform: scale(0.985);
+  transition-duration: 80ms;
+}
+.card-face.open {
+  box-shadow:
+    var(--shadow-rest),
+    0 0 0 1px var(--accent);
+}
+.card-face.selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-face:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-face.someday {
+  opacity: 0.6;
+}
+.card-face.dim {
+  opacity: 0.3;
+}
+.card-face.collapsed {
+  display: none;
+}
+.card-face.entering {
+  animation: card-enter var(--d-base) var(--ease-out) both;
+}
+.card-face.pulse {
+  animation: card-pulse 240ms var(--ease-out);
+}
+.card-face.flip-flying {
+  z-index: 2;
+}
+/* Cross-column move: the real node waits hidden while its clone flies (§11.2). */
+.card-face.move-hidden {
+  visibility: hidden;
+}
+.move-wrap {
+  z-index: 35; /* over the board and bar, under the floating panel (40) */
+  pointer-events: none;
+}
+.move-clone {
+  transform-origin: center;
+  box-shadow: var(--shadow-rest);
+}
+
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  transition: color var(--d-fast);
+}
+.card-face.done .card-title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.card-title-edit {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: var(--accent-tint);
+  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-tint); /* its one focus treatment (tint field + ring) */
+  font: inherit;
+  font-weight: 500;
+}
+
+.card-notes {
+  margin: 3px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.card-progress .bar {
+  width: 40px;
+  height: 3px;
+  background: var(--track);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.card-progress .fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transition: transform 260ms var(--ease-out);
+}
+.card-progress .count,
+.card-face .repeat {
+  color: var(--muted);
+}
+
+mark.hl {
+  background: var(--accent-tint);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+/* done circle: 24px desktop / 26px phone, ≥44px hit area (§5.1) */
+.card-circle {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: -10px -8px -10px -10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.card-circle .ring {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  transition:
+    background-color var(--d-fast),
+    border-color var(--d-fast),
+    transform 260ms var(--ease-out);
+}
+.phone .card-circle .ring {
+  width: 26px;
+  height: 26px;
+}
+.card-circle:hover .ring {
+  border-color: var(--muted);
+}
+.card-face.done .ring {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.card-face.done.pulse .card-circle .ring {
+  animation: check-pop var(--spring-gentle-ms) var(--spring-gentle);
+} /* only when it just got done here, never on mount */
+.ring svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ring path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  transition: stroke-dashoffset 160ms var(--ease-out) 60ms;
+}
+.card-face.done .ring path {
+  stroke-dashoffset: 0;
+}
+
+/* ---- composer ------------------------------------------------------------ */
+
+.composer {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-rest);
+  transition:
+    box-shadow 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    border-color 160ms;
+}
+.composer:focus-within {
+  box-shadow:
+    var(--shadow-hover),
+    0 0 0 1px var(--accent);
+}
+/* All three composers look identical (user decision 2026-09-22, deviates from §9/§17 "quiet"). */
+.composer.shake {
+  animation: field-shake 240ms var(--ease-out);
+}
+
+.composer-input {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 14px;
+  border: 0;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-size: 15px;
+  line-height: 22px;
+  overflow-y: hidden;
+}
+.composer-input::placeholder {
+  color: var(--placeholder);
+}
+.phone .composer-input {
+  min-height: 54px;
+  padding: 15px 14px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.composer-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px 10px 14px;
+  animation: rise-in 160ms var(--ease-out) both;
+}
+.composer-hint {
+  flex: 1;
+  min-width: 0;
+  color: var(--muted);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+
+.mode-toggle {
+  display: flex;
+  background: var(--track);
+  border-radius: 8px;
+  padding: 2px;
+}
+.mode-toggle button {
+  border: 0;
+  background: transparent;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  transition:
+    background-color var(--d-fast),
+    color var(--d-fast);
+}
+.mode-toggle button.active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(20, 24, 29, 0.08);
+}
+
+/* ---- phone layout (§9) ------------------------------------------------------ */
+
+/* The board may shrink below its content's min width, so one-line chips truncate instead of widening the page. */
+.board {
+  min-width: 0;
+}
+
+.board.phone .columns {
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden; /* a swiped card slides out of view, never scrolls the column sideways */
+  overscroll-behavior: contain;
+  padding: 4px 12px calc(120px + max(var(--safe-bottom), var(--kb)));
+}
+.board.phone .column {
+  min-height: 100%;
+}
+.board.phone .column-body {
+  overflow: visible;
+  flex: none;
+  padding: 4px 0 12px;
+}
+.board.phone .column-header {
+  padding: 8px 4px 10px;
+}
+.board.phone .card-title {
+  font-size: 16px;
+}
+.board.phone .card-face {
+  padding: 14px 14px 14px 12px;
+}
+
+.column.from-right {
+  animation: col-from-right var(--spring-gentle-ms) var(--spring-gentle) both;
+}
+.column.from-left {
+  animation: col-from-left var(--spring-gentle-ms) var(--spring-gentle) both;
+}
+
+.phone-composer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(var(--safe-bottom), var(--kb));
+  z-index: 20;
+  padding: 8px 12px 8px;
+  background: linear-gradient(to bottom, transparent, var(--bg) 24px);
+}
+
+.phone-nav {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--segments, 3), 1fr);
+  margin: 8px 12px 4px;
+  padding: 3px;
+  background: var(--track);
+  border-radius: 12px;
+}
+.phone-nav .pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--segments, 3));
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(20, 24, 29, 0.1);
+  transition: transform 260ms var(--ease-out);
+}
+.phone-nav button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 48px;
+  border: 0;
+  background: none;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--muted);
+  transition: color var(--d-fast);
+}
+.phone-nav button.active {
+  color: var(--ink);
+}
+.phone-nav button .mono {
+  color: var(--muted);
+}
+
+/* ---- drag and drop (§11.8) --------------------------------------------------- */
+
+body.dragging {
+  user-select: none;
+  cursor: grabbing;
+}
+body.dragging .card-face {
+  cursor: grabbing;
+}
+
+.drag-ghost {
+  position: fixed;
+  z-index: 1000;
+  margin: 0;
+  pointer-events: none;
+  --rot: 0deg;
+  transform: scale(1) rotate(0deg);
+  transition:
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+.drag-ghost.lifted {
+  transform: scale(1.04) rotate(var(--rot));
+  box-shadow: var(--shadow-drag);
+}
+.drag-ghost.drag-return,
+.drag-ghost.drag-drop {
+  transform: scale(1) rotate(0deg);
+  box-shadow: var(--shadow-rest);
+  /* The drop settles on the release spring (the return to the start slot too). */
+  transition:
+    transform var(--spring-release-ms) var(--spring-release),
+    box-shadow 280ms;
+}
+
+.drop-placeholder {
+  height: 3px;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.drop-placeholder::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 12px;
+  right: 12px;
+  background: var(--studio-accent, var(--accent));
+}
+
+/* ---- keyframes ------------------------------------------------------------------- */
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes card-pulse {
+  0% {
+    transform: scale(1);
+    background-color: var(--accent-tint);
+  }
+  35% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--surface);
+  }
+}
+@keyframes check-pop {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes field-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  33% {
+    transform: translateX(-4px);
+  }
+  66% {
+    transform: translateX(4px);
+  }
+}
+@keyframes header-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+@keyframes col-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes col-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- §11.2 card exit ------------------------------------------------------- */
+.card-face.exiting {
+  animation: card-exit 160ms var(--ease-out) both;
+  pointer-events: none;
+}
+.card-face.exiting.exit-right {
+  animation-name: card-exit-right;
+}
+.card-face.exiting.exit-left {
+  animation-name: card-exit-left;
+}
+@keyframes card-exit {
+  to {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+}
+@keyframes card-exit-right {
+  to {
+    transform: translateX(40px) scale(0.96);
+    opacity: 0;
+  }
+}
+@keyframes card-exit-left {
+  to {
+    transform: translateX(-40px) scale(0.96);
+    opacity: 0;
+  }
+}
+
+/* ---- touch swipe action: Delete on the right ---- */
+.card-swipe,
+[data-swipe-row] {
+  position: relative;
+  touch-action: pan-y;
+}
+.card-swipe {
+  border-radius: var(--r-card);
+}
+.card-swipe.hidden {
+  display: none;
+}
+.card-swipe-inner {
+  position: relative;
+}
+.swipe-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+}
+.swipe-bg-delete {
+  justify-content: flex-end;
+  background: var(--variant-canvas, var(--bg));
+  color: var(--destructive);
+}
+.swipe-left > .swipe-bg-delete {
+  opacity: 1;
+  pointer-events: auto;
+}
+.swipe-left > .card-swipe-inner {
+  background: var(--variant-canvas, var(--bg));
+}
+.swipe-action {
+  width: 88px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 0;
+  background: #b01832;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+.swipe-action:active {
+  background: #8f1228;
+}
+.swipe-action svg {
+  transition: transform 160ms var(--ease-out);
+}
+.armed .swipe-action svg {
+  transform: scale(1.25);
+}
+
+/* ---- §7.7 phone edge move ------------------------------------------------------ */
+.board.phone::before,
+.board.phone::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to right, var(--accent-tint), transparent);
+  transition: opacity var(--d-fast);
+  z-index: 5;
+}
+.board.phone::before {
+  left: 0;
+}
+.board.phone::after {
+  right: 0;
+  background: linear-gradient(to left, var(--accent-tint), transparent);
+}
+.board.phone.edge-left::before,
+.board.phone.edge-right::after {
+  opacity: 1;
+}
+.board.phone .columns {
+  touch-action: pan-y;
+}
+
+/* ---- §4.4 temporary Archived group --------------------------------------------- */
+.column.archived .card-face {
+  opacity: 0.7;
+}
+
+/* ---- input-aware: touch press cue, drag over a phone tab, hover quick actions ---------------- */
+.column-body {
+  overflow-x: hidden;
+} /* a swiped card slides out of view, never scrolls sideways */
+.card-face.pressing {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-hover);
+  transition:
+    transform 260ms var(--ease-out) 90ms,
+    box-shadow 260ms var(--ease-out) 90ms;
+}
+.phone-nav button.drag-hover {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+/* Desktop mouse only: "→ Start / Done" and ··· appear on hover; touch never shows them. */
+.card-quick {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 9px;
+  background: var(--surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--d-fast) var(--ease-out);
+}
+.card-quick-btn {
+  min-width: 28px;
+  height: 26px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+}
+.card-quick-btn:hover {
+  background: var(--track);
+  color: var(--ink);
+}
+.card-quick-more {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-face:hover .card-quick {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+@media not all and (hover: hover) {
+  .card-quick {
+    display: none;
+  }
+}
+body.dragging .card-quick {
+  display: none;
+}
+
+/* Right-click menu: the ··· menu's look, at the pointer. */
+.dt-menu.ctx-menu {
+  position: fixed;
+  right: auto;
+  z-index: 60;
+  transform-origin: top left;
+} /* beats .dt-menu { right: 0 } */
+.ctx-group {
+  display: flex;
+  flex-direction: column;
+}
+.ctx-sub {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 4px 12px;
+  padding-left: 6px;
+  border-left: 1px solid var(--line);
+}
+.ctx-menu button[aria-disabled='true'] {
+  color: var(--placeholder);
+  cursor: default;
+}
+.ctx-menu button[aria-disabled='true']:hover {
+  background: transparent;
+}
+
+/* Coarse pointers (iPad, phone): no long-press callout or selection on cards. */
+@media (pointer: coarse) {
+  .card-face {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* The queue, active work and completion ledger each have their own anatomy. */
+.columns {
+  max-width: none;
+  padding: 0;
+  gap: 20px;
+}
+.column-header {
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: nowrap;
+}
+.column-label {
+  font: 600 20px/1.2 var(--font-display);
+}
+.column-count {
+  font-size: 13px;
+}
+.column-tip {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.column-header .linkbtn {
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+.column-body {
+  padding: 0 0 8px;
+  gap: 8px;
+  scrollbar-width: none;
+}
+.column-body::-webkit-scrollbar,
+.dt-scroll::-webkit-scrollbar,
+.columns::-webkit-scrollbar {
+  display: none;
+}
+.column.doing .column-body {
+  gap: 10px;
+}
+.column.done .column-body {
+  gap: 16px;
+}
+.column-composer {
+  padding: 0;
+  margin-bottom: 12px;
+}
+.column-empty {
+  font-size: 15px;
+  border: 1px dashed var(--line-2);
+  border-radius: 12px;
+  padding: 28px 12px;
+}
+.card-face {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 0;
+  padding: 12px 14px 12px 8px;
+  box-shadow: var(--shadow-rest);
+  border-color: var(--line);
+}
+.card-face:hover {
+  transform: none;
+  background: var(--surface-3);
+  box-shadow: var(--shadow-rest);
+}
+.card-face.open {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-rest);
+}
+.card-title {
+  font-size: 16px;
+  line-height: 24px;
+  -webkit-line-clamp: 2;
+}
+.card-circle {
+  width: 36px;
+  height: 24px;
+  min-width: 36px;
+  margin: 0;
+  position: relative;
+}
+.card-circle::after {
+  content: '';
+  position: absolute;
+  inset: -10px 0;
+}
+.card-circle .ring {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--circle);
+}
+.card-meta {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--muted);
+  padding-right: 65px;
+}
+.card-meta > * {
+  flex: none;
+}
+.card-meta .card-att {
+  display: inline;
+  margin: 0;
+}
+.card-count.active,
+.repeat,
+.done-repeat {
+  color: var(--accent);
+}
+.card-thumb,
+.card-file-tile {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  margin-left: 10px;
+  grid-column: 3;
+  grid-row: 1;
+}
+.card-file-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: var(--track);
+  border: 1px solid var(--line-2);
+  color: var(--muted);
+}
+.card-file-tile svg {
+  width: 12px;
+  height: 12px;
+}
+.card-file-tile .mono {
+  font-size: 9px;
+  font-weight: 500;
+}
+.card-quick {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  opacity: 1;
+  background: none;
+  display: flex;
+  gap: 0;
+  padding: 0;
+}
+.card-quick-btn {
+  font: 600 13px var(--font-ui);
+  color: var(--accent);
+  opacity: 0.6;
+  background: none;
+  min-height: 24px;
+  padding: 0 2px;
+}
+.card-quick-btn:hover {
+  opacity: 1;
+  background: none;
+}
+.card-quick-more {
+  display: none;
+}
+.card-face.doing {
+  padding: 14px 16px 12px;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+}
+.card-face.doing .card-circle {
+  width: 24px;
+  min-width: 24px;
+}
+.card-face.doing .card-circle::after {
+  inset: -10px;
+}
+.card-face.doing .card-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+.card-face.doing .card-circle .ring {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  position: relative;
+}
+.card-face.doing .ring::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+.card-face.doing .ring svg {
+  display: none;
+}
+.card-inline-items {
+  margin-top: 10px;
+  margin-left: -38px;
+}
+.card-inline-item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  gap: 14px;
+  min-height: 36px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-2);
+  border-radius: 8px;
+}
+.card-inline-item > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-inline-item:hover {
+  background: var(--surface-3);
+}
+.inline-box {
+  justify-self: center;
+  position: relative;
+  padding: 0;
+  background: none;
+  color: inherit;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border: 1px solid var(--box);
+  border-radius: 5px;
+}
+.inline-box::after {
+  content: '';
+  position: absolute;
+  inset: -9px -5px;
+}
+.card-more-items {
+  padding-left: 38px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  height: 30px;
+  text-align: left;
+}
+.card-face.doing .card-meta {
+  margin: 10px 0 0;
+  padding-right: 60px;
+}
+.card-face.doing .card-quick-btn {
+  color: var(--placeholder);
+  font-weight: 400;
+}
+.card-face.doing .card-notes {
+  white-space: normal;
+  line-height: 1.5;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin: 10px 0 0;
+}
+.done-group {
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 6px;
+}
+.done-day {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 6px;
+  color: var(--muted);
+}
+.done-day span {
+  color: var(--placeholder);
+}
+.done-group .card-face {
+  min-height: 42px;
+  padding: 9px 10px;
+  border: 0;
+  box-shadow: none;
+  border-radius: 8px;
+  background: none;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+}
+.done-group .card-face:hover {
+  background: var(--surface-3);
+}
+.done-group .card-title {
+  font-size: 15px;
+  line-height: 24px;
+  -webkit-line-clamp: 1;
+}
+.done-group .card-circle {
+  width: 24px;
+  min-width: 24px;
+}
+.done-group .card-body {
+  align-self: center;
+}
+.archived-link {
+  align-self: flex-start;
+  color: var(--placeholder);
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+.someday-tray {
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 4px;
+  margin-top: 8px;
+  flex: none;
+  max-height: 35%;
+  overflow: auto;
+  scrollbar-width: none;
+}
+.someday-divider {
+  margin: 0;
+  min-height: 40px;
+}
+.someday-toggle {
+  display: grid;
+  grid-template-columns: 36px auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  min-height: 40px;
+  width: 100%;
+  margin: 0;
+  padding: 0 8px;
+  color: var(--ink-3);
+  font: 600 16px var(--font-display);
+}
+.someday-toggle .mono {
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.someday-toggle .someday-chevron {
+  width: 14px;
+  height: 14px;
+  justify-self: center;
+}
+.someday-preview {
+  margin-left: 8px;
+  font: 400 14px var(--font-ui);
+  color: var(--placeholder);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.someday-toggle[aria-expanded='false'] .someday-chevron {
+  transform: rotate(-180deg);
+}
+.someday-list {
+  gap: 0;
+}
+.someday-tray.drop-into {
+  outline: 1px dashed var(--accent);
+  background: var(--surface-3);
+}
+.someday-list .card-face {
+  opacity: 1;
+  min-height: 40px;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  box-shadow: none;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+}
+.someday-list .card-face:hover {
+  background: var(--surface-3);
+}
+.someday-list .card-title {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink-3);
+  -webkit-line-clamp: 1;
+}
+.someday-list .card-circle {
+  width: 36px;
+  min-width: 36px;
+}
+.someday-list .card-circle .ring {
+  width: 16px;
+  height: 16px;
+  border: 1px dashed var(--box);
+}
+.someday-list .card-meta {
+  display: none;
+}
+.card-return {
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: 18px;
+  min-width: 28px;
+}
+.composer {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: none;
+}
+.composer:focus-within {
+  border-color: var(--accent);
+  box-shadow: none;
+}
+.composer-input {
+  padding: 0;
+  background: none;
+  line-height: 24px;
+  font-size: 16px;
+  min-height: 24px;
+}
+.composer-draft-wrap {
+  position: relative;
+}
+.composer-key {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  border: 1px solid var(--line-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--placeholder);
+  font-size: 11px;
+}
+.composer-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin: 0;
+  padding: 4px 0 0;
+}
+.composer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.composer-hint {
+  font-size: 11px;
+  line-height: 18px;
+  color: var(--placeholder);
+  flex: 1;
+}
+.draft-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: var(--track);
+  border-radius: 12px;
+  min-height: 24px;
+  padding: 3px 8px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.draft-chip.time {
+  color: var(--due);
+}
+.draft-chip.time .label-dot {
+  background: var(--due);
+}
+.draft-chip > span:last-child:not(.label-dot) {
+  opacity: 0.6;
+}
+.composer-as-notes {
+  border: 0;
+  background: none;
+  color: var(--placeholder);
+  font-size: 11px;
+}
+.composer-commit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.label-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  display: inline-block;
+}
+.card-progress .fill {
+  width: 100%;
+  transform-origin: left;
+  transition: transform 260ms var(--ease-out);
+}
+@media (max-width: 899px) {
+  .board.phone .columns {
+    padding: 4px 12px 110px;
+    gap: 8px;
+  }
+  .board.phone .column-header {
+    display: none;
+  }
+  .board.phone .column-body {
+    overflow: visible;
+  }
+  .board.phone .card-face {
+    border-radius: 14px;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    padding: 12px 14px 12px 6px;
+  }
+  .card-circle {
+    width: 44px;
+    min-width: 44px;
+    height: 26px;
+  }
+  .board.phone .card-circle .ring {
+    width: 24px;
+    height: 24px;
+  }
+  .card-title {
+    line-height: 26px;
+  }
+  .board.phone .card-face.doing {
+    padding: 12px 14px 12px 6px;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+  }
+  .card-face.doing .card-circle {
+    width: 44px;
+    min-width: 44px;
+  }
+  .card-face.doing .card-title {
+    font-size: 16px;
+  }
+  .card-inline-items {
+    margin-left: -44px;
+  }
+  .card-face.doing .card-meta,
+  .card-face.doing .card-notes {
+    margin-left: 0;
+  }
+  .card-face.doing .card-circle::after {
+    inset: -10px 0;
+  }
+  .card-inline-item {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 0;
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .inline-box::after {
+    inset: -11px -5px;
+  }
+  .inline-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+  }
+  .card-quick {
+    display: none;
+  }
+  .card-meta,
+  .card-face.doing .card-meta {
+    padding-right: 0;
+  }
+  .someday-tray {
+    max-height: none;
+    border-radius: 14px;
+    min-height: 52px;
+  }
+  .card-more-items {
+    padding-left: 44px;
+  }
+  .board.phone .someday-list .card-face {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    padding: 8px;
+    min-height: 44px;
+    align-items: center;
+  }
+  .board.phone .someday-list .card-face.open {
+    padding: 7px;
+  }
+  .board.phone .someday-list .card-circle {
+    width: 44px;
+    min-width: 44px;
+    height: 24px;
+    align-self: center;
+  }
+  .board.phone .someday-list .card-circle .ring {
+    width: 16px;
+    height: 16px;
+  }
+  .someday-toggle {
+    grid-template-columns: 44px auto auto minmax(0, 1fr);
+    min-height: 44px;
+  }
+  .phone-nav {
+    margin: 0 12px 8px;
+    padding: 0;
+    gap: 6px;
+    background: none;
+    border-radius: 0;
+    min-height: 52px;
+  }
+  .phone-nav button {
+    min-height: 52px;
+    padding: 7px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 14px;
+    background: none;
+  }
+  .phone-nav button.active {
+    background: var(--surface);
+    border-color: var(--accent);
+  }
+  .phone-tab-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .phone-tab-name > .mono {
+    margin-left: auto;
+    font-size: 12px;
+  }
+  .phone-tab-summary {
+    font-size: 10px;
+    color: var(--placeholder);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .phone-composer {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(max(var(--safe-bottom), 30px) + var(--kb));
+    padding: 0;
+    background: none;
+    z-index: 25;
+  }
+  .phone-compose-bar {
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 5px 6px 5px 16px;
+    font-size: 16px;
+    color: var(--placeholder);
+  }
+  .phone-compose-plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 26px;
+  }
+  .compose-sheet-root {
+    position: fixed;
+    inset: 0;
+    z-index: 130;
+  }
+  .compose-sheet {
+    position: absolute;
+    bottom: var(--kb);
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line-2);
+    padding: 16px;
+    animation: sheet-in var(--spring-gentle-ms) var(--spring-gentle);
+  }
+  .compose-sheet .composer {
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+  .compose-sheet .composer-input {
+    font-size: 17px !important;
+    line-height: 26px;
+    position: relative;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--ink);
+  }
+  .composer-highlight {
+    position: absolute;
+    inset: 0;
+    font-size: 17px;
+    line-height: 26px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+  .composer-highlight > div:first-child {
+    color: var(--ink);
+  }
+  .composer-highlight mark {
+    color: var(--accent);
+    background: var(--accent-tint);
+    border-radius: 4px;
+  }
+  .composer-highlight mark.time {
+    color: var(--due);
+    background: color-mix(in srgb, var(--due) 12%, var(--surface));
+  }
+  .compose-sheet .composer-commit-row {
+    margin-top: 10px;
+  }
+  .compose-sheet .draft-chip {
+    min-height: 28px;
+    font-size: 14px;
+  }
+}
+.someday-reminder {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin-right: 28px;
+  max-width: 110px;
+  overflow: hidden;
+}
+.someday-list .card-return {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  line-height: 1;
+  min-height: 32px;
+}
+@media (max-width: 899px) {
+  .someday-reminder {
+    max-width: 88px;
+    font-size: 11px;
+  }
+  .someday-list .card-return {
+    min-height: 44px;
+  }
+}
+.card-quick {
+  top: auto;
+  bottom: 8px;
+}
+.card-meta {
+  flex-wrap: nowrap;
+}
+.card-meta .card-att {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  height: 18px;
+  font-size: 12px;
+}
+.card-meta .card-link {
+  border: 0;
+  padding: 0;
+  background: none;
+  height: 18px;
+}
+.card-face:hover .card-thumb {
+  opacity: 1;
+}
+.someday-list .card-return {
+  grid-column: auto;
+  grid-row: auto;
+}
+.card-meta {
+  padding-right: 0;
+  margin-right: 65px;
+}
+.card-face.doing .card-meta {
+  padding-right: 0;
+  margin-right: 65px;
+}
+.card-face.doing .card-count {
+  order: -1;
+}
+.card-inline-item.checked .inline-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  animation: dt-box-pop var(--spring-gentle-ms) var(--spring-gentle);
+}
+.inline-box svg {
+  width: 14px;
+  height: 14px;
+}
+.card-inline-item.checked > span:last-child {
+  color: var(--placeholder);
+  text-decoration: line-through;
+}
+.card-file-tile .att-icon {
+  width: 12px;
+  height: 12px;
+}
+.card-file-tile .att-icon > svg {
+  width: 12px;
+  height: 12px;
+}
+.card-file-tile .att-badge {
+  display: none;
+}
+@media (max-width: 899px) {
+  .card-meta,
+  .card-face.doing .card-meta {
+    margin-right: 0;
+  }
+}
+.someday-reminder,
+.someday-reminder .card-remind {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 899px) {
+  .column.done .column-body {
+    gap: 8px;
+  }
+}
+.compose-sheet .composer-draft-wrap {
+  overflow: hidden;
+}
+.card-face:not(.doing):has(.card-thumb, .card-file-tile) .card-quick {
+  right: 62px;
+}
+/* Give the keyboard ring four pixels of paint room without moving desktop cards. */
+.board:not(.phone) .column-body {
+  margin: -4px -4px 0;
+  padding: 4px 4px 8px;
+}
+.card-face.open,
+.card-face.open.selected,
+.card-face.open:focus-visible {
+  outline: none;
+}
+.done-group .card-face.open {
+  border: 1px solid var(--accent);
+  padding: 8px 9px;
+}
+.someday-list .card-face.open {
+  border: 1px solid var(--accent);
+  padding: 7px;
+}
+
+.someday-list .card-face.open .card-return {
+  right: 7px;
+}
+
+/* ---- phone: tab row inside the glass bar, tabs as sliding panes (§11.3, §11.9.5, §11.14) ---- */
+@media (max-width: 899px) {
+  .app.phone .topbar {
+    height: calc(124px + var(--safe-top));
+    padding-bottom: 0;
+    box-shadow: inset 0 -1px 0 var(--bar-line);
+  }
+  /* Clipped at the bar's bottom edge so the raised tab's shadow never falls on the content. */
+  .app.phone .phone-nav {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--segments, 4), minmax(0, 1fr));
+    gap: 8px;
+    margin: 8px -12px 0;
+    padding: 0 12px 8px;
+    min-height: 0;
+    overflow: hidden;
+    background: none;
+    border-radius: 0;
+  }
+  .app.phone .phone-nav::before {
+    content: none;
+  }
+  .phone-tab-wells {
+    position: absolute;
+    inset: 0 12px 8px;
+    display: grid;
+    grid-template-columns: repeat(var(--segments, 4), minmax(0, 1fr));
+    gap: 8px;
+  }
+  .phone-tab-wells > span {
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    background: var(--surface-2);
+    box-shadow: var(--well-depth);
+  }
+  .app.phone .phone-nav .pill {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 12px;
+    bottom: auto;
+    height: 52px;
+    width: calc((100% - 24px - (var(--segments, 4) - 1) * 8px) / var(--segments, 4));
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--card-depth);
+    transform: translateX(calc(var(--pos, 1) * (100% + 8px)));
+    transition: none;
+  }
+  .app.phone .phone-nav button,
+  .app.phone .phone-nav button.active {
+    z-index: 2;
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  /* Board columns page inside their view; Notes sits beside the whole Board. */
+  .phone-panes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  .phone-pane {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    min-width: 0;
+  }
+  .app.phone .phone-pane > .notes-view.phone {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+  }
+  .app.phone .notes-view.phone .notes-scroll {
+    height: 100%;
+    margin: 0 -12px;
+    padding: calc(136px + var(--safe-top)) 12px calc(120px + max(var(--safe-bottom), var(--kb)));
+    overscroll-behavior: contain;
+  }
+  .app.phone .board.phone {
+    flex: none;
+    display: block;
+    height: 100%;
+  }
+  .app.phone .board.phone .columns {
+    display: flex;
+    width: max-content;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    overflow: visible;
+  }
+  .app.phone .board.phone .column {
+    display: block;
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100%;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    padding: calc(136px + var(--safe-top)) 12px calc(120px + max(var(--safe-bottom), var(--kb)));
+  }
+  .app.phone .board.phone .column::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* The ··· menu drops over the tab row. */
+  .app.phone .phone-menu-anchor {
+    z-index: 3;
+  }
+  /* §11.20.4: Labels on the phone is a glass sheet at the bottom (rows and create row unchanged). */
+  .app.phone .labels-menu {
+    top: auto !important;
+    right: 0 !important;
+    left: 0;
+    bottom: var(--kb, 0px);
+    width: auto;
+    max-height: min(70dvh, 560px);
+    z-index: 90;
+    padding: 20px 12px calc(12px + var(--safe-bottom));
+    border-radius: 20px 20px 0 0;
+  }
+  .app.phone .labels-menu::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 36px;
+    height: 4px;
+    margin-left: -18px;
+    border-radius: 2px;
+    background: var(--line-2);
+  }
+  .app.phone .labels-menu .labels-row-main,
+  .app.phone .labels-menu .labels-find {
+    min-height: 44px;
+  }
+  /* No hover on touch: the row's ··· is always there, at a finger's size. */
+  .app.phone .labels-menu .labels-row {
+    grid-template-columns: minmax(0, 1fr) 44px;
+  }
+  .app.phone .labels-menu .labels-more {
+    width: 44px;
+    height: 44px;
+    opacity: 1;
+  }
+}
+
+/* ---- phone card sheet (§11.12: sheets fill the screen; touch targets of 44 px) ---- */
+@media (max-width: 899px) {
+  .dt-sheet-root .dt-sheet {
+    top: var(--safe-top);
+    height: auto;
+    max-height: none;
+  }
+  .dt-sheet .dt-remind-btn {
+    flex: none;
+  }
+  .dt-sheet .dt-sheet-close {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--muted);
+    font-size: 22px;
+  }
+  /* The picker opens on its own line under the chip; the old -86 px key-column offset slid it over the chip. */
+  .dt-sheet .dt-remind .remind-pop {
+    flex: 0 0 100%;
+    width: 100%;
+    margin: 6px 0 0;
+  }
+  .dt-sheet .dt-remind-btn > svg {
+    display: block;
+    width: 12px;
+    height: 12px;
+  }
+  /* Chips and small controls keep their look; the hit area grows to 44 px. */
+  .dt-sheet .dt-chip-btn,
+  .dt-sheet .dt-remind-btn,
+  .dt-sheet .dt-crumb {
+    position: relative;
+  }
+  .dt-sheet .dt-chip-btn::before,
+  .dt-sheet .dt-remind-btn::before {
+    content: '';
+    position: absolute;
+    inset: -9px -2px;
+  }
+  .dt-sheet .dt-crumb::before {
+    content: '';
+    position: absolute;
+    inset: -14px -4px;
+  }
+  .dt-sheet .ref-open {
+    width: 44px;
+    height: 44px;
+    margin: -8px -10px -8px 0;
+  }
+}
+
+/* Phone grid: a footer that doesn't fit wraps instead of clipping its date and labels. */
+@media (max-width: 899px) {
+  .notes-view.phone .note-foot {
+    height: auto;
+    min-height: 20px;
+    flex-wrap: wrap;
+    row-gap: 4px;
+    overflow: visible;
+  }
+  .notes-view.phone .note-foot > * {
+    flex: none;
+    max-width: 100%;
+  }
+  .notes-view.phone .note-foot > .note-spacer {
+    flex: 1 0 0;
+  }
+  .notes-view.phone .note-foot > .note-link {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* A ticked item's strike runs under its text, not to the row's edge. */
+.dt-row.checked .dt-row-text {
+  flex: 0 1 auto;
+  margin-right: auto;
+}

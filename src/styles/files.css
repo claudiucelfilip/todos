@@ -1,0 +1,379 @@
+/* Attachments: the detail section (grid + file list + pending uploads), the lightbox, and the
+ * card face's paperclip chip and thumbnail. */
+
+.dt-atts {
+  margin: 0 0 16px;
+}
+.dt-atts.empty {
+  margin: -6px 0 12px;
+}
+.dt-atts-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.att-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.att-add.compact {
+  font-size: 12px;
+}
+
+.att-grid {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 8px;
+}
+.att-tile {
+  position: relative;
+  aspect-ratio: 1;
+}
+.att-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--track);
+  cursor: zoom-in;
+}
+.att-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.att-tile.pending .att-thumb {
+  cursor: default;
+  opacity: 0.55;
+}
+.att-tile > .att-x {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  opacity: 0;
+}
+.att-tile:hover > .att-x,
+.att-tile > .att-x:focus-visible {
+  opacity: 1;
+}
+.att-tile.pending .att-state {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+}
+.att-tile .att-state {
+  gap: 4px;
+  font-size: 10px;
+}
+.att-tile .att-state-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.att-tile .att-state .att-x {
+  width: 18px;
+  height: 18px;
+  font-size: 13px;
+}
+.att-tile .att-state .linkbtn {
+  padding: 0 2px;
+  font-size: 10px;
+}
+
+.att-files {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.att-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  border-radius: 8px;
+}
+.att-file:hover {
+  background: var(--bg);
+}
+.att-file-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 4px 6px;
+}
+.att-file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.att-file-size {
+  color: var(--muted);
+  font-size: 12px;
+}
+.att-file.pending .att-file-link {
+  color: var(--muted);
+}
+.att-icon {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  color: var(--muted);
+}
+.att-badge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  text-align: center;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.att-x {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  transition:
+    opacity var(--d-fast),
+    background-color var(--d-fast);
+}
+.att-file > .att-x {
+  opacity: 0;
+}
+.att-file:hover > .att-x,
+.att-file > .att-x:focus-visible {
+  opacity: 1;
+}
+.att-x:hover {
+  background: var(--destructive-tint);
+  color: var(--destructive);
+}
+
+.att-state {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.att-tile .att-state {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+.att-state.failed .att-state-text {
+  color: var(--destructive);
+}
+.att-bar {
+  flex: 1;
+  min-width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--track);
+  overflow: hidden;
+}
+.att-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  width: 100%;
+  transform-origin: left;
+  transition: transform 160ms linear;
+}
+
+/* Dropping files on the detail */
+.dt-content.dropping {
+  outline: 2px dashed var(--accent);
+  outline-offset: -6px;
+  border-radius: 12px;
+}
+
+/* Coarse pointers: remove buttons always visible, 44 px targets. */
+@media (pointer: coarse) {
+  :root .att-x {
+    opacity: 1;
+    width: 44px;
+    height: 44px;
+  }
+  :root .att-tile > .att-x {
+    width: 32px;
+    height: 32px;
+  }
+  :root .att-tile > .att-x::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+  }
+  :root .att-file {
+    min-height: 48px;
+  }
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 10, 12, 0.92);
+  animation: fade-in var(--d-base) var(--ease-out);
+  touch-action: none;
+}
+.lightbox.still {
+  animation: none;
+}
+.lb-img {
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 120px);
+  object-fit: contain;
+  border-radius: 6px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lb-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(var(--safe-top) + 10px) 16px 10px;
+  color: #eef1f4;
+  font-size: 14px;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), transparent);
+}
+.lb-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lb-count {
+  opacity: 0.7;
+  font-size: 12px;
+}
+.lb-btn {
+  min-height: 36px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+}
+.lb-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.lb-close {
+  width: 40px;
+  justify-content: center;
+  font-size: 22px;
+}
+.lb-nav {
+  position: fixed;
+  top: 50%;
+  width: 48px;
+  height: 64px;
+  margin-top: -32px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+}
+.lb-nav.prev {
+  left: 12px;
+}
+.lb-nav.next {
+  right: 12px;
+}
+.lb-nav:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+@media (pointer: coarse) {
+  :root .lb-btn {
+    min-height: 44px;
+  }
+  :root .lb-close {
+    width: 44px;
+  }
+}
+
+/* Card face: 📎 count next to the link chip, and a small preview of the first image. */
+.card-att {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.card-thumb {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  margin: -2px -4px -2px 0;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--track);
+  border: 1px solid var(--line);
+}
+.board.phone .card-att {
+  height: 28px;
+  font-size: 12px;
+}
+.card-thumb {
+  transition: opacity var(--d-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-face:hover .card-thumb {
+    opacity: 0;
+  } /* the hover quick actions take that corner */
+}

@@ -1,0 +1,148 @@
+/* Control colors belong to the surface they sit on, including portalled menus. */
+:root {
+  --control-neutral: var(--studio-neutral);
+  --control-paper: var(--variant-canvas);
+  --control-danger: #b01832;
+}
+:root[data-studio-tone='dark'] { --control-danger: #ffe0e5; }
+:root .app .topbar {
+  --control-neutral: var(--header-neutral);
+  --control-paper: var(--studio-blue);
+}
+:root .app :is(.dt-panel,.dt-sheet,.composer-layer) {
+  --control-neutral: var(--editor-neutral);
+  --control-paper: var(--editor-material);
+  --control-danger: #38000a;
+}
+:root[data-editor-tone='dark'] .app :is(.dt-panel,.dt-sheet,.composer-layer) { --control-danger: #ffe0e5; }
+:root :is(.dialog,.login-card,.shortcut-sheet,.link-prompt,.assistant-panel,.rooms,.rooms-menu,.label-pop,.labels-menu,.label-picker,.dt-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.toast,.banner,.install-card,.phone-search-results) {
+  --control-neutral: var(--studio-neutral);
+  --control-paper: var(--variant-canvas);
+  --control-danger: #b01832;
+}
+:root[data-studio-tone='dark'] :is(.dialog,.login-card,.shortcut-sheet,.link-prompt,.assistant-panel,.rooms,.rooms-menu,.label-pop,.labels-menu,.label-picker,.dt-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.toast,.banner,.install-card,.phone-search-results) { --control-danger: #ffe0e5; }
+:root, :root .topbar, :root :is(.dt-panel,.dt-sheet,.composer-layer,.dialog,.login-card,.shortcut-sheet,.link-prompt,.assistant-panel,.rooms,.rooms-menu,.label-pop,.labels-menu,.label-picker,.dt-menu,.phone-more-menu,.link-pop,.search-pop,.remind-pop,.toast,.banner,.install-card,.phone-search-results) {
+  --control-ink: rgb(var(--control-neutral) / 92%);
+  --control-line: rgb(var(--control-neutral) / 36%);
+  --control-well: rgb(var(--control-neutral) / 6%);
+  --control-hover: rgb(var(--control-neutral) / 12%);
+  --control-press: rgb(var(--control-neutral) / 18%);
+  --control-fill: rgb(var(--control-neutral) / 94%);
+  --control-on-fill: color-mix(in srgb,var(--control-paper) 92%,transparent);
+  --destructive: var(--control-danger);
+}
+:root .app :is(.dt-panel,.dt-sheet) {
+  --control-ink: rgb(var(--control-neutral) / 92%);
+  --control-line: rgb(var(--control-neutral) / 45%);
+  --control-on-fill: color-mix(in srgb,var(--control-paper) 92%,transparent);
+}
+:root :is(button,a.btn,[role='button']) {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+:root :is(button,a.btn,[role='button']):focus-visible {
+  outline: 2px solid var(--control-ink) !important;
+  outline-offset: 3px;
+}
+:root :is(button,.btn):disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+
+/* Text actions share geometry; navigation, swatches and completion rings keep theirs. */
+:root :is(.btn,.rooms .rooms-button,.sh-send,.automation-buttons button,.assistant-apply,.install-card-go,.banner-btn,.dt-add-many) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--control-line);
+  border-radius:0;
+  background: transparent;
+  color: var(--control-ink);
+  box-shadow: none;
+  font: 500 14px/20px var(--font-ui);
+  text-decoration: none;
+  filter: none;
+}
+:root :is(.btn-accent,.rooms .rooms-primary,.sh-send,.automation-buttons .automation-save,.assistant-apply,.assistant-send,.install-card-go,.banner-btn,.dt-add-many) {
+  background: var(--control-fill);
+  color: var(--control-on-fill);
+  border-color: transparent;
+}
+:root .btn-quiet { background: transparent; border-color: transparent; color: var(--control-ink); }
+:root :is(.btn-danger,.automation-buttons .danger,.automation-text.danger,.dt-link.danger,.dt-menu .danger,.rooms-menu .danger,.labels-menu .danger,.card-context .danger) { color: var(--control-danger); }
+:root .rooms .rooms-danger { background: #b01832; color: #ffffff; border-color: transparent; }
+
+/* Small actions have a clear local foreground without borrowing a canvas fill. */
+:root :is(.iconbtn,.dt-ask,.dt-more,.dt-sheet-close,.dt-float-close,.search-clear,.search-cancel,.rooms-icon-button,.labels-more,.automation-back,.sh-follow,.sh-copy,.assistant-new,.assistant-close,.assistant-link,.dt-remind-x,.dt-list-more,.dt-crumb,.dt-parent,.ref-open,.dt-row-actions,.label-pill-x,.toast-undo,.toast-dismiss,.banner-x,.install-card-x,.shortcut-esc) {
+  color: var(--control-ink);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  border-radius:0;
+}
+:root .label-pill-x { color: inherit; }
+:root .sh-identity svg, :root .sh-ready svg { color: inherit; }
+:root :is(.dt-chip-btn,.dt-remind-btn,.remind-chip,.dt-remind-every) { background: transparent; color: var(--control-ink); border-color: var(--control-line); border-radius:0; box-shadow: none; }
+:root :is(.dt-remind-every.on,.remind-repeat button.active,.iconbtn.on,.assistant-launch.on) { background: var(--control-hover); color: var(--control-ink); }
+:root .automation-summary, :root .automation-text { color: var(--control-ink); }
+:root .automation-add { color: var(--control-ink); background: transparent; border-color: var(--control-line); border-radius:0; }
+:root .assistant-prompts button { color: var(--control-ink); background: var(--control-well); border: 1px solid var(--control-line); border-radius:0; }
+:root .assistant-send { border-radius:0; }
+
+/* The switch's 44px target contains a smaller track and thumb. */
+:root .automation-switch { width:44px; height:44px; min-width:44px; padding:0; background:transparent; border:0; }
+:root .automation-switch::before { inset:auto; top:12px; left:5px; width:34px; height:20px; border-radius:99px; background:var(--control-fill); }
+:root .automation-switch::after { position:absolute; top:14px; left:7px; background:var(--control-on-fill); }
+:root .automation-switch[aria-checked='false'] { background:transparent; }
+:root .automation-switch[aria-checked='false']::before { background:var(--control-well); box-shadow:inset 0 0 0 1px var(--control-line); }
+:root .automation-switch[aria-checked='false']::after { background:var(--control-ink); }
+
+@media (hover:hover) and (pointer:fine) {
+  :root :is(.btn,.rooms .rooms-button,.automation-buttons button,.dt-chip-btn,.dt-remind-btn,.remind-chip,.dt-remind-every,.assistant-prompts button,.automation-add):hover:not(:disabled) { background:var(--control-hover); filter:none; }
+  :root :is(.btn-accent,.rooms .rooms-primary,.sh-send,.automation-buttons .automation-save,.assistant-apply,.assistant-send,.install-card-go,.banner-btn,.dt-add-many):hover:not(:disabled) { background:rgb(var(--control-neutral) / 86%); color:var(--control-on-fill); }
+  :root .rooms .rooms-danger:hover:not(:disabled) { background:#961329; color:#ffffff; }
+  :root :is(.iconbtn,.dt-ask,.dt-more,.dt-sheet-close,.dt-float-close,.rooms-icon-button,.labels-more,.assistant-new,.assistant-close,.assistant-link,.ref-open,.dt-row-actions):hover:not(:disabled) { background:var(--control-hover); color:var(--control-ink); }
+  :root .automation-summary:hover { color:var(--control-ink); background:var(--control-well); }
+}
+:root :is(.btn,.rooms .rooms-button,.sh-send,.automation-buttons button,.assistant-apply,.assistant-send,.install-card-go,.banner-btn,.dt-add-many):active:not(:disabled) { transform:scale(.97); }
+@media (pointer:coarse), (max-width:899px) {
+  :root :is(.btn,.rooms .rooms-button,.sh-send,.automation-buttons button,.assistant-apply,.assistant-send,.install-card-go,.banner-btn,.dt-add-many,.dt-chip-btn,.dt-remind-btn,.dt-remind-every,.remind-chip,.rooms-icon-button,.labels-more,.dt-ask,.dt-more,.dt-sheet-close,.dt-float-close,.search-clear,.toast-dismiss,.banner-x,.install-card-x,.shortcut-esc,.assistant-new,.assistant-close,.assistant-link) { min-height:44px; }
+  :root :is(.iconbtn,.rooms-icon-button,.labels-more,.dt-ask,.dt-more,.dt-sheet-close,.dt-float-close,.search-clear,.toast-dismiss,.banner-x,.install-card-x,.shortcut-esc,.assistant-close,.assistant-send) { min-width:44px; }
+  :root .app.phone .dt-sheet .dt-row { position:relative; padding-right:52px; }
+  :root .app.phone .dt-sheet .dt-row-actions { position:absolute; top:0; right:0; width:44px; height:44px; }
+}
+
+:root .app .topbar .phone-column-pill { color:var(--control-ink); }
+:root .app :is(.dt-panel,.dt-sheet) {
+  --md:var(--editor-ink) !important;
+  --surface-2:rgb(var(--editor-neutral) / 6%) !important;
+  --surface-3:rgb(var(--editor-neutral) / 12%) !important;
+  --surface-sel:rgb(var(--editor-neutral) / 18%) !important;
+}
+:root .md-mark { color:inherit; }
+:root .app :is(.dt-panel,.dt-sheet) .dt-box { border-color:var(--control-line) !important; }
+:root .app .ring6-btn[data-ring='note'] { opacity:1; }
+:root .lightbox { --control-neutral:255 255 255; --control-paper:#101316; --control-ink:#ffffff; }
+:root .lb-btn, :root .lb-nav { color:#ffffff; border:1px solid rgb(255 255 255 / 45%); border-radius:0; }
+@media (pointer:coarse), (max-width:899px) {
+  :root .swatch { width:44px; height:44px; }
+  :root :is(.label-pill-x,.dt-remind-x,.sh-follow,.sh-copy,.lb-btn,.att-x,.automation-panel-head button) { min-width:44px; min-height:44px; }
+}
+
+/* Completion feedback belongs to the ring, not its larger hit area. */
+:root .app button.ring6-btn { background:transparent; }
+@media (hover:hover) and (pointer:fine) {
+  :root .app button.ring6-btn:hover:not(:disabled) {
+    --circle:currentColor !important;
+    --box:currentColor !important;
+    --accent:currentColor !important;
+    opacity:1;
+  }
+  :root .app button.ring6-btn:hover:not(:disabled) .ring6-done {
+    background:rgb(var(--control-neutral) / 8%);
+  }
+}

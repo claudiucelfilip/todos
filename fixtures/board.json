@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "settings": {
+    "reduceMotion": "system",
+    "theme": "system",
+    "archiveAfterDays": 14,
+    "lastBackupAt": null
+  },
+  "cards": [
+    {
+      "id": "demo-1",
+      "title": "Renew passport",
+      "notes": "",
+      "status": "todo",
+      "items": [
+        { "id": "dp-1", "text": "Find current passport", "done": false },
+        { "id": "dp-2", "text": "Take a compliant photo", "done": false },
+        { "id": "dp-3", "text": "Fill in the application form", "done": false },
+        { "id": "dp-4", "text": "Pay the fee", "done": false },
+        { "id": "dp-5", "text": "Post the application", "done": false }
+      ],
+      "order": 10,
+      "createdAt": "2026-09-14T08:00:00.000Z",
+      "updatedAt": "2026-09-14T08:00:00.000Z",
+      "completedAt": null,
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    },
+    {
+      "id": "demo-2",
+      "title": "Idea: weekly review template",
+      "notes": "",
+      "status": "todo",
+      "items": [],
+      "order": 20,
+      "createdAt": "2026-09-14T09:00:00.000Z",
+      "updatedAt": "2026-09-14T09:00:00.000Z",
+      "completedAt": null,
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    },
+    {
+      "id": "demo-3",
+      "title": "Fix bike brakes",
+      "notes": "Front brake is grinding; buy new pads first.",
+      "status": "todo",
+      "items": [],
+      "order": 30,
+      "createdAt": "2026-09-14T10:00:00.000Z",
+      "updatedAt": "2026-09-14T10:00:00.000Z",
+      "completedAt": null,
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    },
+    {
+      "id": "demo-4",
+      "title": "Read Thinking in Systems",
+      "notes": "",
+      "status": "doing",
+      "items": [
+        { "id": "rt-1", "text": "Chapter 1 — systems thinking", "done": true },
+        { "id": "rt-2", "text": "Chapter 2 — stocks and flows", "done": false },
+        { "id": "rt-3", "text": "Chapter 3 — feedback loops", "done": false }
+      ],
+      "order": 40,
+      "createdAt": "2026-09-13T18:00:00.000Z",
+      "updatedAt": "2026-09-15T20:00:00.000Z",
+      "completedAt": null,
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    },
+    {
+      "id": "demo-5",
+      "title": "Groceries",
+      "notes": "",
+      "status": "doing",
+      "items": [
+        { "id": "gr-1", "text": "Milk", "done": true },
+        { "id": "gr-2", "text": "Eggs", "done": true },
+        { "id": "gr-3", "text": "Bread", "done": false },
+        { "id": "gr-4", "text": "Tomatoes", "done": false },
+        { "id": "gr-5", "text": "Rice", "done": false },
+        { "id": "gr-6", "text": "Cereal", "done": false },
+        { "id": "gr-7", "text": "Olive oil", "done": false }
+      ],
+      "order": 50,
+      "createdAt": "2026-09-15T07:30:00.000Z",
+      "updatedAt": "2026-09-15T12:00:00.000Z",
+      "completedAt": null,
+      "archivedAt": null,
+      "someday": false,
+      "repeat": true
+    },
+    {
+      "id": "demo-6",
+      "title": "Plan Lisbon trip",
+      "notes": "",
+      "status": "doing",
+      "items": [
+        { "id": "lp-1", "text": "Book flights", "done": true },
+        { "id": "lp-2", "text": "Find accommodation", "done": false }
+      ],
+      "order": 60,
+      "createdAt": "2026-09-12T14:00:00.000Z",
+      "updatedAt": "2026-09-15T11:00:00.000Z",
+      "completedAt": null,
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    },
+    {
+      "id": "demo-7",
+      "title": "Book dentist",
+      "notes": "",
+      "status": "done",
+      "items": [],
+      "order": 70,
+      "createdAt": "2026-09-10T09:00:00.000Z",
+      "updatedAt": "2026-09-11T15:30:00.000Z",
+      "completedAt": "2026-09-11T15:30:00.000Z",
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    },
+    {
+      "id": "demo-8",
+      "title": "Return library books",
+      "notes": "",
+      "status": "done",
+      "items": [],
+      "order": 80,
+      "createdAt": "2026-09-08T16:00:00.000Z",
+      "updatedAt": "2026-09-09T18:00:00.000Z",
+      "completedAt": "2026-09-09T18:00:00.000Z",
+      "archivedAt": null,
+      "someday": false,
+      "repeat": false
+    }
+  ]
+}

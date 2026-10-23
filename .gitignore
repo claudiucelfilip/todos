@@ -1,0 +1,27 @@
+node_modules
+dist/
+.wrangler/
+worker-logs/
+*.local
+.env
+.env.*
+.DS_Store
+*.log
+
+*.tsbuildinfo
+
+# Runtime sync data stays outside version control. The server creates data/
+# on first start.
+data/
+
+# local scratch + design artifacts
+.qwen/tmp/
+*.zip
+
+# e2e
+e2e/.auth/
+test-results/
+playwright-report/
+
+# Local visual review output
+.visual/

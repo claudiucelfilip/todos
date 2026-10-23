@@ -1,0 +1,1153 @@
+/* Card detail (§8): desktop floating panel / phone bottom sheet. Tokens from index.css. */
+
+/* ---- desktop panel (§8, §11.4) ---- */
+.dt-panel {
+  position: fixed;
+  top: calc(var(--header-h, 64px) + 20px);
+  right: 20px;
+  bottom: 20px;
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow-panel);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  animation: dt-panel-in var(--spring-gentle-ms) var(--spring-gentle);
+}
+@keyframes dt-panel-in {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.dt-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 20px calc(16px + var(--safe-bottom));
+}
+
+/* content cross-fade when switching cards (§11.4) */
+.dt-content {
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+.dt-content.in {
+  animation: dt-content-in 160ms var(--ease-out) 40ms both;
+}
+.dt-content.out {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition-duration: 100ms;
+}
+@keyframes dt-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- phone sheet (§8, §11.5) ---- */
+.dt-sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+.dt-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  animation: dt-fade-in var(--d-base) var(--ease-out);
+}
+@keyframes dt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.dt-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--kb, 0px);
+  max-height: 78%;
+  background: var(--surface);
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  box-shadow: var(--shadow-panel);
+  display: flex;
+  flex-direction: column;
+  animation: dt-sheet-in var(--spring-gentle-ms) var(--spring-gentle);
+  transition: transform var(--spring-release-ms) var(--spring-release);
+  will-change: transform;
+}
+.dt-sheet.dragging {
+  transition: none;
+}
+.dt-sheet.kb {
+  max-height: calc(100dvh - var(--kb, 0px) - 12px);
+}
+@keyframes dt-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.dt-handle {
+  padding: 10px 0 6px;
+  display: flex;
+  justify-content: center;
+  touch-action: none;
+  cursor: grab;
+}
+.dt-handle span {
+  width: 36px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--track);
+}
+.dt-sheet .dt-scroll {
+  padding-top: 4px;
+}
+.dt-sheet .dt-scroll input,
+.dt-sheet .dt-scroll textarea {
+  scroll-margin: 16px;
+}
+
+/* ---- top row: status control, esc, menu ---- */
+.dt-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.dt-status-hint {
+  margin: -8px 0 12px;
+  color: var(--muted);
+}
+
+.dt-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dt-esc {
+  border: 1px solid var(--line);
+  background: transparent;
+  padding: 3px 7px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: background-color var(--d-fast);
+}
+.dt-esc:hover {
+  background: var(--drop);
+}
+.dt-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  transition: background-color var(--d-fast);
+}
+.dt-more svg {
+  width: 22px;
+  height: 22px;
+}
+.dt-more:hover {
+  background: var(--drop);
+  color: var(--ink);
+}
+.dt-menu-anchor {
+  position: relative;
+}
+
+/* ---- card menu (§7.3, §11.4) ---- */
+.dt-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 180px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-hover);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  transform-origin: top right;
+  animation: dt-menu-in var(--spring-snappy-ms) var(--spring-snappy);
+}
+@keyframes dt-menu-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.dt-menu button {
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  color: var(--ink);
+  min-height: 36px;
+  transition: background-color var(--d-fast);
+}
+.dt-menu button:hover,
+.dt-menu button:focus-visible {
+  background: var(--drop);
+  outline: none;
+}
+.dt-menu button[aria-checked='true']::after {
+  content: ' ✓';
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.dt-menu button.danger {
+  color: var(--destructive);
+}
+
+/* ---- title, notes ---- */
+.dt-title {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 2px 0;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  border-radius: 6px;
+}
+.dt-title:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-tint);
+}
+.dt-title.done {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.dt-link {
+  border: 0;
+  background: transparent;
+  padding: 4px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  min-height: 28px;
+  transition: opacity var(--d-fast);
+}
+.dt-link:hover {
+  opacity: 0.8;
+}
+.dt-link.danger {
+  color: var(--destructive);
+}
+
+/* ---- checklist (§7.4) ---- */
+.dt-checklist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.dt-label {
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+.dt-progress {
+  color: var(--muted);
+}
+
+.dt-add {
+  margin-bottom: 6px;
+}
+.dt-add-input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 15px;
+  line-height: 20px;
+  resize: none;
+  overflow: hidden;
+  transition:
+    box-shadow var(--d-fast) var(--ease-out),
+    background-color var(--d-fast),
+    border-color var(--d-fast);
+}
+.dt-add-input::placeholder {
+  color: var(--placeholder);
+}
+.dt-add-input:focus {
+  outline: none;
+  background: var(--surface);
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 2px var(--accent-tint),
+    var(--shadow-hover);
+}
+.dt-add-many {
+  margin-top: 6px;
+  border: 0;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 34px;
+  animation: dt-rise 160ms var(--ease-out);
+  transition: transform 80ms;
+}
+.dt-add-many:active {
+  transform: scale(0.97);
+}
+@keyframes dt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.dt-hint {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+/* ---- rows (§7.5, §11.1, §11.3) ---- */
+.dt-rows {
+  display: flex;
+  flex-direction: column;
+}
+.dt-row-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.dt-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 4px 6px 0;
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  transition:
+    background-color var(--d-fast),
+    transform var(--d-slow) var(--ease-out);
+}
+.dt-row:hover {
+  background: var(--bg);
+}
+.dt-row.drag-over {
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+.dt-row.enter {
+  animation: dt-row-in 200ms var(--ease-out) both;
+}
+@keyframes dt-row-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.dt-row-handle {
+  color: var(--placeholder);
+  font-size: 12px;
+  letter-spacing: -3px;
+  width: 12px;
+  opacity: 0;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity var(--d-fast);
+}
+.dt-row:hover .dt-row-handle {
+  opacity: 1;
+}
+
+.dt-box {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-box);
+  border: 2px solid var(--line);
+  background: transparent;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1);
+  transition:
+    background-color 100ms var(--ease-out),
+    border-color 100ms var(--ease-out),
+    transform 100ms var(--ease-out);
+}
+.dt-box svg {
+  width: 14px;
+  height: 14px;
+}
+.dt-box-check {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 100ms var(--ease-out);
+}
+.dt-row.checked .dt-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  animation: dt-box-pop var(--spring-gentle-ms) var(--spring-gentle); /* a subtle scale spring */
+  transition:
+    background-color var(--d-fast) var(--ease-out),
+    border-color var(--d-fast) var(--ease-out);
+}
+@keyframes dt-box-pop {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.dt-row.checked .dt-box-check {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 160ms var(--ease-out) 60ms;
+}
+
+.dt-row-text {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  font-size: 15px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  transition: color 160ms var(--ease-out);
+}
+.dt-row-text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 100ms var(--ease-out);
+}
+.dt-row.checked .dt-row-text {
+  color: var(--muted);
+}
+.dt-row.checked .dt-row-text::after {
+  transform: scaleX(1);
+  transition: transform 160ms var(--ease-out) 60ms;
+}
+
+.dt-row-edit {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: var(--bg);
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.dt-row-edit:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-tint);
+}
+
+.dt-row-del {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0;
+  transition:
+    opacity var(--d-fast),
+    background-color var(--d-fast);
+}
+.dt-row:hover .dt-row-del,
+.dt-row-del:focus-visible {
+  opacity: 1;
+}
+.dt-row-del:hover {
+  background: var(--destructive-tint);
+  color: var(--destructive);
+}
+
+.dt-bulk {
+  display: flex;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+/* ---- footer ---- */
+.dt-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 22px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.dt-dates {
+  color: var(--muted);
+}
+
+/* ---- phone sizes (§9) ---- */
+@media (max-width: 899px) {
+  .dt-row {
+    min-height: 52px;
+    padding: 8px 6px;
+  }
+  .dt-box {
+    width: 24px;
+    height: 24px;
+  } /* four segments fit at 390 px, even in the fallback font */
+  .dt-more {
+    width: 48px;
+    height: 48px;
+  }
+  .dt-menu button {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .dt-add-many {
+    min-height: 44px;
+  }
+  .dt-link {
+    min-height: 44px;
+    font-size: 15px;
+  }
+  .dt-title {
+    font-size: 22px;
+  }
+}
+
+/* §11.3 item exit: fade + 8 px slide, siblings close via layout */
+.dt-row-exit {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 40px;
+  color: var(--muted);
+  animation: dt-row-exit 120ms var(--ease-out) both;
+  overflow: hidden;
+}
+.dt-row-exit.done .dt-row-exit-text {
+  text-decoration: line-through;
+}
+@keyframes dt-row-exit {
+  to {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+}
+@media (max-width: 899px) {
+  .dt-row-exit {
+    height: 52px;
+  }
+}
+
+/* A swiped checklist row is opaque so the action shows only where the row moved away. */
+[data-swipe-row] > .dt-row {
+  background: var(--surface);
+}
+
+/* ---- checklist reorder: press cue, the lifted ghost, the slot it will land in ---- */
+.dt-row-wrap.pressing {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-hover);
+  transition:
+    transform 240ms var(--ease-out) 60ms,
+    box-shadow 240ms var(--ease-out) 60ms;
+  z-index: 1;
+}
+.dt-row-ghost {
+  position: fixed;
+  z-index: 90;
+  pointer-events: none;
+  margin: 0;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-hover);
+  transition:
+    transform 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out);
+}
+.dt-row-ghost.lifted {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-drag);
+}
+.dt-row-ghost.dropping {
+  transform: none;
+  transition:
+    top var(--spring-release-ms) var(--spring-release),
+    transform 160ms var(--ease-out);
+}
+.dt-row-ghost .dt-row {
+  background: var(--surface);
+}
+.dt-row-slot {
+  flex: none;
+  border: 2px dashed var(--placeholder-slot);
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin: 2px 0;
+}
+
+/* ---- links inside item text; the ⌘K popover ---- */
+.text-link {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+.text-link:hover {
+  text-decoration-color: currentColor;
+}
+.text-link.static {
+  cursor: inherit;
+}
+.dt-row.checked .text-link {
+  color: inherit;
+}
+.link-prompt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px 8px 40px;
+  background: var(--surface);
+}
+.link-prompt-input {
+  flex: 1;
+  min-width: 160px;
+  height: 34px;
+  padding: 0 10px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.link-prompt-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-tint);
+}
+.link-prompt-input.bad {
+  border-color: var(--destructive);
+}
+.link-prompt-go {
+  min-height: 34px;
+  padding: 4px 12px;
+}
+.link-prompt-hint {
+  flex-basis: 100%;
+  color: var(--destructive);
+  font-size: 12px;
+}
+.dt-add .link-prompt {
+  padding-left: 0;
+  margin-top: 6px;
+}
+@media (pointer: coarse) {
+  :root .link-prompt-input,
+  :root .link-prompt-go {
+    min-height: 44px;
+  }
+}
+
+.dt-panel {
+  border-color: var(--line-2);
+  border-radius: 16px;
+}
+.dt-scroll {
+  padding: 14px 22px 20px;
+  scrollbar-width: none;
+}
+.dt-top {
+  margin: 0 -8px 18px -4px;
+  align-items: center;
+}
+.dt-esc {
+  border: 1px solid var(--line-2);
+  border-radius: 5px;
+  font-size: 11px;
+  padding: 2px 4px;
+  min-height: 22px;
+  color: var(--placeholder);
+}
+.dt-title {
+  font: 600 24px/1.2 var(--font-display);
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  padding: 0;
+}
+.dt-remind {
+  margin: 0;
+  min-width: 0;
+}
+.dt-remind-anchor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  min-height: 32px;
+}
+.dt-remind-btn {
+  font-size: 15px;
+  min-height: 32px;
+  padding: 0;
+  flex: 1;
+  justify-content: flex-start;
+  gap: 0;
+  color: var(--placeholder);
+}
+.dt-remind-btn > svg {
+  display: none;
+}
+.dt-remind-btn.set {
+  color: var(--ink-2);
+}
+.dt-remind-tail {
+  gap: 0;
+}
+.dt-remind-x {
+  width: 24px;
+  height: 32px;
+}
+.dt-remind-every {
+  font: 400 12px var(--font-mono);
+  border: 0;
+  background: none;
+  padding: 0 4px;
+}
+.dt-remind-every svg {
+  display: none;
+}
+.dt-remind .remind-pop {
+  position: static;
+  flex-basis: 100%;
+  width: 100%;
+  max-height: none;
+  min-width: 0;
+  margin: 6px 0 0;
+  padding: 6px;
+  background: var(--surface-3);
+  border: 1px solid var(--line-2);
+}
+.remind-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.remind-chip {
+  min-height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.dt-remind-hint {
+  display: none;
+}
+.dt-section-title {
+  font: 600 16px/1.2 var(--font-display);
+  color: var(--ink);
+  margin: 0;
+}
+.dt-checklist {
+  margin: 0 0 22px;
+}
+.dt-checklist-head {
+  margin-bottom: 10px;
+}
+.dt-progress {
+  font-size: 12px;
+}
+.dt-row {
+  min-height: 40px;
+}
+.dt-row-text {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+/* The add field is the main way items get in: a real box, two lines tall, in ink. */
+.dt-add-input {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-height: 64px;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--ink);
+}
+.dt-row-text {
+  cursor: text;
+}
+.dt-row .dt-box {
+  cursor: pointer;
+}
+.dt-foot {
+  margin: 22px -22px -20px;
+  padding: 12px 22px;
+  border-top: 1px solid var(--line);
+  min-height: 44px;
+}
+.dt-foot .danger {
+  font-size: 13px;
+}
+.dt-dates {
+  font-size: 11px;
+}
+@media (max-width: 899px) {
+  .dt-sheet {
+    height: 80%;
+    max-height: calc(100dvh - var(--kb) - 16px);
+    border-radius: 24px 24px 0 0;
+    border-color: var(--line-2);
+  }
+  .dt-scroll {
+    padding: 0 20px 40px;
+  }
+  .dt-handle {
+    height: 22px;
+  }
+  .dt-handle > span {
+    width: 40px;
+    height: 5px;
+    background: var(--circle);
+  }
+  .dt-top {
+    margin: 0 -4px 18px;
+  }
+  .dt-title {
+    font-size: 24px !important;
+  }
+  .dt-remind-anchor,
+  .dt-remind-btn {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .dt-remind-x {
+    width: 44px;
+    height: 48px;
+  }
+  .dt-remind-every {
+    font-size: 11px;
+  }
+  .dt-remind .remind-pop {
+    margin-left: -86px;
+    width: calc(100% + 86px);
+    border-radius: 14px;
+  }
+  .remind-chip,
+  .label-check {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .dt-section-title {
+    font-size: 17px;
+  }
+  .dt-row {
+    min-height: 52px;
+    border-bottom: 1px solid var(--track);
+  }
+  .dt-row-text {
+    font-size: 16px;
+  }
+  .dt-foot {
+    margin: 22px -20px -40px;
+    padding: 12px 20px;
+  }
+}
+.dt-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.dt-content > * {
+  flex-shrink: 0;
+}
+.dt-labels-anchor.picker-open {
+  width: 100%;
+}
+.dt-foot {
+  margin-top: auto;
+}
+.dt-files-links {
+  margin: 0 0 22px;
+}
+.dt-atts {
+  margin: 0;
+}
+.dt-atts.empty {
+  margin: 0;
+}
+.attachment-empty {
+  font-size: 13px;
+  color: var(--placeholder);
+  border: 1px dashed var(--line-2);
+  border-radius: 10px;
+  text-align: center;
+  padding: 18px 8px;
+  margin: 10px 0 0;
+}
+.att-add.compact {
+  font-size: 13px;
+}
+.att-grid {
+  grid-template-columns: repeat(auto-fill, 84px);
+}
+.att-tile {
+  width: 84px;
+  height: 62px;
+  aspect-ratio: auto;
+}
+.att-thumb {
+  border-radius: 8px;
+}
+.att-bar > span {
+  width: 100%;
+  transform-origin: left;
+  transition: transform 160ms linear;
+}
+@media (max-width: 899px) {
+  .att-grid {
+    grid-template-columns: repeat(auto-fill, 96px);
+  }
+  .att-tile {
+    width: 96px;
+    height: 72px;
+  }
+  .att-thumb {
+    border-radius: 12px;
+  }
+  .dt-labels-anchor.picker-open {
+    width: 100%;
+  }
+  .dt-foot {
+    min-height: 48px;
+  }
+}
+.dt-sheet-root {
+  z-index: 100;
+}
+.dt-row-ghost.dropping {
+  transition: none;
+}
+.label-pill .label-dot {
+  background: var(--dot-light);
+}
+[data-theme='tint-dark'] .label-pill .label-dot {
+  background: var(--dot-dark);
+}
+@media (max-width: 899px) {
+  :root .dt-sheet .dt-title {
+    font-size: 24px !important;
+  }
+  :root .dt-sheet .dt-row-text {
+    font-size: 16px;
+  }
+  .dt-sheet .dt-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    border-color: var(--box);
+    border-width: 1px;
+    color: var(--on-accent);
+  }
+}
+.dt-panel > .dt-foot,
+.dt-sheet > .dt-foot {
+  flex: none;
+  min-height: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--line);
+}
+.dt-panel > .dt-foot .dt-link {
+  min-height: 32px;
+}
+.dt-panel .dt-content {
+  min-height: 0;
+}
+.label-dot {
+  background: var(--dot-light, var(--label));
+}
+[data-theme='tint-dark'] .label-dot {
+  background: var(--dot-dark, var(--label));
+}
+.dt-row-ghost {
+  z-index: 200;
+}
+.lightbox {
+  z-index: 250;
+}
+.attachment-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.attachment-tiles .att-grid,
+.attachment-tiles .att-files {
+  display: contents;
+}
+.attachment-tiles .att-file {
+  position: relative;
+  display: flex;
+  width: 84px;
+  min-height: 62px;
+  height: 62px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--track);
+}
+.attachment-tiles .att-file-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+}
+.attachment-tiles .att-icon {
+  position: static;
+  width: auto;
+  height: 12px;
+}
+.attachment-tiles .att-icon > svg {
+  display: none;
+}
+.attachment-tiles .att-badge {
+  position: static;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.attachment-tiles .att-file-name {
+  flex: none;
+  max-width: 100%;
+  font-size: 10px;
+  line-height: 13px;
+}
+.attachment-tiles .att-file-size {
+  font-size: 9px;
+  color: var(--placeholder);
+}
+.attachment-tiles .att-file > .att-x {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+}
+.attachment-tiles .att-file > .att-state {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+}
+@media (max-width: 899px) {
+  :root .attachment-tiles .att-file {
+    width: 96px;
+    min-height: 72px;
+    height: 72px;
+    border-radius: 12px;
+  }
+  .attachment-tiles .att-file-name {
+    font-size: 11px;
+  }
+  .attachment-tiles .att-file-size {
+    font-size: 10px;
+  }
+}
+.attachment-tiles .att-thumb {
+  border-radius: 10px;
+}
+@media (max-width: 899px) {
+  .attachment-tiles .att-thumb {
+    border-radius: 12px;
+  }
+}
+.dt-esc.dt-float-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  border: 0;
+  background: none;
+  border-radius: 6px;
+  padding: 0;
+  color: var(--muted);
+}
+.dt-esc.dt-float-close {
+  font-size: 22px;
+}
+.dt-esc.dt-float-close:hover {
+  background: var(--surface-3);
+  color: var(--ink);
+}

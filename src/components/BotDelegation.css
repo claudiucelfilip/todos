@@ -1,0 +1,15 @@
+.bot-delegation { padding-top: 16px; color: var(--ink); }
+.bot-delegation .sh-ready { min-height: 44px; }
+.bot-delegation .sh-ready p { margin-top: 6px; }
+.bot-delegation .sh-heading { margin-top: 0; }
+.bot-delegation .sh-summary { margin-top: 8px; }
+.bot-delegation .sh-thread { margin-top: 4px; }
+.bot-delegation .sh-composer textarea { box-sizing: border-box; }
+.bot-delegation .sh-send-row { justify-content: flex-end; }
+.bot-delegation .bot-delegation-error { color: var(--destructive); }
+.bot-conversation { display: grid; gap: 14px; margin-top: 12px; }
+.bot-exchange p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.bot-message { margin: 0; color: var(--ink-3); font: 400 14px/21px var(--font-ui); }
+.bot-message span, .bot-exchange .sh-summary span { display: block; margin-bottom: 4px; color: var(--muted); font: 500 11px/16px var(--font-ui); }
+.bot-exchange .sh-summary { margin-top: 8px; }
+.bot-exchange .sh-context { margin: 8px 0 0; }

@@ -1,0 +1,502 @@
+/* Redesign tokens: Instrument Sans UI, Bricolage Grotesque headings, JetBrains Mono.
+ * :root is Leaf (theme value 'light'); [data-theme='tint-dark'] and [data-theme='sky'] override it. */
+
+/* Bricolage Grotesque: vietnamese */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 500 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(/fonts/bricolage-grotesque-vietnamese-v9.woff2) format('woff2');
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301,
+    U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+/* Bricolage Grotesque: latin-ext */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 500 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(/fonts/bricolage-grotesque-latin-ext-v9.woff2) format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* Bricolage Grotesque: latin */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 500 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(/fonts/bricolage-grotesque-latin-v9.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Instrument Sans: latin-ext */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-latin-ext-v4.woff2) format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* Instrument Sans: latin */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(/fonts/instrument-sans-latin-v4.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* JetBrains Mono: cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-cyrillic-ext-v24.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+/* JetBrains Mono: cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-cyrillic-v24.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* JetBrains Mono: greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-greek-v24.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* JetBrains Mono: vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-vietnamese-v24.woff2) format('woff2');
+  unicode-range:
+    U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301,
+    U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+/* JetBrains Mono: latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-latin-ext-v24.woff2) format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* JetBrains Mono: latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-latin-v24.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Leaf (v6 §11, theme value 'light'): green page, flat cards with a bottom band. */
+  --page: linear-gradient(180deg, #8bc34a 0%, #5e9a2e 100%);
+  --bg: #e7f3d8;
+  --surface: #f4faec;
+  --surface-sel: #ffffff;
+  --surface-2: #e7f3d8;
+  --surface-3: #f8fcf2;
+  --track: #dfeecb;
+  --line: transparent;
+  --line-2: #b8d595;
+  --line-soft: #dcebc6;
+  --ink: #0e1a08;
+  --ink-2: #15240e;
+  --ink-3: #1f3315;
+  --muted: #233a1a;
+  --placeholder: #2c4523;
+  --on-bg-muted: #0e1a08;
+  --on-bg-faint: #15240e;
+  --circle: #2c4523;
+  --box: #2c4523;
+  --accent: #0e1a08;
+  --on-accent: #f4faec;
+  --due: #5a3600;
+  --destructive: #7a1010;
+  --backdrop: rgba(14, 26, 8, 0.4);
+  --toast-bg: #0e1a08;
+  --toast-ink: #e6f2dc;
+  --toast-accent: #f4faec;
+  --drop: var(--surface-2);
+  --placeholder-slot: var(--line-2);
+  --card-border: var(--line);
+  --accent-fill: var(--accent);
+  --accent-text: var(--accent);
+  --accent-tint: #dfeecb;
+  --on-destructive: #ffffff;
+  --destructive-tint: #f6e3df;
+  --shadow-rest: none;
+  --shadow-hover: none;
+  --focus-ring: rgba(14, 26, 8, 0.12);
+  --card-depth: 0 4px 0 #c4dca8, 0 2px 3px rgba(26, 52, 8, 0.18), 0 6px 12px -2px rgba(26, 52, 8, 0.2), 0 18px 32px -8px rgba(26, 52, 8, 0.32);
+  --control-depth: 0 2px 0 #c4dca8, 0 1px 2px rgba(26, 52, 8, 0.16), 0 4px 8px -2px rgba(26, 52, 8, 0.2);
+  --well-depth: inset 0 1px 0 rgba(34, 64, 12, 0.14), inset 1px 0 0 rgba(34, 64, 12, 0.06), inset 0 -1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-panel: 0 3px 0 rgba(196, 220, 168, 0.75), 0 4px 6px rgba(26, 52, 8, 0.16), 0 12px 24px -4px rgba(26, 52, 8, 0.24), 0 40px 80px -16px rgba(26, 52, 8, 0.42);
+  --shadow-drag: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 30px 60px -12px rgba(34, 64, 12, 0.4);
+  --panel-glass: rgba(255, 255, 255, 0.58);
+  --composer-glass: rgba(255, 255, 255, 0.74);
+  --composer-solid: rgba(255, 255, 255, 0.94);
+  --bar-glass: rgba(155, 205, 95, 0.55);
+  --bar-line: rgba(26, 52, 8, 0.22);
+  --glass-blur: blur(28px) saturate(1.6);
+  --seg-well: rgba(26, 52, 8, 0.16);
+  --seg-well-depth: inset 0 1px 2px rgba(26, 52, 8, 0.22);
+  --seg-raised: 0 1px 2px rgba(26, 52, 8, 0.22);
+  --r-card: 12px;
+  --r-panel: 16px;
+  --r-sheet: 24px;
+  --r-control: 10px;
+  --r-chip: 12px;
+  --r-box: 5px;
+  --r-row: 8px;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-ui: 'Instrument Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --d-fast: 120ms;
+  --d-base: 200ms;
+  --d-slow: 240ms;
+  --d-move: 280ms;
+  --kb: 0px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  color-scheme: light;
+}
+[data-theme='tint-dark'] {
+  --page: linear-gradient(180deg, #121619 0%, #0a0c0e 100%);
+  --bg: #121619;
+  --surface: #1a2027;
+  --surface-sel: #2a3038;
+  --surface-2: #13171c;
+  --surface-3: #20272f;
+  --track: #232a32;
+  --line: transparent;
+  --line-2: #2e363f;
+  --line-soft: #1f252c;
+  --ink: #f2f4f6;
+  --ink-2: #e3e8ed;
+  --ink-3: #c5cdd5;
+  --muted: #9aa5b1;
+  --placeholder: #6f7a86;
+  --on-bg-muted: var(--muted);
+  --on-bg-faint: var(--placeholder);
+  --circle: #3c4650;
+  --box: #4c5661;
+  --accent: #56d39b;
+  --on-accent: #0e1114;
+  --due: #f2b544;
+  --destructive: #f08c8c;
+  --backdrop: rgba(0, 0, 0, 0.5);
+  --toast-bg: #f2f4f6;
+  --toast-ink: #0e1114;
+  --toast-accent: #1e6b4e;
+  --accent-tint: #15291f;
+  --on-destructive: #0e1114;
+  --destructive-tint: #3a1f1f;
+  --shadow-rest: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-hover: var(--shadow-rest);
+  --focus-ring: rgba(242, 244, 246, 0.12);
+  --card-depth: inset 0 1px 0 rgba(255, 255, 255, 0.13), 0 4px 0 #12171c, 0 2px 3px rgba(0, 0, 0, 0.45), 0 6px 12px -2px rgba(0, 0, 0, 0.45), 0 18px 32px -8px rgba(0, 0, 0, 0.65);
+  --control-depth: inset 0 1px 0 rgba(255, 255, 255, 0.13), 0 2px 0 #12171c, 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 8px -2px rgba(0, 0, 0, 0.45);
+  --well-depth: inset 0 1px 0 rgba(0, 0, 0, 0.45), inset 1px 0 0 rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.13), 0 3px 0 rgba(18, 23, 28, 0.75), 0 4px 6px rgba(0, 0, 0, 0.45), 0 12px 24px -4px rgba(0, 0, 0, 0.65), 0 40px 80px -16px rgba(0, 0, 0, 0.5);
+  --shadow-drag: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 20px -4px rgba(0, 0, 0, 0.5), 0 48px 84px -16px rgba(0, 0, 0, 0.8);
+  --panel-glass: rgba(36, 43, 51, 0.62);
+  --composer-glass: rgba(40, 48, 57, 0.74);
+  --composer-solid: rgba(44, 52, 62, 0.94);
+  --bar-glass: rgba(16, 19, 22, 0.7);
+  --bar-line: rgba(0, 0, 0, 0.55);
+  --seg-well: rgba(0, 0, 0, 0.35);
+  --seg-well-depth: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+  --seg-raised: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+/* Sky: Leaf's structure in blue; labels, --due and --destructive shared with Leaf. */
+[data-theme='sky'] {
+  --page: linear-gradient(180deg, #4a91c3 0%, #2e6d9a 100%);
+  --bg: #d8e8f3;
+  --surface: #ecf4fa;
+  --surface-sel: #ffffff;
+  --surface-2: #d8e8f3;
+  --surface-3: #f2f8fc;
+  --track: #cbdfee;
+  --line-2: #95bad5;
+  --line-soft: #c6dceb;
+  --ink: #08121a;
+  --ink-2: #0e1b24;
+  --ink-3: #152733;
+  --muted: #1a2d3a;
+  --placeholder: #233745;
+  --on-bg-muted: #08121a;
+  --on-bg-faint: #0e1b24;
+  --circle: #233745;
+  --box: #233745;
+  --accent: #08121a;
+  --on-accent: #ecf4fa;
+  --backdrop: rgba(8, 18, 26, 0.4);
+  --toast-bg: #08121a;
+  --toast-ink: #dce9f2;
+  --toast-accent: #ecf4fa;
+  --accent-tint: #cbdfee;
+  --focus-ring: rgba(8, 18, 26, 0.12);
+  --card-depth: 0 4px 0 #a9c6da, 0 2px 3px rgba(8, 34, 52, 0.18), 0 6px 12px -2px rgba(8, 34, 52, 0.2), 0 18px 32px -8px rgba(8, 34, 52, 0.32);
+  --control-depth: 0 2px 0 #a9c6da, 0 1px 2px rgba(8, 34, 52, 0.16), 0 4px 8px -2px rgba(8, 34, 52, 0.2);
+  --well-depth: inset 0 1px 0 rgba(12, 42, 64, 0.14), inset 1px 0 0 rgba(12, 42, 64, 0.06), inset 0 -1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-panel: 0 3px 0 rgba(169, 198, 218, 0.75), 0 4px 6px rgba(8, 34, 52, 0.16), 0 12px 24px -4px rgba(8, 34, 52, 0.24), 0 40px 80px -16px rgba(8, 34, 52, 0.42);
+  --shadow-drag: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 30px 60px -12px rgba(12, 42, 64, 0.4);
+  --bar-glass: rgba(95, 159, 205, 0.55);
+  --bar-line: rgba(8, 34, 52, 0.22);
+  --seg-well: rgba(8, 34, 52, 0.16);
+  --seg-well-depth: inset 0 1px 2px rgba(8, 34, 52, 0.22);
+  --seg-raised: 0 1px 2px rgba(8, 34, 52, 0.22);
+  --md: #2e485a;
+}
+
+/* Spring tokens, generated from src/lib/spring.ts (a test keeps them in sync).
+ * linear() needs Safari/iOS 17.2+, Chrome 113+, Firefox 112+; older engines get cubic-bezier. */
+:root {
+  --spring-snappy-ms: 150ms;
+  --spring-gentle-ms: 232ms;
+  --spring-heavy-ms: 284ms;
+  --spring-release-ms: 189ms;
+}
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-snappy: linear(0, 0.2333, 0.5235, 0.7456, 0.8647, 0.9347, 0.9673, 0.9849, 0.9927, 0.9967, 0.9984, 0.9993, 0.9997, 1);
+    --spring-gentle: linear(0, 0.0991, 0.2819, 0.4937, 0.6618, 0.8021, 0.8984, 0.9546, 0.9902, 1.0066, 1.0136, 1.0143, 1.0124, 1.0093, 1.0066, 1.0041, 1.0023, 1.0012, 1.0004, 1.0001, 1);
+    --spring-heavy: linear(0, 0.0975, 0.3009, 0.5194, 0.6933, 0.838, 0.9352, 0.9928, 1.0216, 1.0316, 1.0312, 1.0257, 1.0187, 1.012, 1.0068, 1.0031, 1.0009, 0.9996, 0.9991, 0.999, 0.9991, 0.9993, 0.9995, 0.9997, 1);
+    --spring-release: linear(0, 0.0899, 0.2685, 0.4401, 0.6033, 0.7312, 0.8249, 0.89, 0.9335, 0.9596, 0.9777, 0.9884, 0.9946, 0.9979, 0.9995, 1.0003, 1);
+  }
+}
+@supports not (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --spring-gentle: cubic-bezier(0.22, 1.06, 0.36, 1);
+    --spring-heavy: cubic-bezier(0.22, 1.1, 0.36, 1);
+    --spring-release: cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+/* Safety net: nothing may ever pan the page sideways on a phone (clip, unlike hidden, keeps sticky/fixed working). */
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  /* Never 100vh (§9.1); height comes from 100dvh in the app root. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.35;
+  background: var(--bg) var(--page) fixed;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--d-base) var(--ease-out),
+    color var(--d-base) var(--ease-out);
+  overscroll-behavior: contain;
+}
+
+@media (display-mode: standalone) {
+  html, body { overscroll-behavior-x: none; }
+}
+
+.mono,
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible:not(input):not(textarea):not(select) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* Text fields get exactly one focus treatment, from themselves or their wrapper (never this outline). */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+/* All text inputs are ≥ 16px on phone so iOS does not zoom on focus (§9.1).
+ * Class selectors below would beat a bare element rule, hence the attribute chain. */
+@media (max-width: 899px) {
+  input:not([type='checkbox']):not([type='radio']),
+  textarea,
+  select,
+  .search-input,
+  .composer textarea,
+  .dt-title,
+  .dt-add-items textarea,
+  .card-title-edit,
+  .item-edit,
+  .label-new-name,
+  .label-name-input,
+  .login-input,
+  .remind-input {
+    font-size: 16px !important;
+  }
+}
+
+/* §11.0 reduced motion: no transforms; state changes cross-fade ≤ 120ms. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-reduce-motion='off']) * {
+    animation: none !important;
+  animation-delay: 0ms !important;
+    transition-duration: 120ms !important;
+    transition-property: opacity, background-color, color, border-color !important;
+  }
+}
+[data-reduce-motion='on'] * {
+  animation: none !important;
+  animation-delay: 0ms !important;
+  transition-duration: 120ms !important;
+  transition-property: opacity, background-color, color, border-color !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* §11.6 / §11.7 digit roll */
+.roll {
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+}
+.roll-slot {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+  line-height: 1.2em;
+  vertical-align: bottom;
+}
+.roll-slot .roll-new {
+  display: inline-block;
+}
+.roll-slot.roll-changed .roll-new {
+  animation: roll-in 160ms var(--ease-out) both;
+}
+.roll-slot.roll-changed .roll-old {
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: roll-out 160ms var(--ease-out) both;
+}
+@keyframes roll-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes roll-out {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* Remote snapshots stay quiet without cancelling an editor the user just opened. */
+[data-sync-quiet='true'] *:not(.dt-panel, .dt-panel *, .dt-sheet, .dt-sheet *) {
+  animation: none !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}

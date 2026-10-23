@@ -1,0 +1,33 @@
+import { test, expect, K, isPhone, openFromBoard, panel, pushActions, setFields } from './journeys';
+
+test('body placeholder keeps its space; title focus and Markdown re-editing stay stable', async ({ app, account }) => {
+  await pushActions(account, [setFields(K('t1'), { notes: '' })]);
+  await app.reload();
+  await openFromBoard(app, 't1', 'todo');
+  const body = panel(app).getByRole('textbox', { name: 'Note body', exact: true });
+  const title = panel(app).getByTestId('detail-title');
+  await expect(body).toHaveAttribute('placeholder', 'Write anything. # heading, - list, **bold**, [link](url), ![image](url)');
+  await panel(app).evaluate(el => Promise.all(el.getAnimations({ subtree: true }).filter(a => a.effect?.getTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))));
+  expect(await panel(app).evaluate(el => el.querySelector('.dt-head')!.getBoundingClientRect().top - el.querySelector('.dt-top')!.getBoundingClientRect().bottom)).toBe(isPhone() ? 5 : 1);
+  const before = await body.boundingBox();
+  const checklist = await panel(app).locator('.dt-checklist').boundingBox();
+  await body.click();
+  expect((await body.boundingBox())!.height).toBe(before!.height);
+  expect((await panel(app).locator('.dt-checklist').boundingBox())!.y).toBe(checklist!.y);
+  await title.click();
+  expect((await body.boundingBox())!.y).toBe(before!.y);
+  await title.press('Enter');
+  await expect(body).toBeFocused();
+  const markdown = '### Project\n\nA paragraph\nwith a new line.';
+  await body.fill(markdown);
+  await title.click();
+  await expect(panel(app).getByRole('heading', { name: 'Project', exact: true })).toBeVisible();
+  await panel(app).locator('.md-p').first().click();
+  await expect(body).toBeFocused();
+  await expect(body).toHaveValue(markdown);
+  await title.click();
+  await title.press('Enter');
+  await expect(body).toBeFocused();
+  await expect(body).toHaveValue(markdown);
+  await expect(app.locator('.md-add')).toHaveCount(0);
+});

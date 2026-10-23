@@ -1,0 +1,289 @@
+/* Reminders: the card-face badge, the detail's "Remind me" row and its chip popover,
+ * and Settings → Notifications. Popover chrome comes from .label-pop (labels.css). */
+
+.card-remind {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted);
+}
+.dt-remind {
+  margin: 0 0 16px;
+}
+.dt-remind-anchor {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dt-remind-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 10px 4px 8px;
+  margin-left: -8px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--muted);
+  transition:
+    background-color var(--d-fast) var(--ease-out),
+    color var(--d-fast) var(--ease-out);
+}
+.dt-remind-btn:hover {
+  background: var(--track);
+  color: var(--ink);
+}
+.dt-remind-btn.set {
+  color: var(--ink);
+}
+.dt-remind-btn.set svg {
+  color: var(--accent);
+}
+.dt-remind-btn.sent {
+  color: var(--muted);
+}
+.dt-remind-x {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+}
+.dt-remind-x:hover {
+  background: var(--track);
+  color: var(--ink);
+}
+/* Repeat picker: a quiet chip showing the chosen word; the native select lies invisible on top,
+ * so the whole chip opens the platform's own menu and is as wide as its word. */
+.dt-remind-anchor {
+  flex-wrap: wrap;
+}
+.dt-remind-tail {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.dt-remind-every {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background-color var(--d-fast) var(--ease-out),
+    color var(--d-fast) var(--ease-out);
+}
+.dt-remind-every:hover,
+.dt-remind-every:focus-within {
+  background: var(--track);
+  color: var(--ink);
+}
+.dt-remind-every:focus-within {
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.dt-remind-every.on {
+  color: var(--ink);
+}
+.dt-remind-every.on svg {
+  color: var(--accent);
+}
+.dt-remind-every select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+}
+.dt-remind-hint {
+  margin: 4px 0 0 24px;
+  color: var(--muted);
+}
+
+.dt-remind-notify {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.dt-remind-notify.on { color: var(--accent); background: var(--surface-2); }
+.dt-remind-notify:hover { color: var(--ink); background: var(--track); }
+.dt-remind-notify:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.remind-pop {
+  width: 248px;
+}
+.remind-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.remind-chip {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  text-align: left;
+}
+.remind-chip:hover {
+  background: var(--track);
+}
+.remind-chip-time {
+  color: var(--muted);
+}
+.remind-custom {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  margin-top: 6px;
+  padding: 8px 4px 2px;
+}
+.remind-input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.remind-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-tint);
+}
+.remind-set {
+  min-height: 36px;
+  padding: 6px 12px;
+}
+.phone .dt-remind .remind-pop {
+  position: static;
+  flex-basis: 100%;
+  width: auto;
+  margin-top: 6px;
+  box-shadow: none;
+}
+.phone .dt-remind-anchor {
+  flex-wrap: wrap;
+}
+@media (max-width: 899px) {
+  .remind-chip {
+    min-height: 48px;
+  }
+  .remind-input,
+  .remind-set {
+    min-height: 44px;
+  }
+  .dt-remind-x {
+    width: 44px;
+    height: 44px;
+  }
+  .dt-remind-every {
+    min-height: 44px;
+  }
+}
+
+.notify-hint {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+.notify-topic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.notify-topic code {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.notify-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.notify-actions a.btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.remind-repeat {
+  border-top: 1px solid var(--line-2);
+  margin-top: 6px;
+  padding: 10px 6px 6px;
+}
+.remind-repeat > .mono {
+  color: var(--placeholder);
+  font-size: 11px;
+}
+.remind-repeat-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+.remind-repeat-options > button {
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  min-height: 26px;
+  padding: 3px 7px;
+  background: none;
+  color: var(--muted);
+  font-size: 11px;
+}
+.remind-repeat-options > button.active {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+@media (max-width: 899px) {
+  .remind-repeat-options > button {
+    min-height: 32px;
+    font-size: 13px;
+  }
+}

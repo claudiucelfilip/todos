@@ -1,0 +1,1115 @@
+/* v6 §11: one material at three heights, glass bar / composer / panel, shadow room. Loaded last.
+ * Tokens (--card-depth, --control-depth, --well-depth, --shadow-panel, --*-glass) live in index.css. */
+
+/* ---- cards (§11.19): no border; a 4 px outset band under the face and a three-layer shadow ---- */
+.card-face,
+.note-card {
+  background: var(--surface);
+  border: 0;
+  box-shadow: var(--card-depth);
+  transition:
+    transform 160ms var(--ease-out),
+    opacity 0.2s;
+}
+.card-face,
+.note-card {
+  padding-bottom: 12px; /* the band sits outside the face now (§11.19) */
+}
+.someday-list .card-face {
+  padding-bottom: 8px;
+}
+/* Ring hit areas sit 8/8 (To do, notes) and 10/10 (Doing) from the corner, as drawn. */
+.card-face > .card-ring,
+.note-card > .note-ring {
+  top: 8px;
+  right: 8px;
+}
+.card-face.doing > .card-ring {
+  top: 10px;
+  right: 10px;
+}
+/* Phone grid: the 20 px ring at 8/8 inside a centred 44 px hit. */
+.notes-view.phone .note-card > .note-ring {
+  top: -4px;
+  right: -4px;
+}
+.card-face:hover,
+.note-card:hover {
+  background: var(--surface-3);
+  box-shadow: var(--card-depth);
+  transform: none;
+  --ring-hole: var(--surface-3);
+}
+/* Selected (§11.5): a lighter face that rises a little; no outline, no accent, no hover change. */
+.card-face.open,
+.card-face.selected,
+.note-card.open,
+.card-face.open:hover,
+.card-face.selected:hover,
+.note-card.open:hover {
+  background: var(--surface-sel);
+  --ring-hole: var(--surface-sel);
+  box-shadow: var(--card-depth);
+  border: 0;
+  outline: none;
+  transform: translateY(-2px) scale(1.012);
+  z-index: 1;
+}
+.card-face:focus-visible,
+.note-card:focus-visible {
+  outline: 1px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.grid-ghost .note-card {
+  box-shadow: var(--shadow-drag);
+}
+.done-group .card-face.open {
+  border: 0;
+  padding: 0 0 0 10px;
+  background: var(--surface-sel);
+}
+[data-reduce-motion='on'] .card-face.open,
+[data-reduce-motion='on'] .card-face.selected,
+[data-reduce-motion='on'] .note-card.open {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reduce-motion='system'] .card-face.open,
+  [data-reduce-motion='system'] .card-face.selected,
+  [data-reduce-motion='system'] .note-card.open {
+    transform: none;
+  }
+}
+
+/* ---- controls: no border, a 2 px outset band, a two-layer shadow ---- */
+/* .app outranks rooms.css, which loads after this sheet. */
+.app .room-switch,
+.app .topbar-search,
+.app .label-filter-btn,
+.app .composer,
+.app .phone-compose-bar {
+  background: var(--surface);
+  border: 0;
+  box-shadow: var(--control-depth);
+}
+.app.desktop .topbar-search {
+  padding: 0 10px 0 12px;
+}
+.app.desktop .label-filter-btn {
+  padding: 0 14px 0 12px;
+}
+.composer:focus-within {
+  box-shadow: var(--control-depth);
+}
+.app .topbar-phone .room-switch,
+.app .topbar-phone .label-filter-btn {
+  background: none;
+  box-shadow: none;
+}
+
+/* ---- Done ledger ---- */
+.done-group {
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--well-depth);
+}
+
+/* ---- segmented controls (§11.13): a dark well with one raised thumb that slides ---- */
+.app .seg {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  align-items: center;
+  gap: 0;
+  padding: 3px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--seg-well);
+  box-shadow: var(--seg-well-depth);
+}
+.app .seg > button {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.app .seg > button.on,
+.app .seg > button.active {
+  background: transparent;
+  color: var(--ink);
+  font-weight: 600;
+}
+.seg-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--n));
+  border-radius: 7px;
+  background: var(--surface);
+  box-shadow: var(--seg-raised);
+  transform: translateX(calc(var(--i) * 100%));
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+[data-reduce-motion='on'] .seg-thumb {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reduce-motion='system'] .seg-thumb {
+    transition: none;
+  }
+}
+
+/* ---- text straight on the page ---- */
+.topbar-title h1 > span,
+.column-count,
+.column-tip,
+.column .linkbtn,
+.topbar-meta,
+.topbar-counter {
+  color: var(--on-bg-faint);
+}
+.column-count,
+.topbar-counter {
+  color: var(--on-bg-muted);
+}
+
+/* ---- glass ---- */
+.topbar,
+.dt-panel {
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.app.desktop .topbar {
+  margin: 0 -32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  background: var(--bar-glass);
+  border-bottom: 1px solid var(--bar-line);
+}
+.app .dt-panel {
+  background: var(--panel-glass);
+  border: 0;
+  box-shadow: var(--shadow-panel);
+}
+.app.desktop[data-detail-open] .dt-panel {
+  top: 72px;
+  right: 20px;
+  bottom: 20px;
+  width: max(360px, var(--col-w));
+  border-radius: 18px;
+}
+.toast,
+.rooms {
+  box-shadow: var(--shadow-panel);
+}
+.banners > .banner {
+  background: var(--panel-glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .app.desktop .topbar,
+  .app .dt-panel,
+  .banners > .banner {
+    background: var(--surface);
+  }
+}
+
+/* ---- Notes: the grid scrolls under the bar and the composer ---- */
+/* It starts at the window's top (under the bar) and runs to its bottom edge (§11.6). */
+.app.desktop .notes-scroll {
+  margin: 0 -16px -32px;
+  padding: 112px 16px 56px;
+}
+
+/* ---- shadow room (§10.15): scrollers clip, so pad them and pull the margin back ---- */
+.app.desktop .column-body {
+  padding: 6px 16px 32px;
+  margin: -6px -16px 0;
+}
+
+/* ---- phone: glass bar with the tab row; content scrolls under it ---- */
+@media (max-width: 899px) {
+  .app.phone .topbar {
+    background: var(--bar-glass);
+    border-bottom: 0;
+  }
+  /* The tab row sits inside the bar (board.css, phone panes). */
+  .phone-nav button {
+    background: var(--surface-2);
+    border-color: var(--line-soft);
+    box-shadow: var(--well-depth);
+  }
+  .phone-nav button.active {
+    background: var(--surface);
+    border-color: transparent;
+    box-shadow: var(--card-depth);
+  }
+  .app .phone-compose-bar {
+    background: var(--panel-glass);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+  }
+}
+
+/* Label dots in Notes: the per-theme preset colours (§10.20). */
+.label-dot6 {
+  background: var(--dot-light);
+}
+[data-theme='tint-dark'] .label-dot6 {
+  background: var(--dot-dark);
+}
+
+/* Inside the glass panel: rows and the add field sit flat on the glass (§10.21: no material). */
+.dt-panel .dt-row:not(.ref) {
+  background: transparent;
+}
+.dt-panel .dt-row:not(.ref):hover {
+  background: var(--surface-3);
+}
+.dt-panel .dt-add-input {
+  background: transparent;
+}
+
+/* Done ledger as drawn: 6 px well padding, a 32 px day header, 42 px rows 4 px apart. */
+.done-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.done-group .done-day {
+  height: 32px;
+  padding: 0 10px;
+}
+
+/* Panel as drawn: 40 px add field with a visible edge; status segments 12 px apart. */
+.dt-panel .dt-add-input {
+  border: 1px solid var(--line-2);
+  min-height: 40px;
+  padding: 7px 12px;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* Assistant: a 40 px icon button like settings (§11.10 F). */
+.app .assistant-launch.iconbtn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+}
+.app .assistant-launch.iconbtn:hover {
+  color: var(--ink);
+}
+/* §11.20.7: selected while the assistant is open, like an open Labels button. */
+.app .assistant-launch.iconbtn.on {
+  background: var(--surface-sel);
+  box-shadow: var(--control-depth);
+  border-radius: 10px;
+  color: var(--ink);
+}
+/* The bar's counts go below 1200 px; the sync icon stays (§11.10 B). */
+@media (max-width: 1199px) {
+  .app.desktop .topbar-counter {
+    display: none;
+  }
+}
+
+/* Panel chips (§11.10 C): outlined + Label and Remind. Label pills are at the end of this sheet. */
+.dt-panel .dt-chip-btn,
+.dt-panel .dt-remind-btn {
+  height: 28px;
+  min-height: 28px;
+  flex: none;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: none;
+  font: 500 13px var(--font-ui);
+  color: var(--ink-3);
+}
+.dt-panel .dt-remind-btn > svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+.dt-panel .dt-remind-btn.set {
+  color: var(--ink-2);
+}
+.dt-checklist-head .dt-menu-anchor {
+  align-self: center;
+  margin: -4px -6px -4px 4px;
+}
+.dt-list-more {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.dt-list-more:hover,
+.dt-list-more[aria-expanded='true'] {
+  background: var(--track);
+  color: var(--ink);
+}
+
+/* The one-time install card (§11.10 E): the toast's size and material, bottom left, never over content. */
+.install-card {
+  position: fixed;
+  left: 20px;
+  bottom: calc(var(--safe-bottom) + 20px);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 8px 8px 8px 16px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--r-control);
+  box-shadow: var(--shadow-panel);
+  font-size: 14px;
+  animation: toast-in var(--spring-snappy-ms) var(--spring-snappy);
+}
+.install-card > span {
+  flex: 1;
+}
+/* §11.24.4: Install is the primary ink button (as Add); × is a 32 px muted target. */
+.install-card .install-card-go {
+  flex: none;
+  height: 32px;
+  min-width: 64px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--ink);
+  color: var(--surface);
+  box-shadow: var(--control-depth);
+  font: 600 14px/32px var(--font-ui);
+  cursor: pointer;
+}
+.install-card-x {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+}
+.install-card-x:hover {
+  color: var(--ink);
+  background: var(--seg-well);
+}
+@media (max-width: 899px) {
+  .install-card {
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    bottom: calc(max(var(--safe-bottom), 30px) + 64px); /* above the compose bar */
+  }
+}
+.settings-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+.dt-checklist-head .dt-section-title {
+  flex: 1;
+}
+/* ---- every floating surface uses the panel's glass (§11.12) ---- */
+/* Menus are portalled out of the glass bar and panel, since a nested backdrop only blurs its parent. */
+.app .label-pop,
+.dt-menu,
+.app .link-pop,
+.rooms,
+.phone-more-menu,
+.install-card {
+  background: var(--panel-glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 0;
+  border-radius: 14px;
+  box-shadow: var(--shadow-panel);
+  animation: float-in 140ms var(--ease-out);
+}
+.install-card {
+  color: var(--ink);
+}
+/* Portalled menus: fixed under their trigger (CardMenu.tsx, TopBar.tsx). */
+.dt-menu.dt-menu-float {
+  position: fixed;
+  left: auto;
+  z-index: 160;
+}
+.phone-more-menu {
+  position: fixed;
+  right: 12px;
+  z-index: 95;
+  width: 190px;
+}
+.app .phone-more-menu .label-filter-btn {
+  background: none;
+  box-shadow: none;
+}
+@keyframes float-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Fields inside a float show the glass through a translucent well (§11.14). */
+.app .link-pop .link-pop-hint,
+.labels-find {
+  background: var(--seg-well);
+  box-shadow: var(--seg-well-depth);
+}
+
+/* ---- the Labels menu (§11.11) ---- */
+.labels-menu {
+  position: fixed;
+  left: auto;
+  width: 288px;
+  max-height: min(70dvh, 520px);
+  z-index: 60;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--ink);
+}
+.labels-find {
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  border-radius: 9px;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+.labels-find input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: 400 15px var(--font-ui);
+  color: var(--ink);
+  padding: 0;
+}
+.labels-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  min-height: 0;
+}
+.labels-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px;
+  align-items: center;
+  border-radius: 8px;
+}
+.labels-row:hover {
+  background: var(--surface-3);
+}
+.labels-row.fresh {
+  background: var(--surface-sel);
+}
+.labels-row-main {
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 10px;
+  padding: 0 6px 0 10px;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.labels-create .labels-row-main {
+  width: 100%;
+  border-radius: 8px;
+}
+.labels-create .labels-row-main:hover {
+  background: var(--surface-3);
+}
+.labels-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 2px solid var(--box);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-accent);
+}
+.labels-row.on .labels-box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.labels-plus {
+  width: 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 16px;
+}
+.labels-create .labels-row-main {
+  background: var(--surface-3);
+}
+.labels-enter {
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid var(--line-2);
+  border-radius: 5px;
+  padding: 0 5px;
+  line-height: 18px;
+}
+.labels-create .swatch-custom {
+  background: none;
+  border: 1px dashed var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.labels-create .swatch-custom::after {
+  content: '+';
+  font-size: 12px;
+  line-height: 1;
+  color: var(--muted);
+}
+.label-filter-btn[aria-expanded='true'] {
+  background: var(--surface-sel);
+}
+.labels-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot-light);
+}
+[data-theme='tint-dark'] .labels-dot {
+  background: var(--dot-dark);
+}
+.labels-name {
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.labels-row.on .labels-name {
+  font-weight: 600;
+}
+.labels-count {
+  font-size: 12px;
+  color: var(--muted);
+}
+.labels-more {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  opacity: 0.6; /* as drawn: always there, stronger on hover */
+  cursor: pointer;
+}
+.labels-row:hover .labels-more,
+.labels-more:focus-visible,
+.labels-more[aria-expanded='true'] {
+  opacity: 1;
+}
+.labels-more:hover {
+  background: var(--track);
+}
+@media (hover: none) {
+  .labels-more {
+    opacity: 0.6;
+  }
+}
+.labels-row-edit {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 2px 10px 8px 40px;
+}
+.labels-row-edit > button,
+.labels-confirm button {
+  border: 0;
+  border-radius: 8px;
+  background: var(--seg-well);
+  color: var(--ink);
+  font: 500 13px var(--font-ui);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.labels-row-edit .danger,
+.labels-confirm .danger {
+  color: var(--destructive);
+}
+.labels-row-edit form,
+.labels-row-edit input {
+  width: 100%;
+}
+.labels-row-edit input {
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 10px;
+  background: var(--seg-well);
+  color: var(--ink);
+  font: 400 15px var(--font-ui);
+}
+.labels-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.labels-create .color-choice {
+  display: grid;
+  grid-template-columns: repeat(6, 24px);
+  justify-content: space-between;
+  row-gap: 8px;
+  align-items: center;
+  padding: 8px 10px 6px 40px;
+}
+/* 24 px targets with a 16 px dot; the selected one has a 2 px --ink ring (§11.11). */
+.labels-create .swatch {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  background-clip: content-box;
+  box-shadow: none;
+  border: 0;
+}
+.labels-create .swatch.on {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+.labels-create .swatch-custom {
+  padding: 0;
+  background: none;
+  border: 1px dashed var(--muted);
+}
+.labels-create .swatch-custom.on {
+  padding: 3px;
+  background: var(--label);
+  background-clip: content-box;
+}
+.labels-foot {
+  margin-top: 4px;
+  padding: 10px;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); /* --line is transparent now */
+  background: none;
+  text-align: left;
+  color: var(--muted);
+  font: 500 13px var(--font-ui);
+  cursor: pointer;
+}
+.labels-foot:hover {
+  color: var(--ink);
+}
+@media (max-width: 899px) {
+  .labels-menu {
+    width: min(320px, calc(100vw - 24px));
+  }
+  .labels-row-main {
+    min-height: 48px;
+  }
+}
+
+/* ---- Board ↔ Notes slide as panes (§11.14): both stay mounted; the track moves one width ---- */
+.app.desktop > .topbar {
+  grid-row: 1;
+}
+.app.desktop > .banners {
+  grid-row: 2;
+}
+.app.desktop .panes {
+  grid-row: 1 / 4;
+  grid-column: 1 / -1;
+  margin: 0 -32px -32px;
+  min-height: 0;
+  overflow: clip;
+}
+.panes-track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 240ms var(--ease-out);
+}
+.panes[data-view='notes'] .panes-track {
+  transform: translateX(-50%);
+}
+.pane {
+  width: 50%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 32px;
+}
+.pane > .board,
+.pane > .notes-view {
+  flex: 1;
+  min-height: 0;
+  width: var(--content-w);
+  margin-left: var(--content-x);
+}
+.pane-board {
+  padding-top: 112px;
+}
+[data-reduce-motion='on'] .panes-track {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reduce-motion='system'] .panes-track {
+    transition: none;
+  }
+}
+
+/* Resize grip (§11.19): an 8 px arc concentric with the 12 px corner, inside a 22 px hit. */
+
+/* Phone: Labels opens from the ··· menu; hide that menu while the Labels menu is up (it stays mounted). */
+.phone-more-menu:has([data-testid='label-filter'][aria-expanded='true']) {
+  visibility: hidden;
+}
+
+/* Search results (§11.21): a 400 px float under the field, right-aligned to it (§11.12 material). */
+.search-pop {
+  position: fixed;
+  z-index: 60;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--panel-glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 14px;
+  box-shadow: var(--shadow-panel);
+  animation: float-in 140ms var(--ease-out);
+}
+.search-pop-count,
+.search-pop-keys {
+  height: 28px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-pop-rule {
+  height: 1px;
+  flex: none;
+  margin: 4px 6px;
+  background: var(--line-2);
+}
+.search-pop .search-pop-keys {
+  font-size: 11px;
+  color: var(--placeholder);
+}
+.search-pop-empty {
+  padding: 12px 10px;
+  font: 400 15px var(--font-ui);
+  color: var(--muted);
+}
+.search-row {
+  width: 100%;
+  height: 52px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--ink);
+  font: 400 15px var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+.search-row:hover {
+  background: var(--surface-3);
+}
+.search-row.on {
+  background: var(--seg-well);
+}
+.search-row .ring6-btn {
+  width: 20px;
+  height: 20px;
+}
+.search-row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.search-row-title,
+.search-row-snippet {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.search-row-title {
+  font-weight: 500;
+  line-height: 19px;
+}
+.search-row.done .search-row-title {
+  text-decoration: line-through;
+  color: var(--placeholder);
+}
+.search-row-snippet {
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--muted);
+}
+.search-row .search-row-tag {
+  height: 18px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  margin-left: -4px;
+  padding: 0 5px;
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---- label pills (owner ruling, 7 Oct): filled with the label's own colour, text >= 4.5:1 ---- */
+/* labelFill() in lib/labels.ts sets --lp-bg-* / --lp-fg-* per theme on each pill. */
+:root .label-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  flex: none;
+  box-sizing: border-box;
+  max-width: 160px;
+  height: 22px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--lp-bg-l);
+  color: var(--lp-fg-l);
+  box-shadow: none;
+  font: 600 12px/22px var(--font-ui);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+[data-theme='tint-dark'] .label-pill {
+  background: var(--lp-bg-d);
+  color: var(--lp-fg-d);
+}
+[data-theme='sky'] .label-pill {
+  background: var(--lp-bg-s);
+  color: var(--lp-fg-s);
+}
+:root .label-pill-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Suggested: an outline in the label's colour, not a fill, so it never reads as applied. */
+:root .label-pill.suggested {
+  border: 1px dashed var(--lp-bg-l);
+  background: transparent;
+  color: var(--ink-2);
+  line-height: 20px;
+  cursor: pointer;
+}
+[data-theme='tint-dark'] .label-pill.suggested {
+  border-color: var(--lp-bg-d);
+}
+[data-theme='sky'] .label-pill.suggested {
+  border-color: var(--lp-bg-s);
+}
+:root .label-pill.suggested:hover {
+  background: var(--track);
+}
+/* Panel and phone sheet: 28 px chips; × is a 24 px target. */
+:root .dt-chips .label-pill {
+  max-width: 220px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font: 600 13px/28px var(--font-ui);
+}
+:root .dt-chips .label-pill.suggested {
+  line-height: 26px;
+}
+:root .dt-chips .label-pill:has(.label-pill-x) {
+  padding-right: 2px;
+}
+:root .label-pill-x {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-left: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: 400 16px/1 var(--font-ui);
+  opacity: 0.8;
+  cursor: pointer;
+}
+:root .label-pill-x:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 18%, transparent);
+}
+/* Rows that list labels (Labels menu, the panel's picker, search) show the pill in place of a dot. */
+.labels-name .label-pill,
+.label-check-name .label-pill {
+  max-width: 100%;
+}
+.search-result .label-pill {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* Checklist strike: a line-through, so it spans the text and not the whole row. */
+.dt-row-text::after {
+  content: none;
+}
+.dt-row-text {
+  text-decoration: line-through 1px transparent;
+  transition:
+    color 160ms var(--ease-out),
+    text-decoration-color 160ms var(--ease-out) 60ms;
+}
+.dt-row.checked .dt-row-text {
+  text-decoration-color: currentColor;
+}
+
+/* ---- top bar as drawn: 16 px between controls, 40 px icon buttons, Labels and room in ink ---- */
+.app.desktop .topbar-actions {
+  gap: 16px;
+}
+.app.desktop .topbar-actions .iconbtn {
+  width: 40px;
+  height: 40px;
+}
+.app.desktop .label-filter-btn {
+  height: 40px;
+  padding: 0 14px;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.app.desktop .room-switch {
+  gap: 9px;
+}
+
+/* ---- Board as drawn: 32 px column headings aligned at the top line, 42 px Done rows, 6 px under a title ---- */
+.app.desktop .column-header {
+  height: 32px;
+  padding: 0 2px;
+  align-items: baseline;
+}
+.done-group .card-face {
+  padding: 7px 10px;
+}
+.app .card-face .card-excerpt {
+  margin-top: 6px;
+}
+.app.desktop .assistant-launch.iconbtn svg {
+  width: 20px;
+  height: 20px;
+}
+.app.desktop .topbar-title {
+  align-items: baseline;
+  margin-left: 8px;
+}
+.app.desktop .column.done .column-body {
+  gap: 12px;
+}
+
+/* ---- open card as drawn: 14 px from the header to the title, 28 px chip row, checklist rows 40 + 4 apart, boxes at 22 px ---- */
+.dt-panel .dt-content > .dt-top {
+  margin-bottom: -4px;
+}
+.dt-panel .dt-chips {
+  min-height: 28px;
+}
+.dt-panel .dt-checklist-head {
+  box-sizing: border-box;
+  height: 28px;
+  margin-bottom: 4px;
+}
+.dt-panel .dt-rows {
+  gap: 4px;
+}
+.dt-panel .dt-row-wrap {
+  margin: 0 -8px 0 -4px;
+}
+.dt-panel .dt-row {
+  gap: 14px;
+  padding: 0 8px 0 4px;
+}
+.dt-panel .dt-row-handle {
+  position: absolute;
+  left: -14px; /* the handle keeps its hover reveal but takes no room: the box sits at the text axis */
+}
+/* Labels menu as drawn: 40 px rows 2 px apart. */
+.labels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dt-panel .dt-remind-anchor {
+  height: 28px; /* the chip row is 28, like its chips */
+}
+
+/* A focused editor stays glass; its controls keep their own focus cues. */
+.dt-panel:focus-visible,
+.dt-sheet:focus-visible { outline: none; }
+.dt-panel .dt-row,
+.dt-sheet .dt-row { align-items: flex-start; padding-top: 8px; padding-bottom: 8px; }
+.dt-panel .dt-row .dt-box,
+.dt-sheet .dt-row .dt-box { margin-top: 2px; }
+
+.card-done-date { margin-left: auto; color: var(--muted); }

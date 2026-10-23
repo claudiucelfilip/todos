@@ -1,0 +1,83 @@
+/* Shared content width keeps the board and Notes grid aligned. */
+.app.desktop {
+  --avail-w: min(calc(100vw - 64px), 1375px);
+  --col-w: round(down, calc((var(--avail-w) - 40px) / 3), 1px);
+  --content-w: calc(var(--col-w) * 3 + 40px);
+  --content-x: round(down, calc((100vw - var(--content-w)) / 2), 1px);
+}
+@supports not (width: round(down, 1px, 1px)) {
+  .app.desktop {
+    --col-w: calc((var(--avail-w) - 40px) / 3);
+    --content-x: calc((100vw - var(--content-w)) / 2);
+  }
+}
+
+/* Add opens the shared editor. */
+.composer-layer.desktop {
+  position: fixed;
+  z-index: 50;
+  right: 20px;
+  bottom: 20px;
+}
+.composer-layer.desktop .composer-bar {
+  width: max(360px, var(--col-w));
+  height: 48px;
+  justify-content: flex-start;
+  padding: 0 22px;
+  color: var(--placeholder);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-panel);
+}
+.composer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  color: var(--surface);
+  background: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.composer-bar input { flex: 1; min-width: 0; border: 0; padding: 0; outline: none; background: transparent; color: inherit; font: inherit; cursor: text; }
+.composer-bar input::placeholder { color: inherit; opacity: 1; }
+.composer-bar::before { content: '+'; font-size: 20px; }
+.composer-kbd { opacity: .6; }
+.composer-layer.phone {
+  position: fixed;
+  z-index: 30;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + var(--safe-bottom));
+}
+.composer-layer.phone .composer-bar {
+  width: 100%;
+  height: 48px;
+  justify-content: flex-start;
+  padding: 0 22px;
+  box-shadow: var(--shadow-panel);
+}
+
+ .composer-kbd { margin-left: auto; }
+.app.phone .phone-nav.many-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.app.phone .phone-nav.many-tabs button { flex: 0 0 88px; }
+.app.phone .phone-nav.many-tabs .pill,
+.app.phone .phone-nav.many-tabs .phone-tab-wells { display: none; }
+.app.phone .phone-nav.many-tabs button { background: var(--surface-2); box-shadow: var(--well-depth); border-radius: 12px; }
+.app.phone .phone-nav.many-tabs button.active { background: var(--surface); box-shadow: var(--card-depth); }
+
+.dt-panel.creating { animation: dt-create-in 240ms var(--ease-out); }
+@keyframes dt-create-in {
+  from { clip-path: inset(calc(100% - 48px) 0 0 round 18px); }
+  to { clip-path: inset(0 0 0 round 18px); }
+}
+@media (prefers-reduced-motion: reduce) { .dt-panel.creating { animation: none; } }
