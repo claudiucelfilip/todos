@@ -68,6 +68,7 @@ test('each bot sees only its own room and wiki captures wait for engagement', as
   assert.equal(delivered.length, 1);
   assert.match(delivered[0].prompt, /Investigate the options/);
   assert.match(delivered[0].prompt, /same card/);
+  assert.ok(delivered[0].prompt.includes(path.join(dir, 'bot-credentials/claw')));
   assert.equal((await request('claw', `/kanban/external/card?id=${firstCardId}`)).body.card.status, 'todo');
   const reply = await request('claw', '/kanban/external/ask/reply', { requestId: askBody.requestId, status: 'done', reply: 'The options are A and B.' });
   assert.equal(reply.status, 200);
@@ -147,9 +148,16 @@ test('each bot sees only its own room and wiki captures wait for engagement', as
   assert.equal(finished.status, 0, finished.stderr);
   const work = (await request('sherlock', `/kanban/external/card?id=${workId}`)).body.card;
   assert.equal(work.status, 'done'); assert.match(work.notes, /Found the answer/);
-  const sherlockWorker = spawn('node', ['scripts/dispatch-bot.mjs'], { env: { ...process.env, BOT_NAME: 'sherlock', BOT_ROOM_ID: shRoom, BOT_TOKEN_FILE: path.join(dir, 'bot-credentials/sherlock'), BOT_WEBHOOK_SECRET_FILE: secretFile, BOT_WEBHOOK_URL: `http://127.0.0.1:${hook.address().port}/hook`, TODOS_BASE: server.base } });
+  const dispatchCard = await request('sherlock', '/kanban/external/card', { title: 'Check the isolated token path', notes: 'Synthetic fixture only', kind: 'todo' });
+  assert.equal(dispatchCard.status, 200);
+  const agentTokenFile = '/isolated/profile/todos-token';
+  const emptyJobsFile = path.join(dir, 'sherlock-jobs.json');
+  fs.writeFileSync(emptyJobsFile, JSON.stringify({ jobs: [] }));
+  const sherlockWorker = spawn('node', ['scripts/dispatch-bot.mjs'], { env: { ...process.env, BOT_NAME: 'sherlock', BOT_ROOM_ID: shRoom, BOT_TOKEN_FILE: path.join(dir, 'bot-credentials/sherlock'), BOT_AGENT_TOKEN_FILE: agentTokenFile, BOT_JOBS_FILE: emptyJobsFile, BOT_WEBHOOK_SECRET_FILE: secretFile, BOT_WEBHOOK_URL: `http://127.0.0.1:${hook.address().port}/hook`, TODOS_BASE: server.base } });
   assert.equal(await new Promise(resolve => sherlockWorker.on('exit', resolve)), 0);
-  assert.equal(delivered.length, 1);
+  assert.equal(delivered.length, 2);
+  assert.ok(delivered[1].prompt.includes(agentTokenFile));
+  assert.ok(!delivered[1].prompt.includes(path.join(dir, 'bot-credentials/sherlock')));
 });
 
 test('old queued Ask tasks move into the original card conversation on restart', async t => {
