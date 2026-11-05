@@ -11,7 +11,7 @@ import { WORKFLOW_LABELS, migrateLinkedNotes, migrateWorkflow, workflowStatus, w
 // Auth for push / pull / snapshot / session: a session cookie from
 // POST /kanban/login, `Bearer <API_TOKEN>` (scripts, older devices) or
 // `Basic <TODOS_USER:TODOS_PASS>`. With neither API_TOKEN nor TODOS_USER set the
-// routes are open (local dev only); without TODOS_USER login is disabled. The
+// routes require an explicit loopback-only development opt-in; without TODOS_USER login is disabled. The
 // session cookie is HMAC-signed with <DATA_DIR>/session-secret (0600, made once).
 // Failed logins and Basic attempts are limited to 10 per 10 min per client IP
 // (cf-connecting-ip / x-forwarded-for are trusted only from a loopback peer, i.e.
@@ -85,6 +85,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, 'dist');
 const API_TOKEN = process.env.API_TOKEN || '';
 const PORT = Number(process.env.PORT || 8094);
+const HOST = process.env.HOST || '127.0.0.1';
+const LOCAL_DEV = process.env.TODOS_ALLOW_UNAUTHENTICATED_LOCAL === '1'
+  && process.env.NODE_ENV !== 'production' && ['127.0.0.1', '::1'].includes(HOST);
 
 // --------------------------- kanban action log ------------------------------
 // data/kanban.json = { seq, logStart, log: Action[], state } — an append-only
@@ -101,6 +104,10 @@ const EXTERNAL_TOKEN_FILE = path.join(DATA_DIR, 'external-token');
 const SESSION_SECRET_FILE = path.join(DATA_DIR, 'session-secret');
 const TODOS_USER = process.env.TODOS_USER || '';
 const TODOS_PASS = process.env.TODOS_PASS || '';
+if (!API_TOKEN && !(TODOS_USER && TODOS_PASS) && !LOCAL_DEV) {
+  throw new Error('Configure API_TOKEN or TODOS_USER/TODOS_PASS before starting Todos.');
+}
+if (TODOS_USER && !TODOS_PASS) throw new Error('TODOS_PASS is required with TODOS_USER.');
 const KEEP_DAYS = 30;
 
 const accounts = accountStore(DATA_DIR, TODOS_USER);
@@ -1665,9 +1672,9 @@ function basicOk(req) {
   return ok;
 }
 
-/** Sync routes: a session cookie, Bearer API_TOKEN or Basic user:pass. Open only when no auth is configured. */
+/** Sync routes require auth unless local development is explicitly enabled. */
 function authorized(req) {
-  if (!API_TOKEN && !TODOS_USER) return true;
+  if (!API_TOKEN && !TODOS_USER) return LOCAL_DEV;
   return tokenIs(req, API_TOKEN) || !!sessionUser(req) || basicOk(req);
 }
 
@@ -1800,6 +1807,9 @@ async function handleRequest(req, res) {
   const url = new URL(req.url, `http://127.0.0.1:${PORT}`);
   const p = url.pathname;
 
+  res.setHeader('x-content-type-options', 'nosniff');
+  res.setHeader('referrer-policy', 'no-referrer');
+  res.setHeader('content-security-policy', "base-uri 'self'; object-src 'none'; frame-ancestors 'self'");
   res.setHeader('access-control-allow-origin', req.headers['origin'] || '*');
   res.setHeader('access-control-allow-methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('access-control-allow-headers', 'Content-Type, Authorization, X-Filename, X-Filename-Encoding, X-File-Id, X-Todos-Room, X-Todos-Account');
@@ -2382,10 +2392,10 @@ for (const name of ['claw', 'lurch']) {
   if (room) roomContext.run(room, () => { migratePendingBotAsks(); reconcileBotReplyLabels(); });
 }
 
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, HOST, () => {
   void checkAllReminders(); // once on start: sends what was missed while down (< 12 h late)
   // eslint-disable-next-line no-console
-  console.log(`todos backend listening on 0.0.0.0:${PORT} (token: ${API_TOKEN ? 'on' : 'off'}, login: ${TODOS_USER ? 'on' : 'off'})`);
+  console.log(`todos backend listening on ${HOST}:${PORT} (token: ${API_TOKEN ? 'on' : 'off'}, login: ${TODOS_USER ? 'on' : 'off'})`);
 });
 
 function accountInfo(user) {

@@ -26,7 +26,7 @@ export async function startServer(script, { env = {}, cwd, port } = {}) {
   const p = port ?? (await freePort());
   return new Promise((resolve, reject) => {
     // Never reach the real ntfy.sh from a test: a dead local port unless the test brings a stub.
-    const child = spawn('node', [script], { cwd, env: { ...process.env, NTFY_SERVER: 'http://127.0.0.1:9', ...env, PORT: String(p) }, stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn('node', [script], { cwd, env: { ...process.env, HOST: '127.0.0.1', TODOS_ALLOW_UNAUTHENTICATED_LOCAL: '1', NTFY_SERVER: 'http://127.0.0.1:9', ...env, PORT: String(p) }, stdio: ['ignore', 'pipe', 'pipe'] });
     children.add(child);
     let out = '';
     let up = false;

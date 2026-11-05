@@ -36,7 +36,7 @@ const check = (name, cond, extra = '') => {
 
 let logs = '';
 async function boot() {
-  const h = await startServer(path.join(ROOT, 'server.js'), { port: PORT, env: { API_TOKEN: TOKEN, DATA_DIR: dataDir, TODOS_USER: USER, TODOS_PASS: PASS } });
+  const h = await startServer(path.join(ROOT, 'server.js'), { port: PORT, env: { HOST: '0.0.0.0', API_TOKEN: TOKEN, DATA_DIR: dataDir, TODOS_USER: USER, TODOS_PASS: PASS } });
   logs += h.logs();
   h.child.stdout.on('data', (d) => { logs += d; });
   h.child.stderr.on('data', (d) => { logs += d; process.stdout.write('[srv] ' + d); });

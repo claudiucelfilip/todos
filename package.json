@@ -17,7 +17,7 @@
     "test:copy": "tsx scripts/copy.test.ts",
     "test:store": "tsx scripts/store.test.ts",
     "test:api": "tsx scripts/api.test.ts",
-    "test": "npm run test:merge && npm run test:sync && npm run test:syncclient && npm run test:db && npm run test:derive && npm run test:reducer && npm run test:copy && npm run test:composer && npm run test:store && npm run test:api && npm run test:search && npm run test:external && npm run test:serverboard && npm run test:reminders && npm run test:repeat && npm run test:files && npm run test:share && npm run test:readonly && npm run test:windows && npm run test:accounts && npm run test:email && npm run test:ai && npm run test:capture && npm run test:notes && npm run test:tint && npm run test:automations && npm run test:sherlock && npm run test:bot-workspaces && npm run test:appearance",
+    "test": "npm run test:security && npm run test:merge && npm run test:sync && npm run test:syncclient && npm run test:db && npm run test:derive && npm run test:reducer && npm run test:copy && npm run test:composer && npm run test:store && npm run test:api && npm run test:search && npm run test:external && npm run test:serverboard && npm run test:reminders && npm run test:repeat && npm run test:files && npm run test:share && npm run test:readonly && npm run test:windows && npm run test:accounts && npm run test:email && npm run test:ai && npm run test:capture && npm run test:notes && npm run test:tint && npm run test:automations && npm run test:sherlock && npm run test:bot-workspaces && npm run test:appearance",
     "test:merge": "node scripts/merge.test.mjs",
     "test:syncclient": "tsx scripts/sync-client.test.ts",
     "test:search": "tsx scripts/search.test.ts",
@@ -40,11 +40,12 @@
     "test:automations": "node --test scripts/automations.test.mjs scripts/flows.test.mjs",
     "test:sherlock": "node --test scripts/sherlock.test.mjs scripts/sherlock-server.test.mjs",
     "test:bot-workspaces": "node --test scripts/bot-workspaces.test.mjs",
-    "test:appearance": "tsx scripts/appearance.test.ts"
+    "test:appearance": "tsx scripts/appearance.test.ts",
+    "test:security": "node --test scripts/security-startup.test.mjs"
   },
   "dependencies": {
     "idb": "^8.0.0",
-    "nodemailer": "^10.0.13",
+    "nodemailer": "^10.3.1",
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -63,5 +64,10 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
     "vite-plugin-pwa": "^0.21.1"
+  },
+  "overrides": {
+    "workbox-build": {
+      "glob": "^14.0.3"
+    }
   }
 }
