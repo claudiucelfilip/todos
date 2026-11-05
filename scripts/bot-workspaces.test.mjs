@@ -148,7 +148,7 @@ test('each bot sees only its own room and wiki captures wait for engagement', as
   assert.equal(finished.status, 0, finished.stderr);
   const work = (await request('sherlock', `/kanban/external/card?id=${workId}`)).body.card;
   assert.equal(work.status, 'done'); assert.match(work.notes, /Found the answer/);
-  const dispatchCard = await request('sherlock', '/kanban/external/card', { title: 'Check the isolated token path', notes: 'Synthetic fixture only', kind: 'todo' });
+  const dispatchCard = await request('sherlock', '/kanban/external/card', { key: 'fixture:isolated-token', title: 'Check the isolated token path', notes: 'Synthetic fixture only', kind: 'todo' });
   assert.equal(dispatchCard.status, 200);
   const agentTokenFile = '/isolated/profile/todos-token';
   const emptyJobsFile = path.join(dir, 'sherlock-jobs.json');
